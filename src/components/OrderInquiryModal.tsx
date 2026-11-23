@@ -3,7 +3,6 @@ import {
   X,
   CheckCircle,
   MessageSquare,
-  ShoppingBag,
   PackageCheck,
   MapPin,
   PhoneCall,
@@ -108,123 +107,118 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
       />
 
       {/* Modal Dialog Card */}
-      <div className="relative bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-7 shadow-2xl border border-cream-200 z-10 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto my-auto">
+      <div className="relative bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-3.5 sm:p-6 shadow-2xl border border-cream-200 z-10 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto my-auto">
         
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full text-botanical-600 hover:text-botanical-950 hover:bg-cream-100 transition-colors cursor-pointer z-20"
+          className="absolute top-3.5 right-3.5 p-1.5 rounded-full text-botanical-600 hover:text-botanical-950 hover:bg-cream-100 transition-colors cursor-pointer z-20"
           aria-label="Close Modal"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {!submitted ? (
           <div>
-            {/* Header with right padding to clear close button */}
-            <div className="flex items-center gap-3 mb-4 pr-10">
-              <div className="w-11 h-11 rounded-2xl bg-botanical-100 text-botanical-800 flex items-center justify-center shrink-0 border border-botanical-200">
-                <ShoppingBag className="w-5 h-5 stroke-[1.75]" />
-              </div>
-              <div className="min-w-0">
-                <h3 className="font-serif font-bold text-lg sm:text-xl text-botanical-950 truncate">
-                  Confirm Quick Order
-                </h3>
-                <p className="text-xs text-botanical-700 truncate">
-                  Tibra Natural Joint Oil • Cash on Delivery
-                </p>
-              </div>
+            {/* Header: Left Icon Removed, Title Clean and Full Width */}
+            <div className="mb-3 pr-8">
+              <h3 className="font-serif font-bold text-base sm:text-lg text-botanical-950 tracking-tight">
+                Confirm Quick Order
+              </h3>
+              <p className="text-[11px] sm:text-xs text-botanical-700 mt-0.5">
+                Tibra Natural Joint Oil (30 ML) • Cash on Delivery
+              </p>
             </div>
 
             {/* Visual 3-Step Process Flow at Top */}
-            <div className="grid grid-cols-3 gap-2 py-2.5 px-3 mb-4 bg-[#F5F0E6]/70 rounded-2xl border border-cream-200 text-center text-xs">
-              <div className="flex flex-col items-center gap-1">
-                <div className="w-6 h-6 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
-                  <PackageCheck className="w-3.5 h-3.5 stroke-[1.75]" />
-                </div>
+            <div className="grid grid-cols-3 gap-1 py-1.5 px-2.5 mb-3 bg-[#F5F0E6]/70 rounded-xl border border-cream-200 text-center text-xs">
+              <div className="flex items-center justify-center gap-1">
+                <PackageCheck className="w-3.5 h-3.5 text-botanical-800 shrink-0" />
                 <span className="font-bold text-[10px] text-botanical-950 uppercase tracking-wide">1. Bottles</span>
               </div>
-              <div className="flex flex-col items-center gap-1 border-x border-cream-300/80">
-                <div className="w-6 h-6 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
-                  <MapPin className="w-3.5 h-3.5 stroke-[1.75]" />
-                </div>
+              <div className="flex items-center justify-center gap-1 border-x border-cream-300/80">
+                <MapPin className="w-3.5 h-3.5 text-botanical-800 shrink-0" />
                 <span className="font-bold text-[10px] text-botanical-950 uppercase tracking-wide">2. Address</span>
               </div>
-              <div className="flex flex-col items-center gap-1">
-                <div className="w-6 h-6 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
-                  <Truck className="w-3.5 h-3.5 stroke-[1.75]" />
-                </div>
+              <div className="flex items-center justify-center gap-1">
+                <Truck className="w-3.5 h-3.5 text-botanical-800 shrink-0" />
                 <span className="font-bold text-[10px] text-botanical-950 uppercase tracking-wide">3. Fast COD</span>
               </div>
             </div>
 
             {/* Product Summary Preview with Live Price */}
-            <div className="p-3.5 rounded-2xl bg-[#F5F0E6] border border-cream-300 flex items-center gap-3 sm:gap-4 mb-4">
-              <img
-                src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                alt="Tibra Natural Joint Oil 30ML"
-                className="w-12 h-16 sm:w-14 sm:h-18 object-contain shrink-0 drop-shadow-sm"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#F5F0E6] border border-cream-300 mb-3 space-y-2">
+              <div className="flex items-center gap-3">
+                <img
+                  src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                  alt="Tibra Natural Joint Oil 30ML"
+                  className="w-10 h-13 sm:w-11 sm:h-15 object-contain shrink-0 drop-shadow-xs"
+                />
+                <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-xs sm:text-sm text-botanical-950 leading-tight">
                     {primaryProduct.name}
                   </h4>
-                  <span className="text-xs sm:text-sm font-bold text-[#748C48] whitespace-nowrap shrink-0">
+                  <p className="text-[10px] sm:text-[11px] text-botanical-700 mt-0.5">
+                    100% Pure Botanical Dropper
+                  </p>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="text-xs sm:text-sm font-bold text-[#748C48] font-mono block">
                     Rs. {unitPrice.toLocaleString()}
                   </span>
+                  <span className="text-[10px] text-stone-400 line-through font-mono block">
+                    Rs. 1,990
+                  </span>
                 </div>
-                <p className="text-[11px] text-botanical-700 mt-0.5 truncate">
-                  100% Pure Botanical Formulation • 30 ML
-                </p>
+              </div>
 
-                <div className="flex items-center justify-between mt-2 pt-2 border-t border-cream-300/70 gap-2">
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <span className="text-[11px] font-semibold text-botanical-800">
-                      Qty:
+              {/* Bottom Row across full width: Stepper on left + Total COD Price on right */}
+              <div className="flex items-center justify-between pt-2 border-t border-cream-300/80 gap-2">
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[11px] font-semibold text-botanical-800">
+                    Qty:
+                  </span>
+                  <div className="inline-flex items-center border border-cream-300 rounded-md bg-white overflow-hidden shadow-2xs">
+                    <button
+                      type="button"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="px-2 py-0.5 text-xs font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
+                    >
+                      -
+                    </button>
+                    <span className="px-2.5 py-0.5 text-xs font-bold text-botanical-950 font-mono">
+                      {quantity}
                     </span>
-                    <div className="inline-flex items-center border border-cream-300 rounded-lg bg-white overflow-hidden shadow-xs">
-                      <button
-                        type="button"
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="px-2 py-0.5 text-xs font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
-                      >
-                        -
-                      </button>
-                      <span className="px-2.5 py-0.5 text-xs font-bold text-botanical-950 font-mono">
-                        {quantity}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="px-2 py-0.5 text-xs font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
-                      >
-                        +
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="px-2 py-0.5 text-xs font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
+                    >
+                      +
+                    </button>
                   </div>
+                </div>
 
-                  <div className="flex items-center gap-1.5 text-right whitespace-nowrap shrink-0">
-                    <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
-                    <span className="text-sm font-bold text-botanical-950 font-mono">
-                      Rs. {totalPrice.toLocaleString()}
+                <div className="flex items-center gap-1.5 text-right shrink-0">
+                  <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
+                  <span className="text-xs sm:text-sm font-bold text-botanical-950 font-mono">
+                    Rs. {totalPrice.toLocaleString()}
+                  </span>
+                  {pricingCalc.isDuoApplied && (
+                    <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 border border-[#748C48]/30 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                      Save {pricingCalc.percentOff}%
                     </span>
-                    {pricingCalc.isDuoApplied && (
-                      <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">
-                        Save 37% (Rs. 1,480 OFF)
-                      </span>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Order Details Form */}
-            <form onSubmit={handleSubmit} className="space-y-3.5">
+            {/* Order Details Form — Compact Input Boxes */}
+            <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-2.5">
               <div>
-                <label className="flex items-center gap-1.5 text-xs font-semibold text-botanical-900 uppercase tracking-wider mb-1">
-                  <User className="w-3.5 h-3.5 text-botanical-600" />
+                <label className="flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-botanical-900 uppercase tracking-wider mb-0.5">
+                  <User className="w-3 h-3 text-botanical-600" />
                   <span>Full Name *</span>
                 </label>
                 <input
@@ -233,14 +227,14 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                   placeholder="e.g. Tariq Mehmood"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-cream-300 focus:outline-none focus:ring-2 focus:ring-botanical-500 text-sm bg-cream-50/50"
+                  className="w-full px-3 py-1.5 sm:py-2 rounded-lg border border-cream-300 focus:outline-none focus:ring-1.5 focus:ring-botanical-500 text-xs sm:text-sm bg-cream-50/50 placeholder:text-stone-400 shadow-2xs"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
                 <div>
-                  <label className="flex items-center gap-1.5 text-xs font-semibold text-botanical-900 uppercase tracking-wider mb-1">
-                    <Phone className="w-3.5 h-3.5 text-botanical-600" />
+                  <label className="flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-botanical-900 uppercase tracking-wider mb-0.5">
+                    <Phone className="w-3 h-3 text-botanical-600" />
                     <span>Phone / WhatsApp *</span>
                   </label>
                   <input
@@ -249,12 +243,12 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                     placeholder="0300 1234567"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-cream-300 focus:outline-none focus:ring-2 focus:ring-botanical-500 text-sm bg-cream-50/50"
+                    className="w-full px-3 py-1.5 sm:py-2 rounded-lg border border-cream-300 focus:outline-none focus:ring-1.5 focus:ring-botanical-500 text-xs sm:text-sm bg-cream-50/50 placeholder:text-stone-400 shadow-2xs"
                   />
                 </div>
                 <div>
-                  <label className="flex items-center gap-1.5 text-xs font-semibold text-botanical-900 uppercase tracking-wider mb-1">
-                    <MapPin className="w-3.5 h-3.5 text-botanical-600" />
+                  <label className="flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-botanical-900 uppercase tracking-wider mb-0.5">
+                    <MapPin className="w-3 h-3 text-botanical-600" />
                     <span>City / Delivery Area *</span>
                   </label>
                   <input
@@ -263,47 +257,47 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                     placeholder="e.g. Lahore / Karachi / Islamabad"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-cream-300 focus:outline-none focus:ring-2 focus:ring-botanical-500 text-sm bg-cream-50/50"
+                    className="w-full px-3 py-1.5 sm:py-2 rounded-lg border border-cream-300 focus:outline-none focus:ring-1.5 focus:ring-botanical-500 text-xs sm:text-sm bg-cream-50/50 placeholder:text-stone-400 shadow-2xs"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-xs font-semibold text-botanical-900 uppercase tracking-wider mb-1">
-                  <FileText className="w-3.5 h-3.5 text-botanical-600" />
+                <label className="flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-botanical-900 uppercase tracking-wider mb-0.5">
+                  <FileText className="w-3 h-3 text-botanical-600" />
                   <span>Delivery Instructions or Notes (Optional)</span>
                 </label>
                 <textarea
-                  rows={2}
-                  placeholder="Street address, nearest landmark, or preferred delivery timing..."
+                  rows={1}
+                  placeholder="Street address, nearest landmark, or timing..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-4 py-2 rounded-xl border border-cream-300 focus:outline-none focus:ring-2 focus:ring-botanical-500 text-sm bg-cream-50/50"
+                  className="w-full px-3 py-1.5 rounded-lg border border-cream-300 focus:outline-none focus:ring-1.5 focus:ring-botanical-500 text-xs bg-cream-50/50 placeholder:text-stone-400 shadow-2xs resize-none"
                 />
               </div>
 
-              {/* Main Action Button */}
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              {/* Main Action Button — Compact and refined */}
+              <div className="pt-1 flex flex-col sm:flex-row gap-2">
                 <button
                   type="submit"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 sm:py-3 px-5 rounded-full bg-[#748C48] hover:bg-[#5F7339] text-white font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all shadow-md shadow-[#748C48]/30 hover:-translate-y-0.5 border border-[#62773C] cursor-pointer"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-4 rounded-full bg-[#748C48] hover:bg-[#5F7339] text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-wider transition-all shadow-md shadow-[#748C48]/25 hover:-translate-y-0.5 border border-[#62773C] cursor-pointer"
                 >
-                  <CheckCircle className="w-4 h-4 text-white" />
+                  <CheckCircle className="w-3.5 h-3.5 text-white" />
                   <span>Confirm Order (Cash on Delivery)</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={handleWhatsAppInquiry}
-                  className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all shadow-md hover:-translate-y-0.5 cursor-pointer whitespace-nowrap shrink-0 border border-white/20"
+                  className="flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-wider transition-all shadow-md hover:-translate-y-0.5 cursor-pointer whitespace-nowrap shrink-0 border border-white/20"
                   title="Direct WhatsApp Order"
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="w-3.5 h-3.5" />
                   <span>WhatsApp</span>
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-2 text-[11px] text-center text-botanical-700 pt-1">
+              <div className="flex items-center justify-center gap-1.5 text-[10px] text-center text-botanical-700 pt-0.5">
                 <BadgeCheck className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Pay securely in cash when package arrives at your doorstep.</span>
               </div>
