@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom smooth scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F5F0E6;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #748C48;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5F7339;
+  }
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.glass-panel-dark {
+  background: rgba(37, 46, 21, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.gold-gradient-text {
+  color: #D4AF37;
+}
+
+/* Solid TIBRA Brand Button (#748C48) — No Gradient */
+.gold-foil-btn,
+.solid-brand-btn {
+  background-color: #748C48 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #62773C !important;
+  box-shadow: 0 4px 14px -2px rgba(116, 140, 72, 0.35);
+}
+.gold-foil-btn:hover,
+.solid-brand-btn:hover {
+  background-color: #5F7339 !important;
+  filter: none !important;
+  box-shadow: 0 6px 20px 0 rgba(116, 140, 72, 0.45);
+}
+
+.botanical-gradient-text {
+  color: #748C48;
+}
+
+/* Subtle canvas background glow */
+.hero-glow {
+  background: radial-gradient(circle at 60% 45%, rgba(116, 140, 72, 0.16) 0%, rgba(212, 175, 55, 0.08) 35%, transparent 70%);
+}
