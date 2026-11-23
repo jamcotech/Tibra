@@ -164,20 +164,18 @@ export const CartDrawer: React.FC = () => {
                             <div className="text-sm font-bold text-botanical-950">
                               Rs. {calc.total.toLocaleString()}
                             </div>
-                            {calc.isDuoApplied ? (
-                              <div className="space-y-0.5">
+                            {calc.regularTotal > calc.total && (
+                              <div className="space-y-0.5 mt-0.5">
                                 <div className="text-[10px] text-stone-400 line-through font-mono">
                                   Rs. {calc.regularTotal.toLocaleString()}
                                 </div>
-                                <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 px-1 py-0.2 rounded inline-block">
-                                  Duo Offer Applied
+                                <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 px-1.5 py-0.5 rounded-full inline-block">
+                                  {calc.isDuoApplied
+                                    ? 'Save 37% (Flat Rs. 1,480 OFF)'
+                                    : 'Save 25% (Flat Rs. 490 OFF)'}
                                 </span>
                               </div>
-                            ) : item.product.originalPrice ? (
-                              <div className="text-[10px] text-botanical-400 line-through">
-                                Rs. {(item.product.originalPrice * item.quantity).toLocaleString()}
-                              </div>
-                            ) : null}
+                            )}
                           </div>
                         );
                       })()}

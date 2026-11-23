@@ -131,13 +131,15 @@ export const CartPage: React.FC = () => {
                               <div className="font-serif font-bold text-base sm:text-lg text-botanical-950">
                                 Rs. {calc.total.toLocaleString()}
                               </div>
-                              {calc.isDuoApplied && (
+                              {calc.regularTotal > calc.total && (
                                 <div className="space-y-0.5 mt-0.5">
                                   <span className="text-[11px] text-stone-400 line-through font-mono block">
                                     Rs. {calc.regularTotal.toLocaleString()}
                                   </span>
                                   <span className="text-[10px] font-bold text-[#748C48] bg-[#748C48]/10 border border-[#748C48]/30 px-1.5 py-0.5 rounded-full inline-block">
-                                    Duo Offer Applied!
+                                    {calc.isDuoApplied
+                                      ? 'Save 37% (Flat Rs. 1,480 OFF)'
+                                      : 'Save 25% (Flat Rs. 490 OFF)'}
                                   </span>
                                 </div>
                               )}

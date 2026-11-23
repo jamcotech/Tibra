@@ -44,26 +44,39 @@ const DEFAULT_ADMIN: AdminUser = {
 export function calculateItemPrice(product: Product, quantity: number): {
   total: number;
   regularTotal: number;
+  originalRegularTotal: number;
   discount: number;
+  percentOff: number;
   isDuoApplied: boolean;
 } {
-  const regularTotal = product.price * quantity;
+  const regularUnitPrice = product.originalPrice || (product.id.includes('bundle-2') ? 3980 : 1990);
+  const originalRegularTotal = regularUnitPrice * quantity;
+
   if (product.id === 'tibra-natural-joint-oil-30ml' || product.price === 1500) {
     const pairs = Math.floor(quantity / 2);
     const remainder = quantity % 2;
     const total = (pairs * 2500) + (remainder * 1500);
-    const discount = regularTotal - total;
+    const discount = originalRegularTotal - total;
+    const percentOff = Math.round((discount / originalRegularTotal) * 100);
     return {
       total,
-      regularTotal,
+      regularTotal: originalRegularTotal,
+      originalRegularTotal,
       discount,
+      percentOff,
       isDuoApplied: pairs > 0,
     };
   }
+  const regularTotal = (product.originalPrice || product.price) * quantity;
+  const total = product.price * quantity;
+  const discount = Math.max(0, regularTotal - total);
+  const percentOff = regularTotal > 0 ? Math.round((discount / regularTotal) * 100) : 0;
   return {
-    total: regularTotal,
+    total,
     regularTotal,
-    discount: 0,
+    originalRegularTotal: regularTotal,
+    discount,
+    percentOff,
     isDuoApplied: false,
   };
 }

@@ -212,7 +212,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                     </span>
                     {pricingCalc.isDuoApplied && (
                       <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">
-                        Duo Offer!
+                        Save 37% (Rs. 1,480 OFF)
                       </span>
                     )}
                   </div>

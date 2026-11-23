@@ -115,10 +115,10 @@ export const CheckoutPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 items-start">
           
-          {/* Left: Customer & Shipping Form */}
-          <div className="lg:col-span-7 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-6 sm:p-10 space-y-8">
+          {/* Customer & Shipping Form — Appears 2nd on mobile (below review) and 1st on desktop */}
+          <div className="lg:col-span-7 order-2 lg:order-1 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-5 sm:p-8 space-y-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-botanical-100 text-botanical-800 text-[11px] font-bold uppercase tracking-wider mb-2">
                 <Lock className="w-3.5 h-3.5 text-botanical-600" />
@@ -400,8 +400,8 @@ export const CheckoutPage: React.FC = () => {
             </form>
           </div>
 
-          {/* Right: Cart Summary Review */}
-          <div className="lg:col-span-5 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-5 sm:p-7 space-y-5 sticky top-28">
+          {/* Cart Summary Review — Appears 1st on mobile (above delivery form) and 2nd on desktop */}
+          <div className="lg:col-span-5 order-1 lg:order-2 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-5 sm:p-7 space-y-5 lg:sticky lg:top-28">
             
             {/* Special Duo Offer Card (Buy 2 for Rs. 2,500) */}
             <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#748C48]/15 via-gold/15 to-[#748C48]/15 border border-[#748C48]/40 shadow-xs">
@@ -496,28 +496,26 @@ export const CheckoutPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Clean Price on Right with Automatic Duo Calculation */}
+                  {/* Clean Price on Right with Accurate Original Crossed-out Price */}
                   {(() => {
                     const calc = calculateItemPrice(item.product, item.quantity);
                     return (
                       <div className="text-right shrink-0">
-                        <div className="font-bold text-xs text-botanical-950">
+                        <div className="font-bold text-xs sm:text-sm text-botanical-950">
                           Rs. {calc.total.toLocaleString()}
                         </div>
-                        {calc.isDuoApplied ? (
-                          <div className="space-y-0.5">
-                            <span className="text-[10px] text-stone-400 line-through font-mono block">
+                        {calc.regularTotal > calc.total && (
+                          <div className="space-y-0.5 mt-0.5">
+                            <span className="text-[10px] sm:text-[11px] text-stone-400 line-through font-mono block">
                               Rs. {calc.regularTotal.toLocaleString()}
                             </span>
-                            <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 px-1 py-0.2 rounded inline-block">
-                              Duo Offer Applied!
+                            <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 border border-[#748C48]/30 px-1.5 py-0.5 rounded-full inline-block">
+                              {calc.isDuoApplied
+                                ? 'Save 37% (Flat Rs. 1,480 OFF)'
+                                : 'Save 25% (Flat Rs. 490 OFF)'}
                             </span>
                           </div>
-                        ) : item.product.originalPrice ? (
-                          <div className="text-[10px] text-stone-400 line-through font-mono">
-                            Rs. {(item.product.originalPrice * item.quantity).toLocaleString()}
-                          </div>
-                        ) : null}
+                        )}
                       </div>
                     );
                   })()}
@@ -532,7 +530,7 @@ export const CheckoutPage: React.FC = () => {
               </div>
               {cartDiscount > 0 && (
                 <div className="flex justify-between text-emerald-700 font-semibold">
-                  <span>Duo Offer Savings</span>
+                  <span>Special Savings Discount</span>
                   <span className="font-bold">-Rs. {cartDiscount.toLocaleString()}</span>
                 </div>
               )}

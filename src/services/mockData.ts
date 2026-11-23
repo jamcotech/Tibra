@@ -14,7 +14,7 @@ export const TIBRA_PRODUCTS: Product[] = [
     image: '/assets/purefix-bottle-transparent.png',
     description: '100% Natural Herbal Blend formulated with 16 time-tested botanical oils and active roots including Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia.',
     badge: 'Best Seller',
-    bundleOffer: 'Save 25% Today'
+    bundleOffer: 'Save 25% (Flat Rs. 490 OFF)'
   },
   {
     id: 'tibra-natural-joint-oil-bundle-2',
