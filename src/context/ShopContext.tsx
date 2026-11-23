@@ -131,7 +131,16 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     storeService.addToCart(product, quantity);
     setCurrentView('checkout');
     setIsCartDrawerOpen(false);
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [currentView]);
 
   const updateQuantity = (productId: string, quantity: number) => {
     storeService.updateCartQuantity(productId, quantity);

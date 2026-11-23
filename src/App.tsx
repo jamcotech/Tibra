@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShopProvider, useShop } from './context/ShopContext';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -22,6 +22,10 @@ import { SpreeAdminApp } from './admin/SpreeAdminApp';
 function ShopAppContent() {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const { currentView, isAdminOpen, setIsAdminOpen } = useShop();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [currentView]);
 
   if (isAdminOpen) {
     return (

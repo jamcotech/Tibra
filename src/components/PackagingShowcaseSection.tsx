@@ -121,19 +121,23 @@ export const PackagingShowcaseSection: React.FC = () => {
                 </span>
               </div>
 
-              {/* Two Bottles Side-by-Side Visual */}
-              <div className="py-1 flex items-center justify-center">
-                <div className="relative flex items-center justify-center -space-x-8">
+              {/* Two Bottles Distinct & Side-by-Side Visual */}
+              <div className="py-2.5 flex items-center justify-center gap-6 sm:gap-8">
+                <div className="flex flex-col items-center">
                   <img
                     src="/assets/purefix-bottle-transparent.png"
                     alt="Tibra Natural Joint Oil Bottle 1"
-                    className="h-24 sm:h-28 object-contain -rotate-6 drop-shadow-md z-10 transition-transform hover:scale-105"
+                    className="h-24 sm:h-30 object-contain drop-shadow-md transition-transform hover:scale-105"
                   />
+                  <span className="text-[10px] font-mono text-botanical-700 font-semibold mt-1">Bottle 1 (30 ML)</span>
+                </div>
+                <div className="flex flex-col items-center">
                   <img
                     src="/assets/purefix-bottle-transparent.png"
                     alt="Tibra Natural Joint Oil Bottle 2"
-                    className="h-24 sm:h-28 object-contain rotate-6 drop-shadow-md z-20 transition-transform hover:scale-105"
+                    className="h-24 sm:h-30 object-contain drop-shadow-md transition-transform hover:scale-105"
                   />
+                  <span className="text-[10px] font-mono text-botanical-700 font-semibold mt-1">Bottle 2 (30 ML)</span>
                 </div>
               </div>
 
@@ -142,11 +146,11 @@ export const PackagingShowcaseSection: React.FC = () => {
                 <h4 className="font-serif font-bold text-sm sm:text-base text-botanical-950">
                   Buy 2 Bottles for Rs. 2,500 Only!
                 </h4>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2.5">
                   <span className="text-base sm:text-lg font-bold text-[#748C48] font-sans">Rs. 2,500</span>
                   <span className="text-xs text-stone-400 line-through font-mono">Rs. 3,980</span>
-                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
-                    Free Delivery
+                  <span className="text-[11px] font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                    Save 37%
                   </span>
                 </div>
                 <p className="text-[11px] text-botanical-800/80 leading-relaxed max-w-sm mx-auto">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ShieldCheck, CheckCircle2, Lock, Truck, CreditCard, Sparkles, Minus, Plus } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useShop } from '../context/ShopContext';
@@ -6,6 +6,10 @@ import { storeService } from '../services/storeService';
 
 export const CheckoutPage: React.FC = () => {
   const { cart, cartSubtotal, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart, addToCart } = useShop();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',

@@ -57,7 +57,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
       items: [
         {
           productId: primaryProduct.id,
-          productName: `${primaryProduct.name} (30 ML)`,
+          productName: primaryProduct.name,
           quantity: quantity,
           price: unitPrice,
           image: primaryProduct.image,
@@ -107,13 +107,13 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
       />
 
       {/* Modal Dialog Card */}
-      <div className="relative bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full p-4 sm:p-8 shadow-2xl border border-cream-200 z-10 animate-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
+      <div className="relative bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-7 shadow-2xl border border-cream-200 z-10 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto my-auto">
         
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full text-botanical-600 hover:text-botanical-950 hover:bg-cream-100 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 p-2 rounded-full text-botanical-600 hover:text-botanical-950 hover:bg-cream-100 transition-colors cursor-pointer z-20"
           aria-label="Close Modal"
         >
           <X className="w-5 h-5" />
@@ -121,91 +121,92 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
 
         {!submitted ? (
           <div>
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-12 h-12 rounded-2xl bg-botanical-100 text-botanical-800 flex items-center justify-center shrink-0 border border-botanical-200">
-                <ShoppingBag className="w-6 h-6 stroke-[1.75]" />
+            {/* Header with right padding to clear close button */}
+            <div className="flex items-center gap-3 mb-4 pr-10">
+              <div className="w-11 h-11 rounded-2xl bg-botanical-100 text-botanical-800 flex items-center justify-center shrink-0 border border-botanical-200">
+                <ShoppingBag className="w-5 h-5 stroke-[1.75]" />
               </div>
-              <div>
-                <h3 className="font-serif font-bold text-xl text-botanical-950">
+              <div className="min-w-0">
+                <h3 className="font-serif font-bold text-lg sm:text-xl text-botanical-950 truncate">
                   Confirm Quick Order
                 </h3>
-                <p className="text-xs text-botanical-700">
-                  Tibra Natural Joint Oil (30 ML) • Cash on Delivery with Free Shipping
+                <p className="text-xs text-botanical-700 truncate">
+                  Tibra Natural Joint Oil • Cash on Delivery
                 </p>
               </div>
             </div>
 
             {/* Visual 3-Step Process Flow at Top */}
-            <div className="grid grid-cols-3 gap-2 py-3 px-3.5 mb-5 bg-[#F5F0E6]/70 rounded-2xl border border-cream-200 text-center text-xs">
+            <div className="grid grid-cols-3 gap-2 py-2.5 px-3 mb-4 bg-[#F5F0E6]/70 rounded-2xl border border-cream-200 text-center text-xs">
               <div className="flex flex-col items-center gap-1">
-                <div className="w-7 h-7 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
-                  <PackageCheck className="w-4 h-4 stroke-[1.75]" />
+                <div className="w-6 h-6 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
+                  <PackageCheck className="w-3.5 h-3.5 stroke-[1.75]" />
                 </div>
                 <span className="font-bold text-[10px] text-botanical-950 uppercase tracking-wide">1. Bottles</span>
               </div>
               <div className="flex flex-col items-center gap-1 border-x border-cream-300/80">
-                <div className="w-7 h-7 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
-                  <MapPin className="w-4 h-4 stroke-[1.75]" />
+                <div className="w-6 h-6 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
+                  <MapPin className="w-3.5 h-3.5 stroke-[1.75]" />
                 </div>
                 <span className="font-bold text-[10px] text-botanical-950 uppercase tracking-wide">2. Address</span>
               </div>
               <div className="flex flex-col items-center gap-1">
-                <div className="w-7 h-7 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
-                  <Truck className="w-4 h-4 stroke-[1.75]" />
+                <div className="w-6 h-6 rounded-lg bg-botanical-800 text-gold-light flex items-center justify-center shadow-xs">
+                  <Truck className="w-3.5 h-3.5 stroke-[1.75]" />
                 </div>
                 <span className="font-bold text-[10px] text-botanical-950 uppercase tracking-wide">3. Fast COD</span>
               </div>
             </div>
 
             {/* Product Summary Preview with Live Price */}
-            <div className="p-4 rounded-2xl bg-[#F5F0E6] border border-cream-300 flex items-center gap-4 mb-5">
+            <div className="p-3.5 rounded-2xl bg-[#F5F0E6] border border-cream-300 flex items-center gap-3 sm:gap-4 mb-4">
               <img
                 src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
                 alt="Tibra Natural Joint Oil 30ML"
-                className="w-14 h-18 object-contain shrink-0 drop-shadow-sm"
+                className="w-12 h-16 sm:w-14 sm:h-18 object-contain shrink-0 drop-shadow-sm"
               />
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-semibold text-sm text-botanical-950">
-                    {primaryProduct.name} (30 ML)
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="font-semibold text-xs sm:text-sm text-botanical-950 leading-tight">
+                    {primaryProduct.name}
                   </h4>
-                  <span className="text-sm font-bold text-botanical-900">
+                  <span className="text-xs sm:text-sm font-bold text-[#748C48] whitespace-nowrap shrink-0">
                     Rs. {unitPrice.toLocaleString()}
                   </span>
                 </div>
-                <p className="text-xs text-botanical-700 mt-0.5">
-                  100% Natural Herbal Blend with Gold Dropper Cap
+                <p className="text-[11px] text-botanical-700 mt-0.5 truncate">
+                  100% Pure Botanical Formulation • 30 ML
                 </p>
-                <div className="flex items-center justify-between mt-2 pt-2 border-t border-cream-300/70">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-botanical-800">
-                      Quantity:
+
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-cream-300/70 gap-2">
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="text-[11px] font-semibold text-botanical-800">
+                      Qty:
                     </span>
                     <div className="inline-flex items-center border border-cream-300 rounded-lg bg-white overflow-hidden shadow-xs">
                       <button
                         type="button"
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="px-2.5 py-0.5 text-sm font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
+                        className="px-2 py-0.5 text-xs font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
                       >
                         -
                       </button>
-                      <span className="px-3 py-0.5 text-xs font-bold text-botanical-950">
+                      <span className="px-2.5 py-0.5 text-xs font-bold text-botanical-950 font-mono">
                         {quantity}
                       </span>
                       <button
                         type="button"
                         onClick={() => setQuantity(quantity + 1)}
-                        className="px-2.5 py-0.5 text-sm font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
+                        className="px-2 py-0.5 text-xs font-bold text-botanical-800 hover:bg-cream-100 transition-colors cursor-pointer"
                       >
                         +
                       </button>
                     </div>
                   </div>
 
-                  <div className="text-right">
-                    <span className="text-[11px] text-botanical-600 block">Total COD:</span>
-                    <span className="text-sm font-bold text-botanical-950">
+                  <div className="flex items-center gap-1 text-right whitespace-nowrap shrink-0">
+                    <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
+                    <span className="text-sm font-bold text-botanical-950 font-mono">
                       Rs. {totalPrice.toLocaleString()}
                     </span>
                   </div>
