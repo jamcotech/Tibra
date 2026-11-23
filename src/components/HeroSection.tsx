@@ -177,23 +177,23 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
               </div>
             </div>
 
-            {/* CTAs: Side-by-side on Mobile, compact, without Rs. */}
-            <div className="hero-t4 grid grid-cols-2 sm:flex sm:flex-row items-center gap-2.5 sm:gap-3.5 mb-4 w-full sm:w-auto">
+            {/* CTAs: Sleek & Compact Side-by-Side Pill Buttons */}
+            <div className="hero-t4 flex flex-row items-center gap-2 sm:gap-3 mb-4 w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => quickBuyNow(primaryProduct)}
-                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-7 py-2.5 sm:py-3.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white transition-all shadow-md shadow-[#748C48]/30 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 border border-[#62773C] group w-full sm:w-auto cursor-pointer"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white transition-all shadow-sm shadow-[#748C48]/25 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 border border-[#62773C] group cursor-pointer whitespace-nowrap"
               >
-                <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white group-hover:scale-110 transition-transform" />
+                <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white group-hover:scale-110 transition-transform shrink-0" />
                 <span>Buy Now</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => addToCart(primaryProduct)}
-                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase bg-white/95 hover:bg-white text-botanical-950 border border-[#748C48]/35 hover:border-[#748C48] shadow-xs hover:shadow-md transition-all hover:-translate-y-0.5 backdrop-blur-sm group w-full sm:w-auto cursor-pointer"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 sm:px-4.5 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-white/95 hover:bg-white text-botanical-950 border border-[#748C48]/40 hover:border-[#748C48] shadow-xs hover:shadow transition-all hover:-translate-y-0.5 backdrop-blur-sm group cursor-pointer whitespace-nowrap"
               >
-                <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#748C48] group-hover:scale-110 transition-transform" />
+                <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#748C48] group-hover:scale-110 transition-transform shrink-0" />
                 <span>Add to Cart</span>
               </button>
             </div>

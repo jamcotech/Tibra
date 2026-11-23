@@ -113,23 +113,23 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
               </div>
 
               {/* Primary Call to Action Button */}
-              <div className="pt-4 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2.5 sm:gap-3.5 w-full">
+              <div className="pt-3 flex flex-row flex-wrap items-center gap-2 sm:gap-3 w-full">
                 <button
                   type="button"
                   onClick={() => quickBuyNow(primaryProduct)}
-                  className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-4 sm:px-8 py-3 sm:py-4 rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white shadow-lg shadow-[#748C48]/30 hover:shadow-xl transition-all hover:-translate-y-0.5 active:translate-y-0 border border-[#62773C] group cursor-pointer"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white shadow-md shadow-[#748C48]/25 hover:shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0 border border-[#62773C] group cursor-pointer whitespace-nowrap"
                 >
-                  <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                  <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white shrink-0" />
                   <span>Buy Now</span>
-                  <ArrowRight className="hidden sm:inline w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="hidden sm:inline w-3.5 h-3.5 text-white group-hover:translate-x-1 transition-transform" />
                 </button>
 
                 <button
                   type="button"
                   onClick={() => addToCart(primaryProduct)}
-                  className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-4 sm:px-7 py-3 sm:py-4 rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase bg-white text-botanical-950 border border-[#748C48]/40 hover:border-[#748C48] hover:bg-cream-50 transition-all shadow-sm hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider uppercase bg-white text-botanical-950 border border-[#748C48]/40 hover:border-[#748C48] hover:bg-cream-50 transition-all shadow-xs hover:-translate-y-0.5 active:translate-y-0 cursor-pointer whitespace-nowrap"
                 >
-                  <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#748C48]" />
+                  <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#748C48] shrink-0" />
                   <span>Add to Cart</span>
                 </button>
 
