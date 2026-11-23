@@ -130,14 +130,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             className="flex items-center gap-3 group focus:outline-none rounded-full py-1 pr-2 text-left cursor-pointer"
           >
             <div className="relative flex items-center">
-              {/* Soft ambient white backing aura to lift logo off dark olive */}
-              <div className="absolute inset-0 -m-1 rounded-full bg-white/25 blur-md pointer-events-none" />
               <img
-                src="/assets/tibra-logo.png"
+                src="/assets/tibra-logo-white.png"
                 alt="TIBRA"
                 style={{
                   filter:
-                    'drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 2px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 7px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.50)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35))',
+                    'drop-shadow(0 0 1px rgba(0, 0, 0, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.70)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.40))',
                 }}
                 className="relative h-6 sm:h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
               />
@@ -313,11 +311,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             <div className="flex items-center justify-between pb-3.5 border-b border-white/20">
               <div className="flex items-center gap-2.5">
                 <img
-                  src="/assets/tibra-logo.png"
+                  src="/assets/tibra-logo-white.png"
                   alt="TIBRA"
                   className="h-8 w-auto object-contain"
                   style={{
-                    filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.9))',
+                    filter:
+                      'drop-shadow(0 0 1px rgba(0, 0, 0, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.70)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.40))',
                   }}
                 />
                 <div className="flex flex-col">
