@@ -12,6 +12,7 @@ import { storeService } from '../services/storeService';
 
 export const BenefitsTargetSection: React.FC = () => {
   const [selectedZone, setSelectedZone] = useState<string>('Knee');
+  const [mobileOpenZone, setMobileOpenZone] = useState<string | null>(null);
   const { quickBuyNow, products } = useShop();
   const primaryProduct = products[0] || storeService.getProducts()[0];
 
@@ -288,15 +289,15 @@ export const BenefitsTargetSection: React.FC = () => {
             </div>
           </div>
 
-          {/* ── MOBILE VIEW (ACCORDION STYLE WITH DIRECT UNDER-ITEM EXPANSION) ── */}
+          {/* ── MOBILE VIEW (ACCORDION STYLE WITH ALL ITEMS CLOSED BY DEFAULT) ── */}
           <div className="block lg:hidden pt-4 space-y-3">
             {targetZones.map((z) => {
-              const isSelected = selectedZone === z.name;
+              const isExpanded = mobileOpenZone === z.name;
               return (
                 <div
                   key={z.name}
                   className={`rounded-2xl transition-all duration-300 border overflow-hidden ${
-                    isSelected
+                    isExpanded
                       ? 'bg-white border-botanical-500 shadow-md ring-2 ring-gold/40'
                       : 'bg-[#FAF8F5] border-cream-200/80 hover:border-botanical-300 hover:bg-white'
                   }`}
@@ -304,13 +305,13 @@ export const BenefitsTargetSection: React.FC = () => {
                   {/* Clickable Header Button */}
                   <button
                     type="button"
-                    onClick={() => setSelectedZone(isSelected ? '' : z.name)}
+                    onClick={() => setMobileOpenZone(isExpanded ? null : z.name)}
                     className="w-full p-3.5 flex items-center justify-between gap-3 text-left cursor-pointer transition-colors"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div
                         className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 p-1.5 transition-all ${
-                          isSelected
+                          isExpanded
                             ? 'bg-botanical-50 border border-botanical-300 shadow-2xs'
                             : 'bg-white border border-cream-200 shadow-2xs'
                         }`}
@@ -323,7 +324,7 @@ export const BenefitsTargetSection: React.FC = () => {
                       </div>
 
                       <div className="min-w-0">
-                        <span className={`font-bold text-sm block truncate ${isSelected ? 'text-botanical-950' : 'text-botanical-900'}`}>
+                        <span className={`font-bold text-sm block truncate ${isExpanded ? 'text-botanical-950' : 'text-botanical-900'}`}>
                           {z.name}
                         </span>
                         <span className="text-[10px] font-mono tracking-wider uppercase text-botanical-600 block truncate">
@@ -333,21 +334,21 @@ export const BenefitsTargetSection: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      {isSelected && (
+                      {isExpanded && (
                         <span className="text-[9px] font-mono font-semibold uppercase px-2 py-0.5 rounded-full bg-botanical-100 text-botanical-800">
                           Active
                         </span>
                       )}
                       <ChevronDown
                         className={`w-4 h-4 text-botanical-700 transition-transform duration-200 ${
-                          isSelected ? 'rotate-180' : ''
+                          isExpanded ? 'rotate-180' : ''
                         }`}
                       />
                     </div>
                   </button>
 
                   {/* Inline Compact Relief Details Box - DIRECTLY UNDER THE SELECTED ITEM */}
-                  {isSelected && (
+                  {isExpanded && (
                     <div className="p-3.5 bg-gradient-to-b from-cream-100/60 to-white border-t border-cream-200 space-y-3 animate-in fade-in duration-200">
                       <div className="flex items-start gap-3">
                         <div className="w-14 h-14 rounded-xl bg-white border border-cream-300 shadow-2xs flex items-center justify-center p-1.5 shrink-0">
