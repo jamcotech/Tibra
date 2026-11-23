@@ -229,19 +229,28 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                       ? '3 Bottles (Triple Pack) • 100% Herbal Dropper'
                       : `${quantity} Bottles Bundle • 100% Herbal Dropper`}
                   </p>
+                  {pricingCalc.regularTotal > totalPrice && (
+                    <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded-full inline-block mt-1">
+                      Save {pricingCalc.percentOff}% (Flat Rs. {pricingCalc.discount.toLocaleString()} OFF)
+                    </span>
+                  )}
                 </div>
+
+                {/* Live price for selected quantity on right */}
                 <div className="text-right shrink-0">
                   <span className="text-xs sm:text-sm font-bold text-[#748C48] font-mono block">
-                    Rs. {unitPrice.toLocaleString()}
+                    Rs. {totalPrice.toLocaleString()}
                   </span>
-                  <span className="text-[10px] text-stone-400 line-through font-mono block">
-                    Rs. 1,990
-                  </span>
+                  {pricingCalc.regularTotal > totalPrice && (
+                    <span className="text-[10px] text-stone-400 line-through font-mono block">
+                      Rs. {pricingCalc.regularTotal.toLocaleString()}
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {/* Bottom Row across full width: Stepper on left + Total COD Price & Badge stacked on right */}
-              <div className="flex items-center justify-between pt-2 border-t border-cream-300/80 gap-2">
+              {/* Bottom Row across full width: Stepper on left + Clean Total on right (Zero overflow) */}
+              <div className="flex items-center justify-between pt-2 border-t border-cream-300/80">
                 <div className="flex items-center gap-1.5 shrink-0">
                   <span className="text-[11px] font-semibold text-botanical-800">
                     Qty:
@@ -267,19 +276,11 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                   </div>
                 </div>
 
-                {/* Total and Savings Badge neatly stacked — zero overflow */}
-                <div className="text-right shrink-0">
-                  <div className="flex items-center justify-end gap-1">
-                    <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
-                    <span className="text-xs sm:text-sm font-bold text-botanical-950 font-mono">
-                      Rs. {totalPrice.toLocaleString()}
-                    </span>
-                  </div>
-                  {pricingCalc.isDuoApplied && (
-                    <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded-full inline-block mt-0.5">
-                      Save {pricingCalc.percentOff}% (Flat Rs. {pricingCalc.discount.toLocaleString()} OFF)
-                    </span>
-                  )}
+                <div className="flex items-center gap-1 text-right shrink-0">
+                  <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
+                  <span className="text-xs sm:text-sm font-bold text-botanical-950 font-mono">
+                    Rs. {totalPrice.toLocaleString()}
+                  </span>
                 </div>
               </div>
             </div>
