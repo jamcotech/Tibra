@@ -6,9 +6,7 @@ import { calculateItemPrice } from '../services/storeService';
 export const CartPage: React.FC = () => {
   const { cart, cartSubtotal, cartDiscount, updateQuantity, removeFromCart, setCurrentView, clearCart, addToCart } = useShop();
 
-  const freeDeliveryThreshold = 3000;
-  const isFreeDelivery = cartSubtotal >= freeDeliveryThreshold;
-  const shippingFee = isFreeDelivery || cart.length === 0 ? 0 : 200;
+  const shippingFee = cart.length === 0 ? 0 : 200;
   const grandTotal = cartSubtotal + shippingFee;
 
   return (
@@ -231,8 +229,8 @@ export const CartPage: React.FC = () => {
                 )}
                 <div className="flex justify-between text-botanical-700">
                   <span>Nationwide Shipping</span>
-                  <span className={isFreeDelivery ? 'text-botanical-700 font-bold' : 'font-medium'}>
-                    {isFreeDelivery ? 'FREE (Orders over Rs. 3,000)' : 'Rs. 200'}
+                  <span className="font-bold text-botanical-950 font-mono">
+                    Rs. 200
                   </span>
                 </div>
 

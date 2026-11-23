@@ -23,9 +23,7 @@ export const CheckoutPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const freeDeliveryThreshold = 3000;
-  const isFreeDelivery = cartSubtotal >= freeDeliveryThreshold;
-  const shippingFee = isFreeDelivery ? 0 : 200;
+  const shippingFee = cart.length === 0 ? 0 : 200;
   const total = cartSubtotal + shippingFee;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -449,21 +447,42 @@ export const CheckoutPage: React.FC = () => {
               Order Review ({cart.reduce((sum, i) => sum + i.quantity, 0)} item{cart.reduce((sum, i) => sum + i.quantity, 0) !== 1 ? 's' : ''})
             </h2>
 
-            <div className="divide-y divide-cream-100 max-h-72 overflow-y-auto pr-1 space-y-3">
-              {cart.map(item => (
-                <div key={item.product.id} className="pt-3 first:pt-0 flex items-center justify-between gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1 shrink-0">
-                    <img src={item.product.image} alt={item.product.name} className="w-full h-full object-contain" />
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    {/* Full Name without cut-off */}
-                    <h4 className="font-serif font-bold text-xs text-botanical-950 break-words leading-snug">
-                      {item.product.name}
-                    </h4>
+            <div className="divide-y divide-cream-100 max-h-80 overflow-y-auto pr-1 space-y-3.5">
+              {cart.map(item => {
+                const calc = calculateItemPrice(item.product, item.quantity);
+                return (
+                  <div key={item.product.id} className="pt-3.5 first:pt-0 space-y-2">
+                    {/* Top Row: Image + Name + Price (Gives full width to Name) */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="w-12 h-14 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1 shrink-0">
+                        <img src={item.product.image} alt={item.product.name} className="w-full h-full object-contain" />
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        {/* Name in 2 lines with proper breathing room */}
+                        <h4 className="font-serif font-bold text-xs sm:text-sm text-botanical-950 leading-snug break-normal line-clamp-2">
+                          {item.product.name}
+                        </h4>
+                        <span className="text-[10px] font-mono text-botanical-600 block mt-0.5">
+                          {item.product.size || '30 ML'} • 100% Herbal Dropper
+                        </span>
+                      </div>
 
-                    {/* Quantity Stepper — collision free */}
-                    <div className="flex items-center gap-2 mt-1.5">
+                      {/* Clean Price on Right */}
+                      <div className="text-right shrink-0">
+                        <div className="font-bold text-xs sm:text-sm text-botanical-950 font-mono">
+                          Rs. {calc.total.toLocaleString()}
+                        </div>
+                        {calc.regularTotal > calc.total && (
+                          <span className="text-[11px] text-stone-400 line-through font-mono block">
+                            Rs. {calc.regularTotal.toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Bottom Sub-row: Quantity Stepper on Left + Discount Badge on Right */}
+                    <div className="flex items-center justify-between gap-2 pl-15">
                       <div className="inline-flex items-center border border-cream-300 rounded-lg bg-cream-50/70 p-0.5 shadow-2xs">
                         <button
                           type="button"
@@ -493,51 +512,35 @@ export const CheckoutPage: React.FC = () => {
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
+
+                      {calc.regularTotal > calc.total && (
+                        <span className="text-[9px] sm:text-[10px] font-bold text-[#748C48] bg-[#748C48]/10 border border-[#748C48]/30 px-2 py-0.5 rounded-full whitespace-nowrap">
+                          {calc.isDuoApplied
+                            ? `Save ${calc.percentOff}% (Flat Rs. ${calc.discount.toLocaleString()} OFF)`
+                            : `Save ${calc.percentOff}% (Flat Rs. ${calc.discount.toLocaleString()} OFF)`}
+                        </span>
+                      )}
                     </div>
                   </div>
-
-                  {/* Clean Price on Right with Accurate Original Crossed-out Price */}
-                  {(() => {
-                    const calc = calculateItemPrice(item.product, item.quantity);
-                    return (
-                      <div className="text-right shrink-0">
-                        <div className="font-bold text-xs sm:text-sm text-botanical-950">
-                          Rs. {calc.total.toLocaleString()}
-                        </div>
-                        {calc.regularTotal > calc.total && (
-                          <div className="space-y-0.5 mt-0.5">
-                            <span className="text-[10px] sm:text-[11px] text-stone-400 line-through font-mono block">
-                              Rs. {calc.regularTotal.toLocaleString()}
-                            </span>
-                            <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 border border-[#748C48]/30 px-1.5 py-0.5 rounded-full inline-block">
-                              {calc.isDuoApplied
-                                ? 'Save 37% (Flat Rs. 1,480 OFF)'
-                                : 'Save 25% (Flat Rs. 490 OFF)'}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="pt-4 border-t border-cream-200 space-y-2.5 text-xs">
               <div className="flex justify-between text-botanical-700">
                 <span>Items Subtotal</span>
-                <span className="font-bold text-botanical-950">Rs. {cartSubtotal.toLocaleString()}</span>
+                <span className="font-bold text-botanical-950 font-mono">Rs. {cartSubtotal.toLocaleString()}</span>
               </div>
               {cartDiscount > 0 && (
                 <div className="flex justify-between text-emerald-700 font-semibold">
                   <span>Special Savings Discount</span>
-                  <span className="font-bold">-Rs. {cartDiscount.toLocaleString()}</span>
+                  <span className="font-bold font-mono">-Rs. {cartDiscount.toLocaleString()}</span>
                 </div>
               )}
               <div className="flex justify-between text-botanical-700">
-                <span>Shipping Fee</span>
-                <span className={isFreeDelivery ? 'text-botanical-700 font-bold' : 'font-semibold'}>
-                  {isFreeDelivery ? 'FREE (Over Rs. 3,000)' : 'Rs. 200'}
+                <span>Shipping Fee (Nationwide)</span>
+                <span className="font-bold text-botanical-950 font-mono">
+                  Rs. 200
                 </span>
               </div>
               <div className="pt-2 border-t border-cream-200 flex justify-between items-center text-xs sm:text-sm font-serif font-bold text-botanical-950">

@@ -17,10 +17,6 @@ export const CartDrawer: React.FC = () => {
 
   if (!isCartDrawerOpen) return null;
 
-  const freeDeliveryThreshold = 3000;
-  const progressPercent = Math.min(100, Math.round((cartSubtotal / freeDeliveryThreshold) * 100));
-  const diff = freeDeliveryThreshold - cartSubtotal;
-
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
@@ -56,25 +52,13 @@ export const CartDrawer: React.FC = () => {
             </button>
           </div>
 
-          {/* Free Shipping Progress Indicator */}
-          <div className="bg-[#252E15] text-cream-50 p-4 text-xs">
-            <div className="flex items-center justify-between mb-1.5 font-medium">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-gold-light" />
-                {diff > 0 ? (
-                  <span>Add <strong>Rs. {diff.toLocaleString()}</strong> more for <strong>FREE Delivery</strong></span>
-                ) : (
-                  <span className="text-gold-light font-bold">🎉 You qualify for FREE Nationwide Delivery!</span>
-                )}
-              </span>
-              <span className="font-mono text-[10px] text-cream-200">{progressPercent}%</span>
-            </div>
-            <div className="w-full bg-botanical-950/60 rounded-full h-1.5 overflow-hidden">
-              <div
-                className="bg-gold h-full rounded-full transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
+          {/* Nationwide Courier Banner */}
+          <div className="bg-[#252E15] text-cream-50 px-4 py-2.5 text-xs flex items-center justify-between">
+            <span className="flex items-center gap-1.5 font-medium">
+              <Sparkles className="w-3.5 h-3.5 text-gold-light" />
+              <span>Fast Doorstep Delivery Across Pakistan</span>
+            </span>
+            <span className="font-mono text-[10px] text-cream-200 bg-white/10 px-2 py-0.5 rounded">Rs. 200</span>
           </div>
 
           {/* Items List */}
@@ -229,15 +213,15 @@ export const CartDrawer: React.FC = () => {
                   <span className="font-bold text-botanical-950">Rs. {cartSubtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-botanical-700">
-                  <span>Estimated Shipping</span>
-                  <span className={cartSubtotal >= freeDeliveryThreshold ? 'text-botanical-700 font-bold' : 'font-medium'}>
-                    {cartSubtotal >= freeDeliveryThreshold ? 'FREE' : 'Rs. 200'}
+                  <span>Shipping Fee</span>
+                  <span className="font-bold text-botanical-950 font-mono">
+                    Rs. 200
                   </span>
                 </div>
                 <div className="flex justify-between text-sm font-serif font-bold text-botanical-950 pt-2 border-t border-cream-200">
                   <span>Estimated Total</span>
-                  <span className="text-base text-botanical-900">
-                    Rs. {(cartSubtotal + (cartSubtotal >= freeDeliveryThreshold ? 0 : 200)).toLocaleString()}
+                  <span className="text-base text-botanical-900 font-mono font-bold">
+                    Rs. {(cartSubtotal + 200).toLocaleString()}
                   </span>
                 </div>
               </div>

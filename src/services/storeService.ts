@@ -53,9 +53,8 @@ export function calculateItemPrice(product: Product, quantity: number): {
   const originalRegularTotal = regularUnitPrice * quantity;
 
   if (product.id === 'tibra-natural-joint-oil-30ml' || product.price === 1500) {
-    const pairs = Math.floor(quantity / 2);
-    const remainder = quantity % 2;
-    const total = (pairs * 2500) + (remainder * 1500);
+    // 1 bottle = Rs. 1,500; 2 or more bottles = Rs. 1,250 each (2 = Rs. 2,500, 3 = Rs. 3,750, etc.)
+    const total = quantity >= 2 ? quantity * 1250 : 1500 * quantity;
     const discount = originalRegularTotal - total;
     const percentOff = Math.round((discount / originalRegularTotal) * 100);
     return {
@@ -64,7 +63,7 @@ export function calculateItemPrice(product: Product, quantity: number): {
       originalRegularTotal,
       discount,
       percentOff,
-      isDuoApplied: pairs > 0,
+      isDuoApplied: quantity >= 2,
     };
   }
   const regularTotal = (product.originalPrice || product.price) * quantity;
