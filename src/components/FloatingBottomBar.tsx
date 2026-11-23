@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
-import { storeService } from '../services/storeService';
+import { storeService, calculateItemPrice } from '../services/storeService';
 
 export const FloatingBottomBar: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -43,11 +43,11 @@ export const FloatingBottomBar: React.FC = () => {
   };
 
   const handleWhatsAppClick = () => {
-    const totalPrice = (primaryProduct ? primaryProduct.price : 1500) * quantity;
+    const calc = calculateItemPrice(primaryProduct, quantity);
     const text = encodeURIComponent(
       `Hello Tibra Natural Team! I want to order Tibra Natural Joint Oil (30 ML Bottle).\n` +
       `Quantity: ${quantity} bottle(s)\n` +
-      `Total: Rs. ${totalPrice.toLocaleString()}\n` +
+      `Total: Rs. ${calc.total.toLocaleString()}${calc.isDuoApplied ? ' (Special Duo Offer: Rs. 2,500)' : ''}\n` +
       `Please confirm my order with Cash on Delivery.`
     );
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');

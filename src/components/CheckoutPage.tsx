@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ShieldCheck, CheckCircle2, Lock, Truck, CreditCard, Sparkles, Minus, Plus } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useShop } from '../context/ShopContext';
-import { storeService } from '../services/storeService';
+import { storeService, calculateItemPrice } from '../services/storeService';
 
 export const CheckoutPage: React.FC = () => {
-  const { cart, cartSubtotal, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart, addToCart } = useShop();
+  const { cart, cartSubtotal, cartDiscount, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart, addToCart } = useShop();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -47,13 +47,16 @@ export const CheckoutPage: React.FC = () => {
         city: formData.city,
         paymentMethod: formData.paymentMethod,
         paymentStatus: formData.paymentMethod === 'Direct Transfer' ? 'pending' : 'pending',
-        items: cart.map(item => ({
-          productId: item.product.id,
-          productName: item.product.name,
-          quantity: item.quantity,
-          price: item.product.price,
-          image: item.product.image
-        })),
+        items: cart.map(item => {
+          const calc = calculateItemPrice(item.product, item.quantity);
+          return {
+            productId: item.product.id,
+            productName: item.product.name,
+            quantity: item.quantity,
+            price: Math.round(calc.total / item.quantity),
+            image: item.product.image
+          };
+        }),
         subtotal: cartSubtotal,
         shippingFee,
         total,
@@ -129,11 +132,11 @@ export const CheckoutPage: React.FC = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
               
               {/* Full Name */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-botanical-900 mb-2">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-botanical-900 mb-1">
                   Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -143,14 +146,14 @@ export const CheckoutPage: React.FC = () => {
                   placeholder="e.g. Tariq Mehmood"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-xs sm:text-sm bg-cream-50/50 outline-none transition-all placeholder:text-stone-400 shadow-2xs"
                 />
               </div>
 
               {/* Phone & Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-botanical-900 mb-2">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-botanical-900 mb-1">
                     Phone / WhatsApp Number <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -160,12 +163,12 @@ export const CheckoutPage: React.FC = () => {
                     placeholder="0300 1234567"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
+                    className="w-full px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-xs sm:text-sm bg-cream-50/50 outline-none transition-all placeholder:text-stone-400 shadow-2xs"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-botanical-900 mb-2">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-botanical-900 mb-1">
                     Email Address <span className="text-botanical-400 font-normal">(Optional)</span>
                   </label>
                   <input
@@ -174,37 +177,37 @@ export const CheckoutPage: React.FC = () => {
                     placeholder="tariq@gmail.com"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
+                    className="w-full px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-xs sm:text-sm bg-cream-50/50 outline-none transition-all placeholder:text-stone-400 shadow-2xs"
                   />
                 </div>
               </div>
 
               {/* Delivery Address */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-botanical-900 mb-2">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-botanical-900 mb-1">
                   Complete Delivery Address <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   name="address"
                   required
-                  rows={3}
+                  rows={2}
                   placeholder="House / Apartment #, Street name, Sector/Block, Landmark"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-xs sm:text-sm bg-cream-50/50 outline-none transition-all placeholder:text-stone-400 shadow-2xs"
                 />
               </div>
 
               {/* City */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-botanical-900 mb-2">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-botanical-900 mb-1">
                   City <span className="text-red-500">*</span>
                 </label>
                 <select
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-xs sm:text-sm bg-cream-50/50 outline-none transition-all shadow-2xs"
                 >
                   <optgroup label="Federal Capital">
                     <option value="Islamabad">Islamabad</option>
@@ -370,7 +373,7 @@ export const CheckoutPage: React.FC = () => {
 
               {/* Special Instructions */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-botanical-900 mb-2">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-botanical-900 mb-1">
                   Special Delivery Instructions <span className="text-botanical-400 font-normal">(Optional)</span>
                 </label>
                 <input
@@ -379,7 +382,7 @@ export const CheckoutPage: React.FC = () => {
                   placeholder="e.g. Call before delivery, deliver in afternoon"
                   value={formData.notes}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-xs sm:text-sm bg-cream-50/50 outline-none transition-all placeholder:text-stone-400 shadow-2xs"
                 />
               </div>
 
@@ -493,17 +496,31 @@ export const CheckoutPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Clean Price on Right with Crossed-out Regular Price */}
-                  <div className="text-right shrink-0">
-                    <div className="font-bold text-xs text-botanical-950">
-                      Rs. {(item.product.price * item.quantity).toLocaleString()}
-                    </div>
-                    {item.product.originalPrice && (
-                      <div className="text-[10px] text-stone-400 line-through font-mono">
-                        Rs. {(item.product.originalPrice * item.quantity).toLocaleString()}
+                  {/* Clean Price on Right with Automatic Duo Calculation */}
+                  {(() => {
+                    const calc = calculateItemPrice(item.product, item.quantity);
+                    return (
+                      <div className="text-right shrink-0">
+                        <div className="font-bold text-xs text-botanical-950">
+                          Rs. {calc.total.toLocaleString()}
+                        </div>
+                        {calc.isDuoApplied ? (
+                          <div className="space-y-0.5">
+                            <span className="text-[10px] text-stone-400 line-through font-mono block">
+                              Rs. {calc.regularTotal.toLocaleString()}
+                            </span>
+                            <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 px-1 py-0.2 rounded inline-block">
+                              Duo Offer Applied!
+                            </span>
+                          </div>
+                        ) : item.product.originalPrice ? (
+                          <div className="text-[10px] text-stone-400 line-through font-mono">
+                            Rs. {(item.product.originalPrice * item.quantity).toLocaleString()}
+                          </div>
+                        ) : null}
                       </div>
-                    )}
-                  </div>
+                    );
+                  })()}
                 </div>
               ))}
             </div>
@@ -513,6 +530,12 @@ export const CheckoutPage: React.FC = () => {
                 <span>Items Subtotal</span>
                 <span className="font-bold text-botanical-950">Rs. {cartSubtotal.toLocaleString()}</span>
               </div>
+              {cartDiscount > 0 && (
+                <div className="flex justify-between text-emerald-700 font-semibold">
+                  <span>Duo Offer Savings</span>
+                  <span className="font-bold">-Rs. {cartDiscount.toLocaleString()}</span>
+                </div>
+              )}
               <div className="flex justify-between text-botanical-700">
                 <span>Shipping Fee</span>
                 <span className={isFreeDelivery ? 'text-botanical-700 font-bold' : 'font-semibold'}>

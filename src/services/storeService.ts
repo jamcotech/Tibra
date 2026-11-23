@@ -41,6 +41,52 @@ const DEFAULT_ADMIN: AdminUser = {
   role: 'Store Administrator & Owner',
 };
 
+export function calculateItemPrice(product: Product, quantity: number): {
+  total: number;
+  regularTotal: number;
+  discount: number;
+  isDuoApplied: boolean;
+} {
+  const regularTotal = product.price * quantity;
+  if (product.id === 'tibra-natural-joint-oil-30ml' || product.price === 1500) {
+    const pairs = Math.floor(quantity / 2);
+    const remainder = quantity % 2;
+    const total = (pairs * 2500) + (remainder * 1500);
+    const discount = regularTotal - total;
+    return {
+      total,
+      regularTotal,
+      discount,
+      isDuoApplied: pairs > 0,
+    };
+  }
+  return {
+    total: regularTotal,
+    regularTotal,
+    discount: 0,
+    isDuoApplied: false,
+  };
+}
+
+export function calculateCartTotal(cart: CartItem[]): {
+  subtotal: number;
+  regularSubtotal: number;
+  totalDiscount: number;
+} {
+  let subtotal = 0;
+  let regularSubtotal = 0;
+  for (const item of cart) {
+    const calc = calculateItemPrice(item.product, item.quantity);
+    subtotal += calc.total;
+    regularSubtotal += calc.regularTotal;
+  }
+  return {
+    subtotal,
+    regularSubtotal,
+    totalDiscount: regularSubtotal - subtotal,
+  };
+}
+
 export const storeService = {
   // PRODUCTS
   getProducts(): Product[] {
@@ -147,7 +193,7 @@ export const storeService = {
   },
 
   getCartSubtotal(): number {
-    return this.getCart().reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    return calculateCartTotal(this.getCart()).subtotal;
   },
 
   // ORDERS

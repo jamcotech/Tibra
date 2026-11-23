@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, ShoppingBag, Sparkles } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
+import { calculateItemPrice } from '../services/storeService';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -155,17 +156,31 @@ export const CartDrawer: React.FC = () => {
                         </button>
                       </div>
 
-                      {/* Price */}
-                      <div className="text-right">
-                        <div className="text-sm font-bold text-botanical-950">
-                          Rs. {(item.product.price * item.quantity).toLocaleString()}
-                        </div>
-                        {item.product.originalPrice && (
-                          <div className="text-[10px] text-botanical-400 line-through">
-                            Rs. {(item.product.originalPrice * item.quantity).toLocaleString()}
+                      {/* Price with Automatic Duo Calculation */}
+                      {(() => {
+                        const calc = calculateItemPrice(item.product, item.quantity);
+                        return (
+                          <div className="text-right">
+                            <div className="text-sm font-bold text-botanical-950">
+                              Rs. {calc.total.toLocaleString()}
+                            </div>
+                            {calc.isDuoApplied ? (
+                              <div className="space-y-0.5">
+                                <div className="text-[10px] text-stone-400 line-through font-mono">
+                                  Rs. {calc.regularTotal.toLocaleString()}
+                                </div>
+                                <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 px-1 py-0.2 rounded inline-block">
+                                  Duo Offer Applied
+                                </span>
+                              </div>
+                            ) : item.product.originalPrice ? (
+                              <div className="text-[10px] text-botanical-400 line-through">
+                                Rs. {(item.product.originalPrice * item.quantity).toLocaleString()}
+                              </div>
+                            ) : null}
                           </div>
-                        )}
-                      </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>

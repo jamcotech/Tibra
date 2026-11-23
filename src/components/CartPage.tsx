@@ -1,9 +1,10 @@
 import React from 'react';
 import { ShoppingBag, ArrowLeft, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
+import { calculateItemPrice } from '../services/storeService';
 
 export const CartPage: React.FC = () => {
-  const { cart, cartSubtotal, updateQuantity, removeFromCart, setCurrentView, clearCart, addToCart } = useShop();
+  const { cart, cartSubtotal, cartDiscount, updateQuantity, removeFromCart, setCurrentView, clearCart, addToCart } = useShop();
 
   const freeDeliveryThreshold = 3000;
   const isFreeDelivery = cartSubtotal >= freeDeliveryThreshold;
@@ -90,13 +91,13 @@ export const CartPage: React.FC = () => {
                               </span>
                             )}
                           </div>
-                          <h3 className="font-serif font-bold text-lg text-botanical-950">
+                          <h3 className="font-serif font-bold text-xs sm:text-sm text-botanical-950 leading-snug">
                             {item.product.name}
                           </h3>
-                          <p className="text-xs text-botanical-700/80 max-w-md">
+                          <p className="text-[11px] sm:text-xs text-botanical-700/80 max-w-md">
                             {item.product.subtitle}
                           </p>
-                          <div className="text-sm font-bold text-botanical-900 pt-1">
+                          <div className="text-xs sm:text-sm font-bold text-botanical-900 pt-0.5">
                             Rs. {item.product.price.toLocaleString()} each
                           </div>
                         </div>
@@ -122,19 +123,34 @@ export const CartPage: React.FC = () => {
                           </button>
                         </div>
 
-                        {/* Line Total */}
-                        <div className="text-right min-w-[100px]">
-                          <div className="font-serif font-bold text-lg text-botanical-950">
-                            Rs. {(item.product.price * item.quantity).toLocaleString()}
-                          </div>
-                          <button
-                            onClick={() => removeFromCart(item.product.id)}
-                            className="text-xs text-botanical-400 hover:text-red-600 transition-colors mt-1 inline-flex items-center gap-1"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                            <span>Remove</span>
-                          </button>
-                        </div>
+                        {/* Line Total with automatic duo pricing */}
+                        {(() => {
+                          const calc = calculateItemPrice(item.product, item.quantity);
+                          return (
+                            <div className="text-right min-w-[110px]">
+                              <div className="font-serif font-bold text-base sm:text-lg text-botanical-950">
+                                Rs. {calc.total.toLocaleString()}
+                              </div>
+                              {calc.isDuoApplied && (
+                                <div className="space-y-0.5 mt-0.5">
+                                  <span className="text-[11px] text-stone-400 line-through font-mono block">
+                                    Rs. {calc.regularTotal.toLocaleString()}
+                                  </span>
+                                  <span className="text-[10px] font-bold text-[#748C48] bg-[#748C48]/10 border border-[#748C48]/30 px-1.5 py-0.5 rounded-full inline-block">
+                                    Duo Offer Applied!
+                                  </span>
+                                </div>
+                              )}
+                              <button
+                                onClick={() => removeFromCart(item.product.id)}
+                                className="text-xs text-botanical-400 hover:text-red-600 transition-colors mt-1 inline-flex items-center gap-1"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                                <span>Remove</span>
+                              </button>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
                   ))}
@@ -205,6 +221,12 @@ export const CartPage: React.FC = () => {
                   <span>Subtotal</span>
                   <span className="font-bold text-botanical-950">Rs. {cartSubtotal.toLocaleString()}</span>
                 </div>
+                {cartDiscount > 0 && (
+                  <div className="flex justify-between text-emerald-700 font-semibold">
+                    <span>Duo Offer Savings</span>
+                    <span className="font-bold">-Rs. {cartDiscount.toLocaleString()}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-botanical-700">
                   <span>Nationwide Shipping</span>
                   <span className={isFreeDelivery ? 'text-botanical-700 font-bold' : 'font-medium'}>

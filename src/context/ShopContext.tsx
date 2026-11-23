@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { CartItem, Product, Order, StoreInventory } from '../types/ecommerce';
-import { storeService } from '../services/storeService';
+import { storeService, calculateCartTotal } from '../services/storeService';
 
 interface ShopContextType {
   cart: CartItem[];
   cartCount: number;
   cartSubtotal: number;
+  cartDiscount: number;
   products: Product[];
   refreshProducts: () => void;
   addToCart: (product: Product, quantity?: number, selectedBundle?: string) => void;
@@ -155,7 +156,9 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const cartSummary = calculateCartTotal(cart);
+  const cartSubtotal = cartSummary.subtotal;
+  const cartDiscount = cartSummary.totalDiscount;
 
   return (
     <ShopContext.Provider
@@ -163,6 +166,7 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         cart,
         cartCount,
         cartSubtotal,
+        cartDiscount,
         products,
         refreshProducts: syncProducts,
         addToCart,

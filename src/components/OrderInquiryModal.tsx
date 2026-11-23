@@ -14,7 +14,7 @@ import {
   Truck
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { storeService } from '../services/storeService';
+import { storeService, calculateItemPrice } from '../services/storeService';
 import type { Order } from '../types/ecommerce';
 
 interface OrderInquiryModalProps {
@@ -41,7 +41,8 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
     image: '/assets/purefix-bottle-transparent.png',
   };
   const unitPrice = primaryProduct.price;
-  const totalPrice = unitPrice * quantity;
+  const pricingCalc = calculateItemPrice(primaryProduct, quantity);
+  const totalPrice = pricingCalc.total;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,11 +205,16 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1 text-right whitespace-nowrap shrink-0">
+                  <div className="flex items-center gap-1.5 text-right whitespace-nowrap shrink-0">
                     <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
                     <span className="text-sm font-bold text-botanical-950 font-mono">
                       Rs. {totalPrice.toLocaleString()}
                     </span>
+                    {pricingCalc.isDuoApplied && (
+                      <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">
+                        Duo Offer!
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
