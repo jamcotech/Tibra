@@ -466,20 +466,14 @@ export const CheckoutPage: React.FC = () => {
                             <img src={item.product.image} alt="Bottle 2" className="h-10 object-contain" />
                           </div>
                         )}
-                        {item.quantity === 3 && (
-                          <div className="flex items-end justify-center -space-x-1.5">
-                            <img src={item.product.image} alt="Bottle 1" className="h-9 object-contain" />
-                            <img src={item.product.image} alt="Bottle 2" className="h-10 object-contain z-10" />
-                            <img src={item.product.image} alt="Bottle 3" className="h-9 object-contain" />
-                          </div>
-                        )}
-                        {item.quantity >= 4 && (
-                          <div className="relative flex items-end justify-center -space-x-1.5">
-                            <img src={item.product.image} alt="Bottle 1" className="h-8.5 object-contain opacity-90" />
-                            <img src={item.product.image} alt="Bottle 2" className="h-9.5 object-contain z-10" />
-                            <img src={item.product.image} alt="Bottle 3" className="h-8.5 object-contain opacity-90" />
-                            <span className="absolute -top-1 -right-2 bg-[#748C48] text-white text-[8px] font-bold font-mono px-1 rounded-full">
-                              {item.quantity === 4 ? '3+1' : `3+${item.quantity - 3}`}
+                        {item.quantity >= 3 && (
+                          <div className="flex flex-col items-center justify-center">
+                            <div className="flex items-end justify-center gap-0.5">
+                              <img src={item.product.image} alt="Bottle 1" className="h-8.5 sm:h-9 object-contain" />
+                              <img src={item.product.image} alt="Bottle 2" className="h-8.5 sm:h-9 object-contain" />
+                            </div>
+                            <span className="text-[9px] font-bold font-mono text-[#748C48] bg-[#748C48]/15 px-1.5 py-0.2 rounded-full leading-none mt-0.5 border border-[#748C48]/25">
+                              +{item.quantity - 2}
                             </span>
                           </div>
                         )}

@@ -70,12 +70,31 @@ export const CartPage: React.FC = () => {
                   {cart.map((item) => (
                     <div key={item.product.id} className="py-6 flex flex-col sm:flex-row gap-5 items-center sm:items-start justify-between">
                       <div className="flex gap-4 items-center sm:items-start w-full sm:w-auto">
-                        <div className="w-24 h-24 rounded-2xl bg-cream-50 border border-cream-200 flex items-center justify-center p-2 shrink-0">
-                          <img
-                            src={item.product.image}
-                            alt={item.product.name}
-                            className="w-full h-full object-contain"
-                          />
+                        <div className="w-24 h-24 rounded-2xl bg-cream-50 border border-cream-200 flex items-center justify-center p-2 shrink-0 overflow-hidden">
+                          {item.quantity === 1 && (
+                            <img
+                              src={item.product.image}
+                              alt={item.product.name}
+                              className="w-full h-full object-contain"
+                            />
+                          )}
+                          {item.quantity === 2 && (
+                            <div className="flex items-end justify-center gap-1.5">
+                              <img src={item.product.image} alt="Bottle 1" className="h-18 object-contain" />
+                              <img src={item.product.image} alt="Bottle 2" className="h-18 object-contain" />
+                            </div>
+                          )}
+                          {item.quantity >= 3 && (
+                            <div className="flex flex-col items-center justify-center">
+                              <div className="flex items-end justify-center gap-1.5">
+                                <img src={item.product.image} alt="Bottle 1" className="h-14 object-contain" />
+                                <img src={item.product.image} alt="Bottle 2" className="h-14 object-contain" />
+                              </div>
+                              <span className="text-xs font-bold font-mono text-[#748C48] bg-[#748C48]/15 px-2.5 py-0.5 rounded-full leading-none mt-1 border border-[#748C48]/25">
+                                +{item.quantity - 2}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         <div className="space-y-1 flex-1">

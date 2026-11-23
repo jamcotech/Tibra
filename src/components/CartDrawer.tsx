@@ -87,12 +87,31 @@ export const CartDrawer: React.FC = () => {
                   key={item.product.id}
                   className="bg-white rounded-2xl p-4 border border-cream-200/90 shadow-2xs flex gap-3.5 items-center"
                 >
-                  <div className="w-20 h-20 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1.5 shrink-0">
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="w-full h-full object-contain"
-                    />
+                  <div className="w-20 h-20 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1.5 shrink-0 overflow-hidden">
+                    {item.quantity === 1 && (
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-full h-full object-contain"
+                      />
+                    )}
+                    {item.quantity === 2 && (
+                      <div className="flex items-end justify-center gap-1">
+                        <img src={item.product.image} alt="Bottle 1" className="h-14 object-contain" />
+                        <img src={item.product.image} alt="Bottle 2" className="h-14 object-contain" />
+                      </div>
+                    )}
+                    {item.quantity >= 3 && (
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="flex items-end justify-center gap-1">
+                          <img src={item.product.image} alt="Bottle 1" className="h-11 object-contain" />
+                          <img src={item.product.image} alt="Bottle 2" className="h-11 object-contain" />
+                        </div>
+                        <span className="text-[10px] font-bold font-mono text-[#748C48] bg-[#748C48]/15 px-2 py-0.5 rounded-full leading-none mt-1 border border-[#748C48]/25">
+                          +{item.quantity - 2}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex-1 min-w-0">

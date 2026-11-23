@@ -173,44 +173,22 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                       />
                     </div>
                   )}
-                  {quantity === 3 && (
-                    <div className="flex items-end justify-center -space-x-1.5 transition-all">
-                      <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                        alt="Bottle 1"
-                        className="h-9 sm:h-10 object-contain drop-shadow-xs"
-                      />
-                      <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                        alt="Bottle 2"
-                        className="h-10 sm:h-11 object-contain drop-shadow-xs z-10"
-                      />
-                      <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                        alt="Bottle 3"
-                        className="h-9 sm:h-10 object-contain drop-shadow-xs"
-                      />
-                    </div>
-                  )}
-                  {quantity >= 4 && (
-                    <div className="relative flex items-end justify-center -space-x-1.5 transition-all">
-                      <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                        alt="Bottle 1"
-                        className="h-9 sm:h-10 object-contain drop-shadow-xs opacity-90"
-                      />
-                      <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                        alt="Bottle 2"
-                        className="h-10 sm:h-11 object-contain drop-shadow-xs z-10"
-                      />
-                      <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                        alt="Bottle 3"
-                        className="h-9 sm:h-10 object-contain drop-shadow-xs opacity-90"
-                      />
-                      <span className="absolute -top-1 -right-2 z-20 bg-[#748C48] text-white text-[9px] font-bold font-mono px-1.5 py-0.2 rounded-full border border-white shadow-xs">
-                        {quantity === 4 ? '3+1' : `3+${quantity - 3}`}
+                  {quantity >= 3 && (
+                    <div className="flex flex-col items-center justify-center transition-all">
+                      <div className="flex items-end justify-center gap-1">
+                        <img
+                          src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                          alt="Bottle 1"
+                          className="h-9 sm:h-9.5 object-contain drop-shadow-xs"
+                        />
+                        <img
+                          src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                          alt="Bottle 2"
+                          className="h-9 sm:h-9.5 object-contain drop-shadow-xs"
+                        />
+                      </div>
+                      <span className="text-[10px] font-bold font-mono text-[#748C48] bg-[#748C48]/15 px-2 py-0.5 rounded-full leading-none mt-1 shadow-2xs border border-[#748C48]/25">
+                        +{quantity - 2}
                       </span>
                     </div>
                   )}
