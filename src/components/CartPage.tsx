@@ -221,18 +221,18 @@ export const CartPage: React.FC = () => {
                   <span>Subtotal</span>
                   <span className="font-bold text-botanical-950">Rs. {cartSubtotal.toLocaleString()}</span>
                 </div>
-                {cartDiscount > 0 && (
-                  <div className="flex justify-between text-emerald-700 font-semibold">
-                    <span>Duo Offer Savings</span>
-                    <span className="font-bold">-Rs. {cartDiscount.toLocaleString()}</span>
-                  </div>
-                )}
                 <div className="flex justify-between text-botanical-700">
                   <span>Nationwide Shipping</span>
                   <span className="font-bold text-botanical-950 font-mono">
                     Rs. 200
                   </span>
                 </div>
+                {cartDiscount > 0 && (
+                  <div className="flex justify-between text-[#748C48] font-bold text-xs bg-[#748C48]/10 px-3 py-2 rounded-xl border border-[#748C48]/30">
+                    <span>Total Savings Applied</span>
+                    <span className="font-mono">Save Rs. {cartDiscount.toLocaleString()}</span>
+                  </div>
+                )}
 
                 <div className="pt-3 border-t border-cream-200 flex justify-between items-baseline">
                   <span className="font-serif font-bold text-lg text-botanical-950">Grand Total</span>
