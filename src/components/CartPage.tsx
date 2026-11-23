@@ -3,11 +3,11 @@ import { ShoppingBag, ArrowLeft, Plus, Minus, Trash2, ArrowRight, ShieldCheck, S
 import { useShop } from '../context/ShopContext';
 
 export const CartPage: React.FC = () => {
-  const { cart, cartSubtotal, updateQuantity, removeFromCart, setCurrentView, clearCart } = useShop();
+  const { cart, cartSubtotal, updateQuantity, removeFromCart, setCurrentView, clearCart, addToCart } = useShop();
 
   const freeDeliveryThreshold = 3000;
   const isFreeDelivery = cartSubtotal >= freeDeliveryThreshold;
-  const shippingFee = isFreeDelivery || cart.length === 0 ? 0 : 150;
+  const shippingFee = isFreeDelivery || cart.length === 0 ? 0 : 200;
   const grandTotal = cartSubtotal + shippingFee;
 
   return (
@@ -159,7 +159,43 @@ export const CartPage: React.FC = () => {
             </div>
 
             {/* Right: Order Summary Card */}
-            <div className="lg:col-span-4 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-6 sm:p-8 space-y-6 sticky top-28">
+            <div className="lg:col-span-4 space-y-4 sticky top-28">
+
+              {/* Special Duo Offer Card (Buy 2 for Rs. 2,500) */}
+              {!cart.some(i => i.product.id.includes('bundle')) && (
+                <div className="p-4 rounded-3xl bg-gradient-to-r from-[#748C48]/15 via-gold/15 to-[#748C48]/15 border border-[#748C48]/40 shadow-xs">
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">🔥</span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-[#748C48] text-white px-2 py-0.5 rounded-full">Duo Offer</span>
+                        <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">Save 37%</span>
+                      </div>
+                      <h4 className="font-serif font-bold text-sm text-botanical-950 mt-1">Buy 2 Bottles for Rs. 2,500 Only!</h4>
+                      <p className="text-xs text-botanical-700 mt-0.5">Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> (Flat Rs. 1,480 Discount)</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const duo = {
+                            id: 'tibra-natural-joint-oil-bundle-2',
+                            name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                            price: 2500,
+                            originalPrice: 3980,
+                            image: '/assets/purefix-bottle-box-showcase.jpg'
+                          };
+                          clearCart();
+                          addToCart(duo as any, 1);
+                        }}
+                        className="mt-2.5 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-xs cursor-pointer"
+                      >
+                        <span>Upgrade to 2-Bottle Pack (Rs. 2,500)</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-6 sm:p-8 space-y-6">
               <h2 className="font-serif font-bold text-lg text-botanical-950 pb-4 border-b border-cream-200">
                 Cart Total
               </h2>
@@ -172,7 +208,7 @@ export const CartPage: React.FC = () => {
                 <div className="flex justify-between text-botanical-700">
                   <span>Nationwide Shipping</span>
                   <span className={isFreeDelivery ? 'text-botanical-700 font-bold' : 'font-medium'}>
-                    {isFreeDelivery ? 'FREE (Orders over Rs. 3,000)' : 'Rs. 150'}
+                    {isFreeDelivery ? 'FREE (Orders over Rs. 3,000)' : 'Rs. 200'}
                   </span>
                 </div>
 
@@ -195,6 +231,7 @@ export const CartPage: React.FC = () => {
               <p className="text-center text-[11px] text-botanical-600/80">
                 Taxes and verified packaging included. Official dispatch guarantee.
               </p>
+            </div>
             </div>
 
           </div>

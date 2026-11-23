@@ -10,6 +10,7 @@ export const CartDrawer: React.FC = () => {
     setIsCartDrawerOpen,
     updateQuantity,
     removeFromCart,
+    addToCart,
     setCurrentView
   } = useShop();
 
@@ -172,6 +173,40 @@ export const CartDrawer: React.FC = () => {
             )}
           </div>
 
+          {/* Duo Bundle Suggestion Banner if cart does not have duo pack */}
+          {cart.length > 0 && !cart.some(i => i.product.id.includes('bundle')) && (
+            <div className="mx-4 mt-2 p-3 rounded-2xl bg-gradient-to-r from-[#748C48]/15 via-gold/15 to-[#748C48]/15 border border-[#748C48]/40 shadow-2xs">
+              <div className="flex items-start gap-2.5">
+                <span className="text-base">🔥</span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[9px] font-bold uppercase tracking-wider bg-[#748C48] text-white px-2 py-0.5 rounded-full">Duo Offer</span>
+                    <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">Save 37%</span>
+                  </div>
+                  <p className="text-xs font-bold text-botanical-950 mt-1">Buy 2 Bottles for Rs. 2,500 Only!</p>
+                  <p className="text-[10px] text-botanical-700">Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> (Flat Rs. 1,480 OFF)</p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const duo = {
+                        id: 'tibra-natural-joint-oil-bundle-2',
+                        name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                        price: 2500,
+                        originalPrice: 3980,
+                        image: '/assets/purefix-bottle-box-showcase.jpg'
+                      };
+                      removeFromCart(cart[0].product.id);
+                      addToCart(duo as any, 1);
+                    }}
+                    className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-xs cursor-pointer"
+                  >
+                    <span>Upgrade to 2-Pack (Rs. 2,500)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Footer Checkout Action */}
           {cart.length > 0 && (
             <div className="p-4 sm:p-6 bg-white border-t border-cream-200 space-y-3 sm:space-y-4">
@@ -183,13 +218,13 @@ export const CartDrawer: React.FC = () => {
                 <div className="flex justify-between text-botanical-700">
                   <span>Estimated Shipping</span>
                   <span className={cartSubtotal >= freeDeliveryThreshold ? 'text-botanical-700 font-bold' : 'font-medium'}>
-                    {cartSubtotal >= freeDeliveryThreshold ? 'FREE' : 'Rs. 150'}
+                    {cartSubtotal >= freeDeliveryThreshold ? 'FREE' : 'Rs. 200'}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm font-serif font-bold text-botanical-950 pt-2 border-t border-cream-200">
                   <span>Estimated Total</span>
                   <span className="text-base text-botanical-900">
-                    Rs. {(cartSubtotal + (cartSubtotal >= freeDeliveryThreshold ? 0 : 150)).toLocaleString()}
+                    Rs. {(cartSubtotal + (cartSubtotal >= freeDeliveryThreshold ? 0 : 200)).toLocaleString()}
                   </span>
                 </div>
               </div>

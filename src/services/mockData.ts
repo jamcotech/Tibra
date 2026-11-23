@@ -3,11 +3,11 @@ import type { Product, Order, StoreInventory } from '../types/ecommerce';
 export const TIBRA_PRODUCTS: Product[] = [
   {
     id: 'tibra-natural-joint-oil-30ml',
-    name: 'Tibra Natural Joint Oil',
+    name: 'Tibra Natural Joint Oil (30 ML)',
     subtitle: 'Natural Relief for Active Living',
     size: '30 ML',
-    price: 1850,
-    originalPrice: 2450,
+    price: 1500,
+    originalPrice: 1990,
     rating: 4.9,
     reviewsCount: 384,
     stock: 48,
@@ -18,18 +18,18 @@ export const TIBRA_PRODUCTS: Product[] = [
   },
   {
     id: 'tibra-natural-joint-oil-bundle-2',
-    name: 'Tibra Natural Joint Oil (Pack of 2)',
+    name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
     subtitle: 'Complete 60-Day Mobility Ritual',
     size: '2 x 30 ML',
-    price: 3390,
-    originalPrice: 4900,
+    price: 2500,
+    originalPrice: 3980,
     rating: 4.9,
     reviewsCount: 196,
     stock: 35,
     image: '/assets/purefix-bottle-box-showcase.jpg',
     description: 'Double pack for continuous daily morning & evening joint care. Best value for chronic knee, lumbar back and joint wellness.',
-    badge: 'Popular Value',
-    bundleOffer: 'Save 30% + Free Delivery'
+    badge: 'Best Value Duo',
+    bundleOffer: 'Buy 2 for Rs. 2,500 — Save 37% (Flat Rs. 1,480 OFF)'
   },
   {
     id: 'tibra-natural-joint-oil-family-pack',

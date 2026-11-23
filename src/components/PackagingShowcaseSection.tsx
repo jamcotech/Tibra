@@ -2,8 +2,6 @@ import React from 'react';
 import {
   Package,
   ShieldCheck,
-  Check,
-  CheckCircle2,
   Sparkles,
   Droplets,
   SunDim,
@@ -112,50 +110,96 @@ export const PackagingShowcaseSection: React.FC = () => {
               })}
             </div>
 
-            {/* Box Features List with Botanical Icon Bullets */}
-            <div className="p-5 rounded-2xl bg-[#F5F0E6] border border-cream-300/80 space-y-3">
-              <span className="text-xs font-bold text-botanical-950 uppercase tracking-wide flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-botanical-600" />
-                Verified Carton Inclusions
-              </span>
-              <ul className="space-y-2 text-xs text-botanical-800">
-                <li className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-md bg-botanical-100 flex items-center justify-center text-botanical-700 shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span>Includes multi-area pain target diagrams on side panel.</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-md bg-botanical-100 flex items-center justify-center text-botanical-700 shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span>Clearly prints "Nature's Care For A Stronger You" brand motto.</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-md bg-botanical-100 flex items-center justify-center text-botanical-700 shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span>Tamper-evident tuck closure ensures factory freshness.</span>
-                </li>
-              </ul>
+            {/* Special Duo Pack Offer Feature with 2 Bottles Picture */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-white via-cream-50 to-[#748C48]/15 border-2 border-[#748C48]/50 shadow-luxury space-y-3.5 relative overflow-hidden">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#748C48] text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                  🔥 Special Duo Offer
+                </span>
+                <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                  Save 37% (Flat Rs. 1,480 OFF)
+                </span>
+              </div>
 
-              {/* Action Buttons */}
-              <div className="pt-3 border-t border-cream-300/80 flex flex-wrap gap-2.5">
+              {/* Two Bottles Side-by-Side Visual */}
+              <div className="py-1 flex items-center justify-center">
+                <div className="relative flex items-center justify-center -space-x-8">
+                  <img
+                    src="/assets/purefix-bottle-transparent.png"
+                    alt="Tibra Natural Joint Oil Bottle 1"
+                    className="h-24 sm:h-28 object-contain -rotate-6 drop-shadow-md z-10 transition-transform hover:scale-105"
+                  />
+                  <img
+                    src="/assets/purefix-bottle-transparent.png"
+                    alt="Tibra Natural Joint Oil Bottle 2"
+                    className="h-24 sm:h-28 object-contain rotate-6 drop-shadow-md z-20 transition-transform hover:scale-105"
+                  />
+                </div>
+              </div>
+
+              {/* Offer Narrative & Pricing */}
+              <div className="text-center space-y-1">
+                <h4 className="font-serif font-bold text-sm sm:text-base text-botanical-950">
+                  Buy 2 Bottles for Rs. 2,500 Only!
+                </h4>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-base sm:text-lg font-bold text-[#748C48] font-sans">Rs. 2,500</span>
+                  <span className="text-xs text-stone-400 line-through font-mono">Rs. 3,980</span>
+                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded">
+                    Free Delivery
+                  </span>
+                </div>
+                <p className="text-[11px] text-botanical-800/80 leading-relaxed max-w-sm mx-auto">
+                  Complete 60-Day continuous botanical joint relief routine. Flat Rs. 1,480 discount on twin pack.
+                </p>
+              </div>
+
+              {/* Action Buttons for Duo Pack */}
+              <div className="pt-1 flex flex-col sm:flex-row gap-2">
                 <button
                   type="button"
-                  onClick={() => quickBuyNow(primaryProduct)}
-                  className="flex-1 py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-md shadow-[#748C48]/30 flex items-center justify-center gap-1.5 cursor-pointer transition-all hover:-translate-y-0.5 border border-[#62773C]"
+                  onClick={() => {
+                    const duo = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
+                      id: 'tibra-natural-joint-oil-bundle-2',
+                      name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                      price: 2500,
+                      originalPrice: 3980,
+                      image: '/assets/purefix-bottle-box-showcase.jpg'
+                    };
+                    quickBuyNow(duo as any, 1);
+                  }}
+                  className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-md shadow-[#748C48]/30 flex items-center justify-center gap-1.5 cursor-pointer transition-all hover:-translate-y-0.5 border border-[#62773C]"
                 >
                   <ShoppingCart className="w-3.5 h-3.5 text-white" />
-                  <span>Buy Now</span>
+                  <span>Buy 2 Bottles (Rs. 2,500)</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => addToCart(primaryProduct)}
-                  className="py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-white text-botanical-950 border border-[#748C48]/40 hover:border-[#748C48] hover:bg-cream-50 shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  onClick={() => {
+                    const duo = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
+                      id: 'tibra-natural-joint-oil-bundle-2',
+                      name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                      price: 2500,
+                      originalPrice: 3980,
+                      image: '/assets/purefix-bottle-box-showcase.jpg'
+                    };
+                    addToCart(duo as any, 1);
+                  }}
+                  className="py-2.5 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-white text-botanical-950 border border-[#748C48]/40 hover:border-[#748C48] hover:bg-cream-50 shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <ShoppingBag className="w-3.5 h-3.5 text-[#748C48]" />
-                  <span>Add to Cart</span>
+                  <span>Add Duo</span>
+                </button>
+              </div>
+
+              {/* Single Bottle Quick Action Link */}
+              <div className="pt-1 text-center">
+                <button
+                  type="button"
+                  onClick={() => quickBuyNow(primaryProduct)}
+                  className="text-[11px] text-botanical-700 hover:text-botanical-950 font-medium underline cursor-pointer"
+                >
+                  Or buy Single Bottle (30 ML) for Rs. 1,500 (was Rs. 1,990)
                 </button>
               </div>
             </div>

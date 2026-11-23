@@ -43,7 +43,7 @@ export const FloatingBottomBar: React.FC = () => {
   };
 
   const handleWhatsAppClick = () => {
-    const totalPrice = (primaryProduct ? primaryProduct.price : 1950) * quantity;
+    const totalPrice = (primaryProduct ? primaryProduct.price : 1500) * quantity;
     const text = encodeURIComponent(
       `Hello Tibra Natural Team! I want to order Tibra Natural Joint Oil (30 ML Bottle).\n` +
       `Quantity: ${quantity} bottle(s)\n` +

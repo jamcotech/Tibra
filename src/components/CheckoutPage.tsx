@@ -5,7 +5,7 @@ import { useShop } from '../context/ShopContext';
 import { storeService } from '../services/storeService';
 
 export const CheckoutPage: React.FC = () => {
-  const { cart, cartSubtotal, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart } = useShop();
+  const { cart, cartSubtotal, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart, addToCart } = useShop();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -21,7 +21,7 @@ export const CheckoutPage: React.FC = () => {
 
   const freeDeliveryThreshold = 3000;
   const isFreeDelivery = cartSubtotal >= freeDeliveryThreshold;
-  const shippingFee = isFreeDelivery ? 0 : 150;
+  const shippingFee = isFreeDelivery ? 0 : 200;
   const total = cartSubtotal + shippingFee;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -202,17 +202,104 @@ export const CheckoutPage: React.FC = () => {
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
                 >
-                  <option value="Lahore">Lahore</option>
-                  <option value="Karachi">Karachi</option>
-                  <option value="Islamabad">Islamabad</option>
-                  <option value="Rawalpindi">Rawalpindi</option>
-                  <option value="Faisalabad">Faisalabad</option>
-                  <option value="Multan">Multan</option>
-                  <option value="Peshawar">Peshawar</option>
-                  <option value="Quetta">Quetta</option>
-                  <option value="Sialkot">Sialkot</option>
-                  <option value="Gujranwala">Gujranwala</option>
-                  <option value="Other City">Other Nationwide City</option>
+                  <optgroup label="Federal Capital">
+                    <option value="Islamabad">Islamabad</option>
+                  </optgroup>
+                  <optgroup label="Punjab">
+                    <option value="Lahore">Lahore</option>
+                    <option value="Faisalabad">Faisalabad</option>
+                    <option value="Rawalpindi">Rawalpindi</option>
+                    <option value="Multan">Multan</option>
+                    <option value="Gujranwala">Gujranwala</option>
+                    <option value="Sialkot">Sialkot</option>
+                    <option value="Sargodha">Sargodha</option>
+                    <option value="Bahawalpur">Bahawalpur</option>
+                    <option value="Sahiwal">Sahiwal</option>
+                    <option value="Gujrat">Gujrat</option>
+                    <option value="Kasur">Kasur</option>
+                    <option value="Jhelum">Jhelum</option>
+                    <option value="Sheikhupura">Sheikhupura</option>
+                    <option value="Rahim Yar Khan">Rahim Yar Khan</option>
+                    <option value="Okara">Okara</option>
+                    <option value="Dera Ghazi Khan">Dera Ghazi Khan</option>
+                    <option value="Mianwali">Mianwali</option>
+                    <option value="Attock">Attock</option>
+                    <option value="Chakwal">Chakwal</option>
+                    <option value="Jhang">Jhang</option>
+                    <option value="Toba Tek Singh">Toba Tek Singh</option>
+                    <option value="Hafizabad">Hafizabad</option>
+                    <option value="Khanewal">Khanewal</option>
+                    <option value="Vehari">Vehari</option>
+                    <option value="Muzaffargarh">Muzaffargarh</option>
+                    <option value="Mandi Bahauddin">Mandi Bahauddin</option>
+                    <option value="Bahawalnagar">Bahawalnagar</option>
+                    <option value="Murree">Murree</option>
+                  </optgroup>
+                  <optgroup label="Sindh">
+                    <option value="Karachi">Karachi</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Sukkur">Sukkur</option>
+                    <option value="Larkana">Larkana</option>
+                    <option value="Nawabshah">Nawabshah (Shaheed Benazirabad)</option>
+                    <option value="Mirpur Khas">Mirpur Khas</option>
+                    <option value="Jacobabad">Jacobabad</option>
+                    <option value="Shikarpur">Shikarpur</option>
+                    <option value="Khairpur">Khairpur</option>
+                    <option value="Thatta">Thatta</option>
+                    <option value="Badin">Badin</option>
+                    <option value="Dadu">Dadu</option>
+                    <option value="Tando Adam">Tando Adam</option>
+                    <option value="Ghotki">Ghotki</option>
+                    <option value="Kotri">Kotri</option>
+                  </optgroup>
+                  <optgroup label="Khyber Pakhtunkhwa (Sarhad)">
+                    <option value="Peshawar">Peshawar</option>
+                    <option value="Mardan">Mardan</option>
+                    <option value="Abbottabad">Abbottabad</option>
+                    <option value="Swat">Swat / Mingora</option>
+                    <option value="Kohat">Kohat</option>
+                    <option value="Dera Ismail Khan">Dera Ismail Khan</option>
+                    <option value="Haripur">Haripur</option>
+                    <option value="Bannu">Bannu</option>
+                    <option value="Nowshera">Nowshera</option>
+                    <option value="Charsadda">Charsadda</option>
+                    <option value="Mansehra">Mansehra</option>
+                    <option value="Swabi">Swabi</option>
+                    <option value="Malakand">Malakand</option>
+                    <option value="Chitral">Chitral</option>
+                  </optgroup>
+                  <optgroup label="Balochistan">
+                    <option value="Quetta">Quetta</option>
+                    <option value="Gwadar">Gwadar</option>
+                    <option value="Turbat">Turbat</option>
+                    <option value="Khuzdar">Khuzdar</option>
+                    <option value="Sibi">Sibi</option>
+                    <option value="Hub">Hub</option>
+                    <option value="Chaman">Chaman</option>
+                    <option value="Zhob">Zhob</option>
+                    <option value="Loralai">Loralai</option>
+                    <option value="Dera Murad Jamali">Dera Murad Jamali</option>
+                    <option value="Kalat">Kalat</option>
+                  </optgroup>
+                  <optgroup label="Gilgit-Baltistan">
+                    <option value="Gilgit">Gilgit</option>
+                    <option value="Skardu">Skardu</option>
+                    <option value="Hunza">Hunza</option>
+                    <option value="Diamer">Diamer</option>
+                    <option value="Ghizer">Ghizer</option>
+                    <option value="Astore">Astore</option>
+                  </optgroup>
+                  <optgroup label="Azad Jammu & Kashmir (AJK)">
+                    <option value="Muzaffarabad">Muzaffarabad</option>
+                    <option value="Mirpur AJK">Mirpur (AJK)</option>
+                    <option value="Rawalakot">Rawalakot</option>
+                    <option value="Kotli">Kotli</option>
+                    <option value="Bhimber">Bhimber</option>
+                    <option value="Bagh">Bagh</option>
+                  </optgroup>
+                  <optgroup label="Other Locations">
+                    <option value="Other City">Other Nationwide City</option>
+                  </optgroup>
                 </select>
               </div>
 
@@ -307,23 +394,68 @@ export const CheckoutPage: React.FC = () => {
           </div>
 
           {/* Right: Cart Summary Review */}
-          <div className="lg:col-span-5 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-6 sm:p-8 space-y-6 sticky top-28">
-            <h2 className="font-serif font-bold text-lg text-botanical-950 pb-4 border-b border-cream-200">
-              Order Review ({cart.reduce((sum, i) => sum + i.quantity, 0)} items)
+          <div className="lg:col-span-5 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-5 sm:p-7 space-y-5 sticky top-28">
+            
+            {/* Special Duo Offer Card (Buy 2 for Rs. 2,500) */}
+            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#748C48]/15 via-gold/15 to-[#748C48]/15 border border-[#748C48]/40 shadow-xs">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#748C48] text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <Sparkles className="w-4 h-4 text-[#F5E6A3]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-[#748C48] text-white px-2 py-0.5 rounded-full">
+                      🔥 Special Duo Offer
+                    </span>
+                    <span className="text-[10px] font-bold text-red-700 bg-red-100/90 border border-red-200 px-1.5 py-0.5 rounded-full">
+                      Save 37% (Flat Rs. 1,480 OFF)
+                    </span>
+                  </div>
+                  <h4 className="font-serif font-bold text-xs sm:text-sm text-botanical-950 mt-1">
+                    Buy 2 Bottles for Rs. 2,500 Only!
+                  </h4>
+                  <p className="text-[11px] text-botanical-800/85 mt-0.5 leading-snug">
+                    Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> • Continuous 60-Day Mobility Relief.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const duoProduct = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
+                        id: 'tibra-natural-joint-oil-bundle-2',
+                        name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                        price: 2500,
+                        originalPrice: 3980,
+                        image: '/assets/purefix-bottle-box-showcase.jpg'
+                      };
+                      clearCart();
+                      addToCart(duoProduct as any, 1);
+                    }}
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-xs transition-all active:scale-95 cursor-pointer"
+                  >
+                    <span>Upgrade to 2-Bottle Pack (Rs. 2,500)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <h2 className="font-serif font-bold text-base sm:text-lg text-botanical-950 pb-3 border-b border-cream-200">
+              Order Review ({cart.reduce((sum, i) => sum + i.quantity, 0)} item{cart.reduce((sum, i) => sum + i.quantity, 0) !== 1 ? 's' : ''})
             </h2>
 
             <div className="divide-y divide-cream-100 max-h-72 overflow-y-auto pr-1 space-y-3">
               {cart.map(item => (
-                <div key={item.product.id} className="pt-3 first:pt-0 flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1 shrink-0">
+                <div key={item.product.id} className="pt-3 first:pt-0 flex items-center justify-between gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1 shrink-0">
                     <img src={item.product.image} alt={item.product.name} className="w-full h-full object-contain" />
                   </div>
+                  
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-serif font-bold text-xs text-botanical-950 truncate">
+                    {/* Full Name without cut-off */}
+                    <h4 className="font-serif font-bold text-xs text-botanical-950 break-words leading-snug">
                       {item.product.name}
                     </h4>
 
-                    {/* Interactive Quantity Stepper */}
+                    {/* Quantity Stepper — collision free */}
                     <div className="flex items-center gap-2 mt-1.5">
                       <div className="inline-flex items-center border border-cream-300 rounded-lg bg-cream-50/70 p-0.5 shadow-2xs">
                         <button
@@ -341,7 +473,7 @@ export const CheckoutPage: React.FC = () => {
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="w-6 text-center font-mono font-bold text-xs text-botanical-950">
+                        <span className="w-5 text-center font-mono font-bold text-xs text-botanical-950">
                           {item.quantity}
                         </span>
                         <button
@@ -354,13 +486,19 @@ export const CheckoutPage: React.FC = () => {
                           <Plus className="w-3 h-3" />
                         </button>
                       </div>
-                      <span className="text-[11px] text-botanical-600 font-mono">
-                        Rs. {item.product.price.toLocaleString()}
-                      </span>
                     </div>
                   </div>
-                  <div className="font-bold text-xs text-botanical-950 shrink-0">
-                    Rs. {(item.product.price * item.quantity).toLocaleString()}
+
+                  {/* Clean Price on Right with Crossed-out Regular Price */}
+                  <div className="text-right shrink-0">
+                    <div className="font-bold text-xs text-botanical-950">
+                      Rs. {(item.product.price * item.quantity).toLocaleString()}
+                    </div>
+                    {item.product.originalPrice && (
+                      <div className="text-[10px] text-stone-400 line-through font-mono">
+                        Rs. {(item.product.originalPrice * item.quantity).toLocaleString()}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -374,7 +512,7 @@ export const CheckoutPage: React.FC = () => {
               <div className="flex justify-between text-botanical-700">
                 <span>Shipping Fee</span>
                 <span className={isFreeDelivery ? 'text-botanical-700 font-bold' : 'font-semibold'}>
-                  {isFreeDelivery ? 'FREE (Over Rs. 3,000)' : 'Rs. 150'}
+                  {isFreeDelivery ? 'FREE (Over Rs. 3,000)' : 'Rs. 200'}
                 </span>
               </div>
               <div className="pt-2 border-t border-cream-200 flex justify-between items-center text-xs sm:text-sm font-serif font-bold text-botanical-950">

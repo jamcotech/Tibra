@@ -37,7 +37,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
   const primaryProduct = products[0] || {
     id: 'tibra-natural-joint-oil-30ml',
     name: 'Tibra Natural Joint Oil',
-    price: 1850,
+    price: 1500,
     image: '/assets/purefix-bottle-transparent.png',
   };
   const unitPrice = primaryProduct.price;

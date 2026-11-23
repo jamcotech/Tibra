@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
   CART: 'tibra_cart_v1',
   ORDERS: 'tibra_orders_v1',
   INVENTORY: 'tibra_inventory_v1',
-  PRODUCTS: 'tibra_products_v1',
+  PRODUCTS: 'tibra_products_v2',
   AUTH: 'tibra_spree_auth_v1',
   SETTINGS: 'tibra_store_settings_v1',
 };
