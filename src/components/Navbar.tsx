@@ -5,8 +5,7 @@ import {
   ArrowRight,
   ShoppingCart,
   ShoppingBag,
-  Search,
-  User
+  Search
 } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 
@@ -26,8 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
     cartCount,
     setIsCartDrawerOpen,
     currentView,
-    setCurrentView,
-    setIsAdminOpen
+    setCurrentView
   } = useShop();
 
   const navLinks = [
@@ -195,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
               <Search className="w-3.5 h-3.5" />
             </button>
 
-            {/* Cart Trigger Button */}
+            {/* Cart Trigger Button — Perfectly Circular Centered Badge */}
             <button
               onClick={() => setIsCartDrawerOpen(true)}
               className="relative p-2 rounded-full bg-white/20 text-white border border-white/30 hover:bg-white/35 transition-colors shadow-2xs group cursor-pointer backdrop-blur-md shrink-0"
@@ -204,20 +202,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             >
               <ShoppingBag className="w-3.5 h-3.5 text-white group-hover:scale-110 transition-transform" />
               {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-[#252E15] text-white text-[10px] font-bold font-mono w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-white shadow-xs animate-in zoom-in-75">
+                <span className="absolute -top-1.5 -right-1.5 min-w-[19px] h-[19px] px-1 bg-[#1F2612] text-white text-[10px] font-bold font-mono rounded-full flex items-center justify-center border-2 border-white shadow-sm leading-none pointer-events-none">
                   {cartCount}
                 </span>
               )}
-            </button>
-
-            {/* Account / Admin Portal Quick Switch */}
-            <button
-              onClick={() => setIsAdminOpen(true)}
-              className="p-2 rounded-full bg-white/20 text-white border border-white/30 hover:bg-white/35 transition-colors shadow-2xs cursor-pointer backdrop-blur-md shrink-0"
-              aria-label="Store Admin Portal & CRM"
-              title="Account / Admin CRM"
-            >
-              <User className="w-3.5 h-3.5 text-white" />
             </button>
 
             {/* Quick Buy Now Button with Shopping Cart Icon - Solid White on Olive Bar */}
@@ -249,7 +237,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#F3CD64] text-[#0F311E] text-[9px] font-bold font-mono w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-0.5 bg-[#1F2612] text-white text-[9px] font-bold font-mono rounded-full flex items-center justify-center border-1.5 border-white shadow-xs leading-none pointer-events-none">
                   {cartCount}
                 </span>
               )}
