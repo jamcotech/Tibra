@@ -127,7 +127,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                 <ShoppingBag className="w-6 h-6 stroke-[1.75]" />
               </div>
               <div>
-                <h3 className="font-serif font-bold text-2xl text-botanical-950">
+                <h3 className="font-serif font-bold text-xl text-botanical-950">
                   Confirm Quick Order
                 </h3>
                 <p className="text-xs text-botanical-700">
@@ -313,7 +313,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
               <div className="inline-block px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-mono font-bold border border-emerald-200">
                 Order #{createdOrder?.orderNumber}
               </div>
-              <h3 className="font-serif font-bold text-2xl text-botanical-950">
+              <h3 className="font-serif font-bold text-xl text-botanical-950">
                 Order Confirmed!
               </h3>
               <p className="text-sm text-botanical-800 max-w-sm mx-auto">

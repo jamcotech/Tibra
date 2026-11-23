@@ -35,7 +35,7 @@ export const CartPage: React.FC = () => {
               <ShoppingBag className="w-10 h-10" />
             </div>
             <div>
-              <h2 className="font-serif font-bold text-2xl text-botanical-950">
+              <h2 className="font-serif font-bold text-xl text-botanical-950">
                 Your cart is currently empty
               </h2>
               <p className="text-sm text-botanical-700/80 mt-2">
@@ -56,7 +56,7 @@ export const CartPage: React.FC = () => {
             <div className="lg:col-span-8 space-y-4">
               <div className="bg-white rounded-3xl border border-cream-200/90 shadow-sm overflow-hidden p-6 sm:p-8">
                 <div className="flex items-center justify-between pb-6 border-b border-cream-200">
-                  <h1 className="font-serif font-bold text-2xl text-botanical-950">
+                  <h1 className="font-serif font-bold text-xl text-botanical-950">
                     Order Summary
                   </h1>
                   <button
@@ -160,7 +160,7 @@ export const CartPage: React.FC = () => {
 
             {/* Right: Order Summary Card */}
             <div className="lg:col-span-4 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-6 sm:p-8 space-y-6 sticky top-28">
-              <h2 className="font-serif font-bold text-xl text-botanical-950 pb-4 border-b border-cream-200">
+              <h2 className="font-serif font-bold text-lg text-botanical-950 pb-4 border-b border-cream-200">
                 Cart Total
               </h2>
 

@@ -154,19 +154,19 @@ export const IngredientsSection: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-xs font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
             <Leaf className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Key Natural Ingredients • 100% Herbal Blend</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-botanical-950 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950 tracking-tight">
             Formulated from the Earth.
             <span className="block text-botanical-600 font-serif italic font-normal mt-1">
               16 Time-Tested Herbs &amp; Pure Botanical Oils.
             </span>
           </h2>
 
-          <p className="text-base text-botanical-800/80 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm text-botanical-800/80 leading-relaxed max-w-2xl mx-auto">
             A synergistic blend of authentic medicinal roots, soothing aromatics, and nourishing natural carrier oils designed for joint care, muscle relief, and active living.
           </p>
         </div>
@@ -204,10 +204,10 @@ export const IngredientsSection: React.FC = () => {
             <span className="text-[10px] font-mono tracking-widest uppercase text-[#B5CC82] font-semibold">
               Pure Ayurvedic Formula • 100% Herbal
             </span>
-            <h4 className="font-serif font-bold text-xl sm:text-2xl text-white">
+            <h4 className="font-serif font-bold text-lg sm:text-xl text-white">
               Experience the Power of 16 Botanical Actives
             </h4>
-            <p className="text-xs sm:text-sm text-cream-200/80 max-w-xl">
+            <p className="text-xs text-cream-200/80 max-w-xl">
               Specially blended to provide long-lasting relief from joint stiffness, muscle aches, and daily mobility discomfort.
             </p>
           </div>

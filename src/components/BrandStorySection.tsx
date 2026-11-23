@@ -16,23 +16,23 @@ export const BrandStorySection: React.FC = () => {
           {/* Left Column: Brand Emblem & Manifesto */}
           <div className="lg:col-span-6 space-y-6">
             
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#748C48]/25 text-[#D1DBB6] text-xs font-semibold uppercase tracking-wider border border-[#748C48]/40">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#748C48]/25 text-[#D1DBB6] text-[11px] font-semibold uppercase tracking-wider border border-[#748C48]/40">
               <BookOpen className="w-3.5 h-3.5 text-gold-light" />
               <span>Brand Heritage & Philosophy</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-cream-50 leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-cream-50 leading-tight">
               Rooted in Nature.
               <span className="block text-gold-light font-serif italic font-normal">
                 Crafted for Modern Living.
               </span>
             </h2>
 
-            <p className="text-base sm:text-lg text-cream-200/90 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-cream-200/90 leading-relaxed font-normal">
               At <strong className="text-white font-semibold">Tibra Natural — The Herbal Store</strong>, we believe genuine wellness starts where synthetic shortcuts end. Our purpose is simple: formulate uncompromised herbal remedies that empower individuals to stay active, resilient, and confident in their everyday movements.
             </p>
 
-            <blockquote className="p-5 rounded-2xl bg-white/5 border-l-2 border-gold text-sm sm:text-base italic text-cream-100">
+            <blockquote className="p-4 rounded-2xl bg-white/5 border-l-2 border-gold text-xs sm:text-sm italic text-cream-100">
               "Nature's Care For A Stronger You — Move Freely, Live Better."
             </blockquote>
 
@@ -49,10 +49,10 @@ export const BrandStorySection: React.FC = () => {
               <div className="w-12 h-12 rounded-2xl bg-[#748C48] text-white flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform shadow-md">
                 <Leaf className="w-6 h-6 stroke-[1.75]" />
               </div>
-              <h3 className="font-serif font-bold text-lg text-white">
+              <h3 className="font-serif font-bold text-base text-white">
                 100% Herbal Purity
               </h3>
-              <p className="text-xs text-cream-200/80 leading-relaxed">
+              <p className="text-[11px] text-cream-200/80 leading-relaxed">
                 Clean herbal formulations free from parabens, synthetic fillers, or artificial harsh coloring agents.
               </p>
             </div>
@@ -61,10 +61,10 @@ export const BrandStorySection: React.FC = () => {
               <div className="w-12 h-12 rounded-2xl bg-[#748C48] text-white flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform shadow-md">
                 <Award className="w-6 h-6 stroke-[1.75]" />
               </div>
-              <h3 className="font-serif font-bold text-lg text-white">
+              <h3 className="font-serif font-bold text-base text-white">
                 Mindful Extraction
               </h3>
-              <p className="text-xs text-cream-200/80 leading-relaxed">
+              <p className="text-[11px] text-cream-200/80 leading-relaxed">
                 Traditional botanical wisdom paired with modern purity standards for consistent daily comfort.
               </p>
             </div>
@@ -74,7 +74,7 @@ export const BrandStorySection: React.FC = () => {
                 <HeartHandshake className="w-6 h-6 stroke-[1.75]" />
               </div>
               <div className="flex items-center justify-between">
-                <h3 className="font-serif font-bold text-lg text-white">
+                <h3 className="font-serif font-bold text-base text-white">
                   Transparent Responsibility
                 </h3>
                 <span className="flex items-center gap-1 text-[10px] font-mono text-gold-light uppercase tracking-wider bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10">
@@ -82,7 +82,7 @@ export const BrandStorySection: React.FC = () => {
                   Verified
                 </span>
               </div>
-              <p className="text-xs text-cream-200/80 leading-relaxed">
+              <p className="text-[11px] text-cream-200/80 leading-relaxed">
                 We believe in honest labeling without inflated medical promises. Tibra Natural Joint Oil is designed as a daily botanical companion for joint flexibility, muscle ease, and active living.
               </p>
             </div>

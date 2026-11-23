@@ -76,24 +76,24 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
             {/* Right Column: Narrative & Order Action */}
             <div className="lg:col-span-7 space-y-6 text-left">
               
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-900 text-xs font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-900 text-[11px] font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
                 <Leaf className="w-3.5 h-3.5 text-botanical-700" />
                 <span>Pure Botanical Potency</span>
               </div>
 
               <div className="space-y-2">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-botanical-950 tracking-tight leading-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950 tracking-tight leading-tight">
                   Engineered for Swift Relief.
                   <span className="block text-botanical-600 font-serif italic font-normal">
                     Pure Botanicals in Motion.
                   </span>
                 </h2>
-                <p className="text-sm font-semibold tracking-widest uppercase text-gold-dark">
+                <p className="text-xs font-semibold tracking-widest uppercase text-gold-dark">
                   Tibra Natural Joint Oil • 100% Herbal Active Formulation
                 </p>
               </div>
 
-              <p className="text-base sm:text-lg text-botanical-800/80 leading-relaxed font-normal">
+              <p className="text-sm sm:text-[15px] text-botanical-800/80 leading-relaxed font-normal">
                 Experience the transformative power of nature. Tibra Natural combines 16 cold-extracted herbal botanicals specifically calibrated to absorb fast, soothe stiff joints, and restore effortless daily mobility.
               </p>
 
@@ -102,7 +102,7 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
                 {commitments.map((c, i) => {
                   const Icon = c.icon;
                   return (
-                    <div key={i} className="flex items-center gap-3 text-xs text-botanical-900 font-medium p-2.5 rounded-xl bg-cream-50/70 border border-cream-200/60">
+                    <div key={i} className="flex items-center gap-2.5 text-[11px] text-botanical-900 font-medium p-2 rounded-xl bg-cream-50/70 border border-cream-200/60">
                       <div className="w-7 h-7 rounded-lg bg-botanical-100 text-botanical-800 flex items-center justify-center shrink-0">
                         <Icon className="w-3.5 h-3.5 stroke-[1.75]" />
                       </div>

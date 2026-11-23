@@ -53,14 +53,14 @@ export const FAQSection: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-xs font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
             <HelpCircle className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Common Inquiries</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-botanical-950">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Frequently Asked Questions
           </h2>
-          <p className="text-base text-botanical-800/80">
+          <p className="text-sm text-botanical-800/80 leading-relaxed">
             Clear, transparent answers regarding Tibra Natural Joint Oil formulation, application, and packaging.
           </p>
         </div>
@@ -89,7 +89,7 @@ export const FAQSection: React.FC = () => {
                     >
                       <Icon className="w-4 h-4 stroke-[1.75]" />
                     </div>
-                    <span className="font-serif font-semibold text-base sm:text-lg text-botanical-950">
+                    <span className="font-serif font-semibold text-sm sm:text-base text-botanical-950">
                       {faq.q}
                     </span>
                   </div>
@@ -108,7 +108,7 @@ export const FAQSection: React.FC = () => {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-botanical-800/85 leading-relaxed border-t border-cream-100 animate-in fade-in-50 duration-200 pl-16">
+                  <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-[13px] text-botanical-800/85 leading-relaxed border-t border-cream-100 animate-in fade-in-50 duration-200 pl-16">
                     {faq.a}
                   </div>
                 )}

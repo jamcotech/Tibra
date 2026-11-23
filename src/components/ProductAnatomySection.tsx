@@ -53,17 +53,17 @@ export const ProductAnatomySection: React.FC = () => {
         
         {/* Section Header: Hidden on mobile per user request */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4 hidden md:block">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200 text-botanical-800 text-xs font-semibold uppercase tracking-wider border border-cream-300/80 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-cream-300/80 shadow-xs">
             <Compass className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Product Anatomy & Craftsmanship</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-botanical-950">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Engineered by Nature.
             <span className="block text-[#748C48] font-serif italic font-normal">
               Refined by Design.
             </span>
           </h2>
-          <p className="text-base text-botanical-800/80">
+          <p className="text-sm text-botanical-800/80 leading-relaxed">
             Every element of the Tibra Natural Joint Oil packaging is selected to protect the botanical integrity and make daily application seamless.
           </p>
         </div>
@@ -100,18 +100,18 @@ export const ProductAnatomySection: React.FC = () => {
 
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-semibold text-base text-botanical-950">
+                        <h3 className="font-semibold text-sm text-botanical-950">
                           {point.title}
                         </h3>
                         <span className="text-[10px] font-mono uppercase tracking-wider text-botanical-600 bg-botanical-50 px-2 py-0.5 rounded-full border border-botanical-100 font-semibold">
                           {point.tag}
                         </span>
                       </div>
-                      <p className="text-xs sm:text-sm text-botanical-800/80 mt-1 leading-relaxed">
+                      <p className="text-xs text-botanical-800/80 mt-1 leading-relaxed">
                         {point.desc}
                       </p>
                       {isActive && (
-                        <div className="mt-3 pt-3 border-t border-cream-100 flex items-center gap-2 text-xs text-botanical-700 font-medium animate-fadeIn">
+                        <div className="mt-3 pt-3 border-t border-cream-100 flex items-center gap-2 text-[11px] text-botanical-700 font-medium animate-fadeIn">
                           <Check className="w-3.5 h-3.5 text-botanical-600 shrink-0" />
                           <span>{point.detail}</span>
                         </div>
@@ -165,7 +165,7 @@ export const ProductAnatomySection: React.FC = () => {
                         {activeHotspot === 3 && <Droplets className="w-5 h-5 stroke-[2]" />}
                       </div>
                       <div className="flex-1 pr-1">
-                        <p className="font-bold text-sm text-[#252E15] tracking-tight leading-snug">
+                        <p className="font-bold text-xs text-[#252E15] tracking-tight leading-snug">
                           {anatomyPoints[activeHotspot].title}
                         </p>
                         <p className="text-[11px] text-[#5F7339] font-semibold mt-0.5">

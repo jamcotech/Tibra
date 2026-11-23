@@ -133,7 +133,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           <div className="max-w-xl lg:max-w-2xl">
 
             {/* Badge - Single Line Compact */}
-            <div className="hero-t1 mb-4 sm:mb-6 inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#748C48]/15 border border-[#748C48]/30 text-[#4B5C2B] text-[10px] sm:text-xs font-semibold tracking-wider uppercase w-fit max-w-full shadow-xs backdrop-blur-sm whitespace-nowrap overflow-hidden">
+            <div className="hero-t1 mb-4 sm:mb-6 inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#748C48]/15 border border-[#748C48]/30 text-[#4B5C2B] text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase w-fit max-w-full shadow-xs backdrop-blur-sm whitespace-nowrap overflow-hidden">
               <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 relative shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#748C48] opacity-75" />
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-[#748C48]" />
@@ -145,33 +145,33 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
             {/* Headline */}
             <div className="hero-t1 mb-4 sm:mb-6 space-y-1">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold text-botanical-950 tracking-tight leading-[1.08]">
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-botanical-950 tracking-tight leading-[1.08]">
                 Move Freely.
                 <span className="block italic font-normal text-[#748C48] font-serif">
                   Live Better.
                 </span>
               </h1>
-              <p className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-gold-dark pt-1">
+              <p className="text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-gold-dark pt-1">
                 Natural Relief for Active Living
               </p>
             </div>
 
             {/* Body copy */}
-            <p className="hero-t2 mb-5 text-sm sm:text-base text-botanical-800/85 max-w-lg leading-relaxed">
+            <p className="hero-t2 mb-5 text-xs sm:text-sm text-botanical-800/85 max-w-lg leading-relaxed">
               Discover <span className="font-semibold text-botanical-950">Tibra Natural Joint Oil</span> — a 100% natural herbal blend for joint comfort, muscle relaxation, and everyday mobility.
             </p>
 
             {/* Trust pills */}
             <div className="hero-t3 mb-5 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-3 border-t border-cream-200/70">
-              <div className="flex items-center gap-2 text-xs font-medium text-botanical-900">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-botanical-900">
                 <CheckCircle2 className="w-4 h-4 text-[#748C48] shrink-0" />
                 <span>100% Natural Herbal</span>
               </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-botanical-900">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-botanical-900">
                 <Leaf className="w-4 h-4 text-[#748C48] shrink-0" />
                 <span>Botanical Extracts</span>
               </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-botanical-900">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-botanical-900">
                 <Droplets className="w-4 h-4 text-gold shrink-0" />
                 <span>30 ML Amber Dropper</span>
               </div>

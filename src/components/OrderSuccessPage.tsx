@@ -37,7 +37,7 @@ export const OrderSuccessPage: React.FC = () => {
           <span className="text-xs font-mono uppercase tracking-widest text-gold-dark font-bold">
             Order Confirmed &amp; Logged
           </span>
-          <h1 className="font-serif font-bold text-3xl sm:text-4xl text-botanical-950">
+          <h1 className="font-serif font-bold text-2xl sm:text-3xl text-botanical-950">
             Thank You for Your Order!
           </h1>
           <p className="text-xs sm:text-sm text-botanical-800/80 max-w-md mx-auto leading-relaxed">

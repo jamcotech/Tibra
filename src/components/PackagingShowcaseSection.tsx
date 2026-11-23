@@ -38,17 +38,17 @@ export const PackagingShowcaseSection: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-xs font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
             <Package className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Bottle & Packaging Showcase</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-botanical-950">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Uncompromising Presentation.
             <span className="block text-botanical-600 font-serif italic font-normal">
               Official Box & 30 ML Bottle.
             </span>
           </h2>
-          <p className="text-base text-botanical-800/80">
+          <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed">
             Designed for durability, extract freshness, and effortless daily handling. Studio presentation of the genuine Tibra Natural Joint Oil set.
           </p>
         </div>
@@ -66,14 +66,14 @@ export const PackagingShowcaseSection: React.FC = () => {
               />
               
               {/* Floating Verified Badge */}
-              <div className="absolute top-4 left-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-950/85 text-cream-50 backdrop-blur-md border border-white/20 text-xs font-medium shadow-lg">
+              <div className="absolute top-4 left-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-950/85 text-cream-50 backdrop-blur-md border border-white/20 text-[11px] font-medium shadow-lg">
                 <ShieldCheck className="w-4 h-4 text-gold-light" />
                 <span>Genuine Brand Packaging</span>
               </div>
 
               {/* Bottom Caption Overlay */}
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-botanical-950/80 via-botanical-950/40 to-transparent p-6 text-cream-50">
-                <p className="font-serif text-lg font-bold">Tibra Natural Joint Oil (30 ML)</p>
+                <p className="font-serif text-base font-bold">Tibra Natural Joint Oil (30 ML)</p>
                 <p className="text-xs text-cream-200">Matching unit carton with comprehensive anatomical usage guides</p>
               </div>
             </div>
@@ -82,14 +82,14 @@ export const PackagingShowcaseSection: React.FC = () => {
           {/* Right Column: Packaging Details & Specifications */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-mono uppercase tracking-widest text-gold-dark font-semibold flex items-center gap-2">
+              <span className="text-[11px] font-mono uppercase tracking-widest text-gold-dark font-semibold flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5 text-gold" />
                 Official Specifications
               </span>
-              <h3 className="text-2xl sm:text-3xl font-serif font-bold text-botanical-950">
+              <h3 className="text-xl sm:text-2xl font-serif font-bold text-botanical-950">
                 Crafted for Botanical Integrity
               </h3>
-              <p className="text-sm text-botanical-800/80 leading-relaxed">
+              <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed">
                 From the amber bottle wall thickness to the gold-anodized dropper finish, every specification serves to protect the natural herbal blend from degradation.
               </p>
             </div>
@@ -99,7 +99,7 @@ export const PackagingShowcaseSection: React.FC = () => {
               {specs.map((item, idx) => {
                 const Icon = item.icon;
                 return (
-                  <div key={idx} className="flex items-center justify-between px-4 py-3 text-xs hover:bg-cream-50/70 transition-colors">
+                  <div key={idx} className="flex items-center justify-between px-4 py-2.5 text-[11px] hover:bg-cream-50/70 transition-colors">
                     <span className="font-mono text-botanical-600 uppercase tracking-wider flex items-center gap-2.5">
                       <Icon className="w-3.5 h-3.5 text-botanical-500 shrink-0 stroke-[1.75]" />
                       <span>{item.label}</span>

@@ -117,7 +117,7 @@ export const CheckoutPage: React.FC = () => {
                 <Lock className="w-3.5 h-3.5 text-botanical-600" />
                 <span>Express Secure Checkout</span>
               </div>
-              <h1 className="font-serif font-bold text-3xl text-botanical-950">
+              <h1 className="font-serif font-bold text-2xl text-botanical-950">
                 Delivery Details
               </h1>
               <p className="text-xs text-botanical-700/80 mt-1">
@@ -306,7 +306,7 @@ export const CheckoutPage: React.FC = () => {
 
           {/* Right: Cart Summary Review */}
           <div className="lg:col-span-5 bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-6 sm:p-8 space-y-6 sticky top-28">
-            <h2 className="font-serif font-bold text-xl text-botanical-950 pb-4 border-b border-cream-200">
+            <h2 className="font-serif font-bold text-lg text-botanical-950 pb-4 border-b border-cream-200">
               Order Review ({cart.reduce((sum, i) => sum + i.quantity, 0)} items)
             </h2>
 

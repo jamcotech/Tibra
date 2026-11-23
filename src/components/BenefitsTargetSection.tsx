@@ -135,17 +135,17 @@ export const BenefitsTargetSection: React.FC = () => {
 
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200 text-botanical-800 text-xs font-semibold uppercase tracking-wider border border-cream-300/80 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-cream-300/80 shadow-xs">
             <Activity className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Target Areas &amp; Verified Benefits</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-botanical-950">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Works on Multiple Areas.
             <span className="block text-botanical-600 font-serif italic font-normal">
               For All Kinds of Body Discomfort.
             </span>
           </h2>
-          <p className="text-base text-botanical-800/80">
+          <p className="text-sm text-botanical-800/80 leading-relaxed">
             Formulated as a multi-action topical oil to soothe joints, muscles, tendons, sprains, and daily physical strains.
           </p>
         </div>
@@ -154,7 +154,7 @@ export const BenefitsTargetSection: React.FC = () => {
         <div className="mb-20 bg-white rounded-3xl p-6 sm:p-10 border border-cream-200/90 shadow-luxury">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-cream-200">
             <div>
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-botanical-950">
+              <h3 className="text-lg sm:text-xl font-serif font-bold text-botanical-950">
                 Where do you feel stiffness or discomfort?
               </h3>
             </div>
@@ -234,7 +234,7 @@ export const BenefitsTargetSection: React.FC = () => {
                   <span className="text-xs font-mono uppercase tracking-widest text-gold-dark font-bold">
                     Target Relief:
                   </span>
-                  <h4 className="font-serif font-bold text-xl sm:text-2xl text-botanical-950">
+                  <h4 className="font-serif font-bold text-lg sm:text-xl text-botanical-950">
                     {currentZone.name} Area Care
                   </h4>
                   <span className="text-[11px] font-mono text-botanical-700 bg-botanical-100 px-3 py-1 rounded-full font-semibold border border-botanical-200">
@@ -248,7 +248,7 @@ export const BenefitsTargetSection: React.FC = () => {
                     <span className="w-2 h-2 rounded-full bg-gold-dark" />
                     <span>How to Apply</span>
                   </div>
-                  <p className="text-sm sm:text-base text-botanical-950 font-medium leading-relaxed">
+                  <p className="text-xs sm:text-sm text-botanical-950 font-medium leading-relaxed">
                     {currentZone.tip}
                   </p>
                 </div>
@@ -436,10 +436,10 @@ export const BenefitsTargetSection: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="font-serif font-bold text-lg text-botanical-950 mb-2 group-hover:text-botanical-700 transition-colors">
+                <h3 className="font-serif font-bold text-base text-botanical-950 mb-1.5 group-hover:text-botanical-700 transition-colors">
                   {b.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed font-normal">
+                <p className="text-xs text-botanical-800/80 leading-relaxed font-normal">
                   {b.desc}
                 </p>
               </div>
