@@ -452,10 +452,35 @@ export const CheckoutPage: React.FC = () => {
                 const calc = calculateItemPrice(item.product, item.quantity);
                 return (
                   <div key={item.product.id} className="pt-3.5 first:pt-0 space-y-2">
-                    {/* Top Row: Image + Name + Price (Gives full width to Name) */}
+                    {/* Top Row: Dynamic Bottle Images (1, 2, 3, 3+) + Name + Price */}
                     <div className="flex items-start justify-between gap-3">
-                      <div className="w-12 h-14 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1 shrink-0">
-                        <img src={item.product.image} alt={item.product.name} className="w-full h-full object-contain" />
+                      <div className="w-13 sm:w-15 h-15 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1 shrink-0 overflow-hidden">
+                        {item.quantity === 1 && (
+                          <img src={item.product.image} alt={item.product.name} className="h-12 sm:h-13 object-contain" />
+                        )}
+                        {item.quantity === 2 && (
+                          <div className="flex items-end justify-center gap-0.5">
+                            <img src={item.product.image} alt="Bottle 1" className="h-10 object-contain" />
+                            <img src={item.product.image} alt="Bottle 2" className="h-10 object-contain" />
+                          </div>
+                        )}
+                        {item.quantity === 3 && (
+                          <div className="flex items-end justify-center -space-x-1.5">
+                            <img src={item.product.image} alt="Bottle 1" className="h-9 object-contain" />
+                            <img src={item.product.image} alt="Bottle 2" className="h-10 object-contain z-10" />
+                            <img src={item.product.image} alt="Bottle 3" className="h-9 object-contain" />
+                          </div>
+                        )}
+                        {item.quantity >= 4 && (
+                          <div className="relative flex items-end justify-center -space-x-1.5">
+                            <img src={item.product.image} alt="Bottle 1" className="h-8.5 object-contain opacity-90" />
+                            <img src={item.product.image} alt="Bottle 2" className="h-9.5 object-contain z-10" />
+                            <img src={item.product.image} alt="Bottle 3" className="h-8.5 object-contain opacity-90" />
+                            <span className="absolute -top-1 -right-2 bg-[#748C48] text-white text-[8px] font-bold font-mono px-1 rounded-full">
+                              {item.quantity === 4 ? '3+1' : `3+${item.quantity - 3}`}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex-1 min-w-0">

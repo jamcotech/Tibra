@@ -149,18 +149,85 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
 
             {/* Product Summary Preview with Live Price */}
             <div className="p-2.5 sm:p-3 rounded-xl bg-[#F5F0E6] border border-cream-300 mb-3 space-y-2">
-              <div className="flex items-center gap-3">
-                <img
-                  src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                  alt="Tibra Natural Joint Oil 30ML"
-                  className="w-10 h-13 sm:w-11 sm:h-15 object-contain shrink-0 drop-shadow-xs"
-                />
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                {/* Dynamic Multi-Bottle Visual based on Quantity (1, 2, 3, 3+) */}
+                <div className="w-14 sm:w-16 h-15 flex items-center justify-center shrink-0">
+                  {quantity === 1 && (
+                    <img
+                      src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                      alt="1 Bottle"
+                      className="h-13 sm:h-14 object-contain drop-shadow-sm transition-all"
+                    />
+                  )}
+                  {quantity === 2 && (
+                    <div className="flex items-end justify-center gap-1 transition-all">
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 1"
+                        className="h-10 sm:h-11 object-contain drop-shadow-xs"
+                      />
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 2"
+                        className="h-10 sm:h-11 object-contain drop-shadow-xs"
+                      />
+                    </div>
+                  )}
+                  {quantity === 3 && (
+                    <div className="flex items-end justify-center -space-x-1.5 transition-all">
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 1"
+                        className="h-9 sm:h-10 object-contain drop-shadow-xs"
+                      />
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 2"
+                        className="h-10 sm:h-11 object-contain drop-shadow-xs z-10"
+                      />
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 3"
+                        className="h-9 sm:h-10 object-contain drop-shadow-xs"
+                      />
+                    </div>
+                  )}
+                  {quantity >= 4 && (
+                    <div className="relative flex items-end justify-center -space-x-1.5 transition-all">
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 1"
+                        className="h-9 sm:h-10 object-contain drop-shadow-xs opacity-90"
+                      />
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 2"
+                        className="h-10 sm:h-11 object-contain drop-shadow-xs z-10"
+                      />
+                      <img
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        alt="Bottle 3"
+                        className="h-9 sm:h-10 object-contain drop-shadow-xs opacity-90"
+                      />
+                      <span className="absolute -top-1 -right-2 z-20 bg-[#748C48] text-white text-[9px] font-bold font-mono px-1.5 py-0.2 rounded-full border border-white shadow-xs">
+                        {quantity === 4 ? '3+1' : `3+${quantity - 3}`}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-xs sm:text-sm text-botanical-950 leading-tight">
                     {primaryProduct.name}
                   </h4>
                   <p className="text-[10px] sm:text-[11px] text-botanical-700 mt-0.5">
-                    100% Pure Botanical Dropper
+                    {quantity === 1
+                      ? '1 Bottle (30 ML) • 100% Herbal Dropper'
+                      : quantity === 2
+                      ? '2 Bottles (Duo Pack) • 100% Herbal Dropper'
+                      : quantity === 3
+                      ? '3 Bottles (Triple Pack) • 100% Herbal Dropper'
+                      : `${quantity} Bottles Bundle • 100% Herbal Dropper`}
                   </p>
                 </div>
                 <div className="text-right shrink-0">
@@ -173,7 +240,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                 </div>
               </div>
 
-              {/* Bottom Row across full width: Stepper on left + Total COD Price on right */}
+              {/* Bottom Row across full width: Stepper on left + Total COD Price & Badge stacked on right */}
               <div className="flex items-center justify-between pt-2 border-t border-cream-300/80 gap-2">
                 <div className="flex items-center gap-1.5 shrink-0">
                   <span className="text-[11px] font-semibold text-botanical-800">
@@ -200,14 +267,17 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-right shrink-0">
-                  <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
-                  <span className="text-xs sm:text-sm font-bold text-botanical-950 font-mono">
-                    Rs. {totalPrice.toLocaleString()}
-                  </span>
+                {/* Total and Savings Badge neatly stacked — zero overflow */}
+                <div className="text-right shrink-0">
+                  <div className="flex items-center justify-end gap-1">
+                    <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
+                    <span className="text-xs sm:text-sm font-bold text-botanical-950 font-mono">
+                      Rs. {totalPrice.toLocaleString()}
+                    </span>
+                  </div>
                   {pricingCalc.isDuoApplied && (
-                    <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 border border-[#748C48]/30 px-1.5 py-0.5 rounded-full whitespace-nowrap">
-                      Save {pricingCalc.percentOff}%
+                    <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded-full inline-block mt-0.5">
+                      Save {pricingCalc.percentOff}% (Flat Rs. {pricingCalc.discount.toLocaleString()} OFF)
                     </span>
                   )}
                 </div>
