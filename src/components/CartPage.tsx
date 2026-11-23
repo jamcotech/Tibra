@@ -11,7 +11,7 @@ export const CartPage: React.FC = () => {
   const grandTotal = cartSubtotal + shippingFee;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] pt-28 pb-20">
+    <div className="min-h-screen bg-[#FAF8F5] pt-20 sm:pt-28 pb-12 sm:pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb */}

@@ -33,16 +33,16 @@ export const PackagingShowcaseSection: React.FC = () => {
   ];
 
   return (
-    <section id="packaging" className="relative py-24 lg:py-32 bg-[#FAF8F5]">
+    <section id="packaging" className="relative py-12 sm:py-16 md:py-20 lg:py-28 bg-[#FAF8F5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14 space-y-2.5 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
             <Package className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Bottle & Packaging Showcase</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Uncompromising Presentation.
             <span className="block text-botanical-600 font-serif italic font-normal">
               Official Box & 30 ML Bottle.
@@ -86,7 +86,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                 <Sparkles className="w-3.5 h-3.5 text-gold" />
                 Official Specifications
               </span>
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-botanical-950">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-bold text-botanical-950">
                 Crafted for Botanical Integrity
               </h3>
               <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed">

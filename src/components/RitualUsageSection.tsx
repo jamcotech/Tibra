@@ -46,7 +46,7 @@ export const RitualUsageSection: React.FC = () => {
   ];
 
   return (
-    <section id="ritual" className="relative py-24 lg:py-32 bg-[#F5F0E6]/50 border-t border-cream-200 overflow-hidden">
+    <section id="ritual" className="relative py-12 sm:py-16 md:py-20 lg:py-28 bg-[#F5F0E6]/50 border-t border-cream-200 overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-gold-light/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-botanical-200/20 rounded-full blur-3xl pointer-events-none" />
@@ -54,18 +54,18 @@ export const RitualUsageSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14 space-y-2.5 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200/90 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-cream-300/80 shadow-xs">
             <Clock className="w-3.5 h-3.5 text-botanical-600" />
             <span>The Daily Ritual • How to Use</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             A Mindful Daily Ritual.
             <span className="block text-botanical-600 font-serif italic font-normal">
               3 Simple Steps to Active Living.
             </span>
           </h2>
-          <p className="text-sm text-botanical-800/80 leading-relaxed">
+          <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed">
             Take two minutes morning or evening to restore comfort to your joints and soothe tired muscles with traditional herbal care.
           </p>
         </div>
@@ -82,7 +82,7 @@ export const RitualUsageSection: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="relative bg-white rounded-3xl p-8 sm:p-9 border border-cream-200/90 shadow-sm hover:shadow-luxury hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
+                  className="relative bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 lg:p-9 border border-cream-200/90 shadow-sm hover:shadow-luxury hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
                 >
                   <div>
                     {/* Top Header Row with High Quality 3D Icon & Step Badge */}
@@ -115,7 +115,7 @@ export const RitualUsageSection: React.FC = () => {
 
                     {/* Step Title & Concise Description */}
                     <div className="space-y-2.5">
-                      <h3 className="font-serif font-bold text-lg sm:text-xl text-botanical-950 group-hover:text-botanical-700 transition-colors">
+                      <h3 className="font-serif font-bold text-base sm:text-lg md:text-xl text-botanical-950 group-hover:text-botanical-700 transition-colors">
                         {step.title}
                       </h3>
                       <p className="text-xs text-botanical-800/80 leading-relaxed font-normal">

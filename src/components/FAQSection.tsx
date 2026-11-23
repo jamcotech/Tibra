@@ -48,19 +48,19 @@ export const FAQSection: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className="relative py-24 lg:py-32 bg-[#FAF8F5]">
+    <section id="faq" className="relative py-12 sm:py-16 md:py-20 lg:py-28 bg-[#FAF8F5]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center mb-16 space-y-4">
+        <div className="text-center mb-8 sm:mb-14 space-y-2.5 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
             <HelpCircle className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Common Inquiries</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Frequently Asked Questions
           </h2>
-          <p className="text-sm text-botanical-800/80 leading-relaxed">
+          <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed">
             Clear, transparent answers regarding Tibra Natural Joint Oil formulation, application, and packaging.
           </p>
         </div>
@@ -78,7 +78,7 @@ export const FAQSection: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between p-5 sm:p-6 text-left focus:outline-none"
+                  className="w-full flex items-center justify-between p-3.5 sm:p-5 text-left focus:outline-none"
                   aria-expanded={isOpen}
                 >
                   <div className="flex items-center gap-3.5 pr-4">
@@ -108,7 +108,7 @@ export const FAQSection: React.FC = () => {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-[13px] text-botanical-800/85 leading-relaxed border-t border-cream-100 animate-in fade-in-50 duration-200 pl-16">
+                  <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-[13px] text-botanical-800/85 leading-relaxed border-t border-cream-100 animate-in fade-in-50 duration-200 pl-4 sm:pl-16">
                     {faq.a}
                   </div>
                 )}

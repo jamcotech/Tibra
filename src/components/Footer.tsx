@@ -7,11 +7,11 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-[#748C48] text-white pt-16 pb-12 border-t border-[#859f54] shadow-inner relative overflow-hidden">
+    <footer className="bg-[#748C48] text-white pt-10 sm:pt-16 pb-8 sm:pb-12 border-t border-[#859f54] shadow-inner relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/20 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-10 pb-8 sm:pb-12 border-b border-white/20 items-start">
           
           {/* Brand Info */}
           <div className="md:col-span-5 space-y-4">

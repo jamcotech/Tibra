@@ -94,7 +94,7 @@ export const CheckoutPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] pt-28 pb-24">
+    <div className="min-h-screen bg-[#FAF8F5] pt-20 sm:pt-28 pb-12 sm:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Back Link */}
@@ -139,7 +139,7 @@ export const CheckoutPage: React.FC = () => {
                   placeholder="e.g. Tariq Mehmood"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
                 />
               </div>
 
@@ -156,7 +156,7 @@ export const CheckoutPage: React.FC = () => {
                     placeholder="0300 1234567"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-sm bg-cream-50/50 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
                   />
                 </div>
 
@@ -170,7 +170,7 @@ export const CheckoutPage: React.FC = () => {
                     placeholder="tariq@gmail.com"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-sm bg-cream-50/50 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -187,7 +187,7 @@ export const CheckoutPage: React.FC = () => {
                   placeholder="House / Apartment #, Street name, Sector/Block, Landmark"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
                 />
               </div>
 
@@ -200,7 +200,7 @@ export const CheckoutPage: React.FC = () => {
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
                 >
                   <option value="Lahore">Lahore</option>
                   <option value="Karachi">Karachi</option>
@@ -288,7 +288,7 @@ export const CheckoutPage: React.FC = () => {
                   placeholder="e.g. Call before delivery, deliver in afternoon"
                   value={formData.notes}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-sm bg-cream-50/50 outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-cream-300 focus:border-botanical-500 focus:ring-2 focus:ring-botanical-200 text-base sm:text-sm bg-cream-50/50 outline-none transition-all"
                 />
               </div>
 

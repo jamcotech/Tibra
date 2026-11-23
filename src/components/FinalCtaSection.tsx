@@ -82,7 +82,7 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
               </div>
 
               <div className="space-y-2">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950 tracking-tight leading-tight">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-botanical-950 tracking-tight leading-tight">
                   Engineered for Swift Relief.
                   <span className="block text-botanical-600 font-serif italic font-normal">
                     Pure Botanicals in Motion.
@@ -93,7 +93,7 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
                 </p>
               </div>
 
-              <p className="text-sm sm:text-[15px] text-botanical-800/80 leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm md:text-[15px] text-botanical-800/80 leading-relaxed font-normal">
                 Experience the transformative power of nature. Tibra Natural combines 16 cold-extracted herbal botanicals specifically calibrated to absorb fast, soothe stiff joints, and restore effortless daily mobility.
               </p>
 

@@ -119,10 +119,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 pointer-events-none">
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-2 sm:px-6 lg:px-8 pt-1.5 sm:pt-4 pointer-events-none">
       <div
         style={headerBgStyle}
-        className="max-w-7xl mx-auto rounded-full transition-all duration-300 pointer-events-auto px-4 sm:px-6 py-2.5 sm:py-3"
+        className="max-w-7xl mx-auto rounded-full transition-all duration-300 pointer-events-auto px-3 sm:px-6 py-1.5 sm:py-2.5"
       >
         <div className="flex items-center justify-between">
           
@@ -141,7 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
                   filter:
                     'drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 2px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 7px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.50)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35))',
                 }}
-                className="relative h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
+                className="relative h-6 sm:h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
               />
             </div>
             <div className="hidden sm:flex flex-col border-l border-white/30 pl-3">
@@ -233,10 +233,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
           </div>
 
           {/* Mobile Right Controls */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-1 sm:gap-2">
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 rounded-full bg-white/20 text-white border border-white/30"
+              className="p-1.5 sm:p-2 rounded-full bg-white/20 text-white border border-white/30"
               aria-label="Search"
             >
               <Search className="w-3.5 h-3.5" />
@@ -244,7 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
 
             <button
               onClick={() => setIsCartDrawerOpen(true)}
-              className="relative p-2 rounded-full bg-white/20 text-white border border-white/30"
+              className="relative p-1.5 sm:p-2 rounded-full bg-white/20 text-white border border-white/30"
               aria-label="Cart"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
@@ -258,9 +258,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             <button
               type="button"
               onClick={onOpenOrderModal}
-              className="px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-botanical-900 text-cream-50 sm:hidden shadow-xs flex items-center gap-1.5"
+              className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white text-[#252E15] sm:hidden shadow-xs flex items-center gap-1 cursor-pointer"
             >
-              <ShoppingCart className="w-3.5 h-3.5 text-emerald-300" />
+              <ShoppingCart className="w-3 h-3 text-[#748C48]" />
               <span>Buy</span>
             </button>
 
@@ -312,11 +312,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
           {/* Menu Card with exact PC header frosted glass styling */}
           <div
             style={{
-              background:
-                'linear-gradient(135deg, rgba(75, 79, 48, 0.94), rgba(39, 65, 39, 0.96), rgba(15, 49, 30, 0.96))',
+              backgroundColor: 'rgba(116, 140, 72, 0.97)',
               backdropFilter: 'blur(25px) saturate(160%)',
               WebkitBackdropFilter: 'blur(25px) saturate(160%)',
-              border: '1.5px solid rgba(255, 255, 255, 0.35)',
+              border: '1.5px solid rgba(255, 255, 255, 0.40)',
               boxShadow:
                 '0 24px 48px -12px rgba(0, 0, 0, 0.50), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35)',
             }}

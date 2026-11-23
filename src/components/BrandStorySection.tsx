@@ -21,14 +21,14 @@ export const BrandStorySection: React.FC = () => {
               <span>Brand Heritage & Philosophy</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-cream-50 leading-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-cream-50 leading-tight">
               Rooted in Nature.
               <span className="block text-gold-light font-serif italic font-normal">
                 Crafted for Modern Living.
               </span>
             </h2>
 
-            <p className="text-sm sm:text-base text-cream-200/90 leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm md:text-base text-cream-200/90 leading-relaxed font-normal">
               At <strong className="text-white font-semibold">Tibra Natural — The Herbal Store</strong>, we believe genuine wellness starts where synthetic shortcuts end. Our purpose is simple: formulate uncompromised herbal remedies that empower individuals to stay active, resilient, and confident in their everyday movements.
             </p>
 
@@ -45,7 +45,7 @@ export const BrandStorySection: React.FC = () => {
           {/* Right Column: Brand Pillars with Consistent Iconography */}
           <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            <div className="p-6 rounded-3xl bg-white/5 border border-white/10 hover:border-gold/40 hover:-translate-y-1 transition-all duration-300 space-y-3 group">
+            <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 hover:border-gold/40 hover:-translate-y-1 transition-all duration-300 space-y-2.5 sm:space-y-3 group">
               <div className="w-12 h-12 rounded-2xl bg-[#748C48] text-white flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform shadow-md">
                 <Leaf className="w-6 h-6 stroke-[1.75]" />
               </div>
@@ -57,7 +57,7 @@ export const BrandStorySection: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-white/5 border border-white/10 hover:border-gold/40 hover:-translate-y-1 transition-all duration-300 space-y-3 group">
+            <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 hover:border-gold/40 hover:-translate-y-1 transition-all duration-300 space-y-2.5 sm:space-y-3 group">
               <div className="w-12 h-12 rounded-2xl bg-[#748C48] text-white flex items-center justify-center border border-white/10 group-hover:scale-105 transition-transform shadow-md">
                 <Award className="w-6 h-6 stroke-[1.75]" />
               </div>

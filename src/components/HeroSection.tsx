@@ -129,7 +129,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         <div className="absolute inset-0 bg-subtle-grain opacity-20 pointer-events-none" />
 
         {/* ── CONTENT (Fitted & Compact for Screen) ── */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 pt-28 pb-16 lg:pt-32 lg:pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 pt-20 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-24">
           <div className="max-w-xl lg:max-w-2xl">
 
             {/* Badge - Single Line Compact */}
@@ -145,7 +145,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
             {/* Headline */}
             <div className="hero-t1 mb-4 sm:mb-6 space-y-1">
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-botanical-950 tracking-tight leading-[1.08]">
+              <h1 className="text-[22px] xs:text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-botanical-950 tracking-tight leading-[1.12] sm:leading-[1.08]">
                 Move Freely.
                 <span className="block italic font-normal text-[#748C48] font-serif">
                   Live Better.

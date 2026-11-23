@@ -153,26 +153,26 @@ export const IngredientsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-14 space-y-2.5 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-100 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-botanical-200/80 shadow-xs">
             <Leaf className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Key Natural Ingredients • 100% Herbal Blend</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950 tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-botanical-950 tracking-tight">
             Formulated from the Earth.
             <span className="block text-botanical-600 font-serif italic font-normal mt-1">
               16 Time-Tested Herbs &amp; Pure Botanical Oils.
             </span>
           </h2>
 
-          <p className="text-sm text-botanical-800/80 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed max-w-2xl mx-auto">
             A synergistic blend of authentic medicinal roots, soothing aromatics, and nourishing natural carrier oils designed for joint care, muscle relief, and active living.
           </p>
         </div>
 
         {/* 16 Ingredients Compact Circular Apothecary Grid (4 per row on Mobile) */}
-        <div className="p-4 sm:p-6 lg:p-8 bg-white/70 backdrop-blur-xs rounded-3xl border border-cream-200/90 shadow-2xs">
+        <div className="p-3 sm:p-6 lg:p-8 bg-white/70 backdrop-blur-xs rounded-2xl sm:rounded-3xl border border-cream-200/90 shadow-2xs">
           <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-y-5 gap-x-2 sm:gap-4 md:gap-5 justify-items-center">
             {ingredients.map((item, idx) => (
               <div
@@ -199,7 +199,7 @@ export const IngredientsSection: React.FC = () => {
         </div>
 
         {/* Section Bottom Buy Now Action Bar */}
-        <div className="mt-8 sm:mt-12 p-6 sm:p-8 rounded-3xl bg-[#252E15] text-cream-50 shadow-luxury flex flex-col sm:flex-row items-center justify-between gap-6 border border-botanical-800">
+        <div className="mt-6 sm:mt-12 p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#252E15] text-cream-50 shadow-luxury flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 border border-botanical-800">
           <div className="space-y-1.5 text-center sm:text-left">
             <span className="text-[10px] font-mono tracking-widest uppercase text-[#B5CC82] font-semibold">
               Pure Ayurvedic Formula • 100% Herbal
@@ -214,7 +214,7 @@ export const IngredientsSection: React.FC = () => {
           <button
             type="button"
             onClick={() => quickBuyNow(primaryProduct)}
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0 border border-[#859F54] shrink-0 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-full text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0 border border-[#859F54] shrink-0 cursor-pointer"
           >
             <ShoppingCart className="w-4 h-4 text-white" />
             <span>Buy Now</span>

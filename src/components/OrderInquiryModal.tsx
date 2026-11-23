@@ -99,7 +99,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-botanical-950/60 backdrop-blur-sm transition-opacity cursor-pointer"
@@ -107,7 +107,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
       />
 
       {/* Modal Dialog Card */}
-      <div className="relative bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-cream-200 z-10 animate-in zoom-in-95 duration-200">
+      <div className="relative bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full p-4 sm:p-8 shadow-2xl border border-cream-200 z-10 animate-in zoom-in-95 duration-200 max-h-[92vh] overflow-y-auto">
         
         {/* Close Button */}
         <button

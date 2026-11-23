@@ -130,31 +130,31 @@ export const BenefitsTargetSection: React.FC = () => {
   const currentZone = targetZones.find((z) => z.name === selectedZone) || targetZones[0];
 
   return (
-    <section id="targets" className="relative py-24 lg:py-32 bg-[#F5F0E6]/50 border-t border-cream-200">
+    <section id="targets" className="relative py-12 sm:py-16 md:py-20 lg:py-28 bg-[#F5F0E6]/50 border-t border-cream-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14 space-y-2.5 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-cream-300/80 shadow-xs">
             <Activity className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Target Areas &amp; Verified Benefits</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Works on Multiple Areas.
             <span className="block text-botanical-600 font-serif italic font-normal">
               For All Kinds of Body Discomfort.
             </span>
           </h2>
-          <p className="text-sm text-botanical-800/80 leading-relaxed">
+          <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed">
             Formulated as a multi-action topical oil to soothe joints, muscles, tendons, sprains, and daily physical strains.
           </p>
         </div>
 
         {/* Interactive Target Areas Explorer Card */}
-        <div className="mb-20 bg-white rounded-3xl p-6 sm:p-10 border border-cream-200/90 shadow-luxury">
+        <div className="mb-10 sm:mb-16 md:mb-20 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 border border-cream-200/90 shadow-luxury">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-cream-200">
             <div>
-              <h3 className="text-lg sm:text-xl font-serif font-bold text-botanical-950">
+              <h3 className="text-base sm:text-lg md:text-xl font-serif font-bold text-botanical-950">
                 Where do you feel stiffness or discomfort?
               </h3>
             </div>

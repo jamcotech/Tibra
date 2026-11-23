@@ -48,16 +48,16 @@ export const ProductAnatomySection: React.FC = () => {
   ];
 
   return (
-    <section id="anatomy" className="relative py-24 lg:py-32 bg-[#F5F0E6]/60 border-y border-cream-200">
+    <section id="anatomy" className="relative py-12 sm:py-16 md:py-20 lg:py-28 bg-[#F5F0E6]/60 border-y border-cream-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header: Hidden on mobile per user request */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4 hidden md:block">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14 space-y-2 sm:space-y-4 block">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200 text-botanical-800 text-[11px] font-semibold uppercase tracking-wider border border-cream-300/80 shadow-xs">
             <Compass className="w-3.5 h-3.5 text-botanical-600 stroke-[1.75]" />
             <span>Product Anatomy & Craftsmanship</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-botanical-950">
             Engineered by Nature.
             <span className="block text-[#748C48] font-serif italic font-normal">
               Refined by Design.
@@ -125,7 +125,7 @@ export const ProductAnatomySection: React.FC = () => {
 
           {/* Right Column: Visual Product Anatomy Stage */}
           <div className="lg:col-span-7 relative flex items-center justify-center">
-            <div className="w-full max-w-lg relative bg-gradient-to-b from-white/90 to-cream-100/70 p-8 sm:p-12 rounded-3xl border border-white shadow-luxury backdrop-blur-md">
+            <div className="w-full max-w-lg relative bg-gradient-to-b from-white/90 to-cream-100/70 p-4 sm:p-8 lg:p-12 rounded-3xl border border-white shadow-luxury backdrop-blur-md">
               
               {/* Center Bottle Graphic with Realistic Ground Shadow */}
               <div className="relative flex flex-col justify-center items-center pt-6 pb-2">
@@ -133,7 +133,7 @@ export const ProductAnatomySection: React.FC = () => {
                   <img
                     src="/assets/purefix-bottle-004-transparent.png"
                     alt="Tibra Natural Joint Oil Anatomy"
-                    className="relative z-10 max-h-[460px] w-auto object-contain drop-shadow-[0_22px_36px_rgba(20,56,35,0.26)] drop-shadow-[0_8px_16px_rgba(0,0,0,0.16)] transition-transform duration-500 hover:scale-102"
+                    className="relative z-10 max-h-[280px] sm:max-h-[380px] lg:max-h-[460px] w-auto object-contain drop-shadow-[0_22px_36px_rgba(20,56,35,0.26)] drop-shadow-[0_8px_16px_rgba(0,0,0,0.16)] transition-transform duration-500 hover:scale-102"
                   />
 
                   {/* Dynamic Callout based on active tab with Icon (Hidden on mobile per user request) */}
@@ -211,7 +211,7 @@ export const ProductAnatomySection: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => quickBuyNow(primaryProduct)}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-md shadow-[#748C48]/30 transition-all hover:-translate-y-0.5 active:scale-98 border border-[#62773C] cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 sm:px-6 py-2.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-md shadow-[#748C48]/30 transition-all hover:-translate-y-0.5 active:scale-98 border border-[#62773C] cursor-pointer"
                   >
                     <ShoppingCart className="w-3.5 h-3.5 text-white" />
                     <span>Buy Now — Direct Checkout</span>
