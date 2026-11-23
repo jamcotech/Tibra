@@ -279,7 +279,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
               <div className="pt-2 flex flex-col sm:flex-row gap-3">
                 <button
                   type="submit"
-                  className="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[#748C48] hover:bg-[#5F7339] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-[#748C48]/30 hover:-translate-y-0.5 border border-[#62773C] cursor-pointer"
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 sm:py-3 px-5 rounded-full bg-[#748C48] hover:bg-[#5F7339] text-white font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all shadow-md shadow-[#748C48]/30 hover:-translate-y-0.5 border border-[#62773C] cursor-pointer"
                 >
                   <CheckCircle className="w-4 h-4 text-white" />
                   <span>Confirm Order (Cash on Delivery)</span>
@@ -288,7 +288,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                 <button
                   type="button"
                   onClick={handleWhatsAppInquiry}
-                  className="flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:-translate-y-0.5 cursor-pointer whitespace-nowrap shrink-0 border border-white/20"
+                  className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-[11px] sm:text-xs uppercase tracking-wider transition-all shadow-md hover:-translate-y-0.5 cursor-pointer whitespace-nowrap shrink-0 border border-white/20"
                   title="Direct WhatsApp Order"
                 >
                   <MessageSquare className="w-4 h-4" />

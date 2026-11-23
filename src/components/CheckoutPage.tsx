@@ -292,15 +292,17 @@ export const CheckoutPage: React.FC = () => {
                 />
               </div>
 
-              {/* Submit CTA */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-4 rounded-full text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white transition-all shadow-lg shadow-[#748C48]/30 hover:shadow-xl disabled:opacity-50 flex items-center justify-center gap-2 border border-[#62773C] cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-white" />
-                <span>{isSubmitting ? 'Confirming Order...' : `Confirm Order • Rs. ${total.toLocaleString()}`}</span>
-              </button>
+              {/* Submit CTA — Compact and Refined */}
+              <div className="flex justify-center pt-1">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto px-7 py-2.5 sm:py-3 rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white transition-all shadow-md shadow-[#748C48]/25 hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 border border-[#62773C] cursor-pointer"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-white" />
+                  <span>{isSubmitting ? 'Confirming Order...' : `Confirm Order • Rs. ${total.toLocaleString()}`}</span>
+                </button>
+              </div>
             </form>
           </div>
 
@@ -353,7 +355,7 @@ export const CheckoutPage: React.FC = () => {
                         </button>
                       </div>
                       <span className="text-[11px] text-botanical-600 font-mono">
-                        @ Rs. {item.product.price.toLocaleString()}
+                        Rs. {item.product.price.toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -375,9 +377,9 @@ export const CheckoutPage: React.FC = () => {
                   {isFreeDelivery ? 'FREE (Over Rs. 3,000)' : 'Rs. 150'}
                 </span>
               </div>
-              <div className="pt-2 border-t border-cream-200 flex justify-between items-baseline text-sm font-serif font-bold text-botanical-950">
+              <div className="pt-2 border-t border-cream-200 flex justify-between items-center text-xs sm:text-sm font-serif font-bold text-botanical-950">
                 <span>Total Amount Due</span>
-                <span className="text-xl text-botanical-950 font-sans font-bold">
+                <span className="text-sm sm:text-base text-botanical-950 font-sans font-bold">
                   Rs. {total.toLocaleString()}
                 </span>
               </div>
