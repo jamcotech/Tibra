@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Minus, Plus, ShoppingCart, ArrowRight } from 'lucide-react';
+import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 import { storeService } from '../services/storeService';
 
@@ -107,7 +107,6 @@ export const FloatingBottomBar: React.FC = () => {
           className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-md shadow-[#748C48]/30 transition-all duration-200 active:scale-95 border border-[#62773C] cursor-pointer whitespace-nowrap"
         >
           <span>Buy Now</span>
-          <ArrowRight className="w-3.5 h-3.5 text-white shrink-0" />
         </button>
 
         {/* WhatsApp Circular Button - Actual Authentic WhatsApp Button */}
