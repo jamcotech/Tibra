@@ -138,7 +138,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#748C48] opacity-75" />
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-[#748C48]" />
               </span>
-              <span className="shrink-0 font-bold">Tibra Natural — The Herbal Store</span>
+              <span className="shrink-0 font-bold">TIBRA NATURALS — The Herbal Store</span>
               <span className="text-[#748C48] shrink-0">•</span>
               <span className="text-gold-dark font-bold shrink-0">30 ML Bottle</span>
             </div>
@@ -158,7 +158,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
             {/* Body copy */}
             <p className="hero-t2 mb-5 text-xs sm:text-sm text-botanical-800/85 max-w-lg leading-relaxed">
-              Discover <span className="font-semibold text-botanical-950">Tibra Natural Joint Oil</span> — a 100% natural herbal blend for joint comfort, muscle relaxation, and everyday mobility.
+              Discover <span className="font-semibold text-botanical-950">TIBRA NATURALS Pain Relief Oil</span> — a 100% natural herbal blend for joint comfort, muscle relaxation, and everyday mobility in Pakistan.
             </p>
 
             {/* Trust pills */}

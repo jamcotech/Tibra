@@ -8,7 +8,7 @@ export const OrderSuccessPage: React.FC = () => {
   const handleWhatsApp = () => {
     if (!lastCreatedOrder) return;
     const text = encodeURIComponent(
-      `Hello Tibra Natural Team! I just placed Order #${lastCreatedOrder.orderNumber}.\n` +
+      `Hello TIBRA NATURALS Team! I just placed Order #${lastCreatedOrder.orderNumber}.\n` +
       `Customer Name: ${lastCreatedOrder.customerName}\n` +
       `Phone: ${lastCreatedOrder.customerPhone}\n` +
       `Delivery Address: ${lastCreatedOrder.shippingAddress}, ${lastCreatedOrder.city}\n` +
@@ -41,7 +41,7 @@ export const OrderSuccessPage: React.FC = () => {
             Thank You for Your Order!
           </h1>
           <p className="text-xs sm:text-sm text-botanical-800/80 max-w-md mx-auto leading-relaxed">
-            Your Tibra Natural Joint Oil order has been recorded into our fulfillment system. Our logistics team is preparing your package.
+            Your TIBRA NATURALS Pain Relief Oil order has been recorded into our fulfillment system. Our logistics team is preparing your package for fast doorstep delivery.
           </p>
         </div>
 

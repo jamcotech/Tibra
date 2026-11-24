@@ -36,7 +36,7 @@ export const CartDrawer: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-serif font-bold text-lg text-botanical-950">
-                  Your Tibra Natural Cart
+                  Your TIBRA NATURALS Cart
                 </h3>
                 <p className="text-xs text-botanical-600 font-medium">
                   {cart.length} unique item{cart.length !== 1 ? 's' : ''} in cart
@@ -71,7 +71,7 @@ export const CartDrawer: React.FC = () => {
                 <div>
                   <h4 className="font-serif font-bold text-lg text-botanical-950">Your cart is empty</h4>
                   <p className="text-xs text-botanical-700/80 max-w-xs mt-1">
-                    Discover Tibra Natural Joint Oil 100% natural herbal relief for joints, back, and active living.
+                    Discover TIBRA NATURALS Pain Relief Oil 100% natural herbal relief for joints, back, and active living.
                   </p>
                 </div>
                 <button
@@ -206,7 +206,7 @@ export const CartDrawer: React.FC = () => {
                     onClick={() => {
                       const duo = {
                         id: 'tibra-natural-joint-oil-bundle-2',
-                        name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                        name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                         price: 2600,
                         originalPrice: 3980,
                         image: '/assets/purefix-bottle-box-showcase.jpg'

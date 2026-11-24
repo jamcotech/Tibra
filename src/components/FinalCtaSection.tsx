@@ -89,12 +89,12 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
                   </span>
                 </h2>
                 <p className="text-xs font-semibold tracking-widest uppercase text-gold-dark">
-                  Tibra Natural Joint Oil • 100% Herbal Active Formulation
+                  TIBRA NATURALS Pain Relief Oil • 100% Herbal Active Formulation
                 </p>
               </div>
 
               <p className="text-xs sm:text-sm md:text-[15px] text-botanical-800/80 leading-relaxed font-normal">
-                Experience the transformative power of nature. Tibra Natural combines 16 cold-extracted herbal botanicals specifically calibrated to absorb fast, soothe stiff joints, and restore effortless daily mobility.
+                Experience the transformative power of nature. TIBRA NATURALS combines time-tested cold-extracted herbal botanicals specifically calibrated to absorb fast, soothe stiff joints, and restore effortless daily mobility in Pakistan.
               </p>
 
               {/* Verified Key Commitments with Luxury Icon Container Bullets */}

@@ -20,8 +20,8 @@ export const PackagingShowcaseSection: React.FC = () => {
   const primaryProduct = products[0] || storeService.getProducts()[0];
 
   const specs = [
-    { label: 'Brand', value: 'Tibra Natural — The Herbal Store', icon: ShieldCheck },
-    { label: 'Product Name', value: 'Tibra Natural Joint Oil', icon: Package },
+    { label: 'Brand', value: 'TIBRA NATURALS — The Herbal Store', icon: ShieldCheck },
+    { label: 'Product Name', value: 'TIBRA NATURALS Pain Relief Oil', icon: Package },
     { label: 'Net Volume', value: '30 ML (1.01 FL. OZ)', icon: Droplets },
     { label: 'Bottle Type', value: 'Amber Glass with UV Defense', icon: SunDim },
     { label: 'Closure Mechanism', value: 'Gold Collar + Rubber Pipette', icon: Pipette },
@@ -47,7 +47,7 @@ export const PackagingShowcaseSection: React.FC = () => {
             </span>
           </h2>
           <p className="text-xs sm:text-sm text-botanical-800/80 leading-relaxed">
-            Designed for durability, extract freshness, and effortless daily handling. Studio presentation of the genuine Tibra Natural Joint Oil set.
+            Designed for durability, extract freshness, and effortless daily handling. Studio presentation of the genuine TIBRA NATURALS Pain Relief Oil set.
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export const PackagingShowcaseSection: React.FC = () => {
             <div className="relative rounded-3xl overflow-hidden border border-cream-200 shadow-luxury bg-cream-100/50 group">
               <img
                 src="/assets/packaging-showcase-003.png"
-                alt="Tibra Natural Joint Oil Official Bottle and Box Packaging Showcase"
+                alt="TIBRA NATURALS Pain Relief Oil Official Bottle and Box Packaging Showcase"
                 className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-700"
               />
               
@@ -71,7 +71,7 @@ export const PackagingShowcaseSection: React.FC = () => {
 
               {/* Bottom Caption Overlay */}
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-botanical-950/80 via-botanical-950/40 to-transparent p-6 text-cream-50">
-                <p className="font-serif text-base font-bold">Tibra Natural Joint Oil (30 ML)</p>
+                <p className="font-serif text-base font-bold">TIBRA NATURALS Pain Relief Oil (30 ML)</p>
                 <p className="text-xs text-cream-200">Matching unit carton with comprehensive anatomical usage guides</p>
               </div>
             </div>
@@ -126,7 +126,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                 <div className="flex flex-col items-center">
                   <img
                     src="/assets/purefix-bottle-transparent.png"
-                    alt="Tibra Natural Joint Oil Bottle 1"
+                    alt="TIBRA NATURALS Pain Relief Oil Bottle 1"
                     className="h-24 sm:h-30 object-contain drop-shadow-md transition-transform hover:scale-105"
                   />
                   <span className="text-[10px] font-mono text-botanical-700 font-semibold mt-1">Bottle 1 (30 ML)</span>
@@ -134,7 +134,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                 <div className="flex flex-col items-center">
                   <img
                     src="/assets/purefix-bottle-transparent.png"
-                    alt="Tibra Natural Joint Oil Bottle 2"
+                    alt="TIBRA NATURALS Pain Relief Oil Bottle 2"
                     className="h-24 sm:h-30 object-contain drop-shadow-md transition-transform hover:scale-105"
                   />
                   <span className="text-[10px] font-mono text-botanical-700 font-semibold mt-1">Bottle 2 (30 ML)</span>
@@ -165,7 +165,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                   onClick={() => {
                     const duo = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
                       id: 'tibra-natural-joint-oil-bundle-2',
-                      name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                      name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                       price: 2600,
                       originalPrice: 3980,
                       image: '/assets/purefix-bottle-box-showcase.jpg'
@@ -182,7 +182,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                   onClick={() => {
                     const duo = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
                       id: 'tibra-natural-joint-oil-bundle-2',
-                      name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                      name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                       price: 2600,
                       originalPrice: 3980,
                       image: '/assets/purefix-bottle-box-showcase.jpg'

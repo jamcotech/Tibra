@@ -610,7 +610,7 @@ export const ThreeBottleScene: React.FC<ThreeBottleSceneProps> = ({
             <div className="absolute -inset-4 bg-gradient-to-tr from-botanical-500/20 to-gold/20 rounded-full blur-2xl opacity-60" />
             <img
               src="/assets/purefix-bottle-transparent.png"
-              alt="Tibra Natural Joint Oil 30 ML Bottle"
+              alt="TIBRA NATURALS Pain Relief Oil 30 ML Bottle"
               className="max-h-[520px] w-auto object-contain drop-shadow-[0_25px_35px_rgba(20,56,35,0.25)] transition-transform duration-500 hover:scale-105"
             />
           </div>

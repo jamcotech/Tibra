@@ -16,14 +16,14 @@ export const FAQSection: React.FC = () => {
 
   const faqs = [
     {
-      q: 'What is the net volume and packaging of Tibra Natural Joint Oil?',
+      q: 'What is the net volume and packaging of TIBRA NATURALS Pain Relief Oil?',
       icon: Package,
-      a: 'Tibra Natural Joint Oil comes in a premium 30 ML (1.01 FL OZ) amber glass bottle fitted with a precision metallic gold dropper cap and white silicone bulb. The amber glass provides UV protection for the botanical actives, and the matching unit box ensures safe delivery and storage.'
+      a: 'TIBRA NATURALS Pain Relief Oil comes in an authentic 30 ML (1.01 FL OZ) amber glass bottle fitted with a precision metallic gold dropper cap and white silicone bulb. The amber glass provides UV protection for the botanical actives, and the matching unit box ensures safe delivery and storage across Pakistan.'
     },
     {
       q: 'Which verified ingredients are used in this formulation?',
       icon: Leaf,
-      a: 'The formulation is an authentic 100% natural herbal blend prominently featuring Curcuma Longa (Turmeric root) for soothing care, Zingiber Officinale (Ginger root) for natural warming stimulation, aromatic herbal foliage extracts, and a pure plant carrier oil base that allows smooth massage glide without greasiness.'
+      a: 'The formulation is an authentic 100% natural herbal blend prominently featuring Curcuma Longa (Turmeric root) for soothing care, Zingiber Officinale (Ginger root) for natural warming stimulation, Wintergreen, Eucalyptus, Boswellia, and a pure plant carrier oil base that allows smooth massage glide without greasiness.'
     },
     {
       q: 'How many drops should I use and how often?',
@@ -31,7 +31,7 @@ export const FAQSection: React.FC = () => {
       a: 'Dispense 3 to 5 drops directly onto the targeted joint or muscle area (such as the knees, shoulders, neck, or lower back) and gently massage in circular motions for 2 to 3 minutes until fully absorbed. For best results, use once or twice daily, especially following a warm bath or physical activity.'
     },
     {
-      q: 'Is Tibra Natural Joint Oil suitable for all skin types?',
+      q: 'Is TIBRA NATURALS Pain Relief Oil suitable for all skin types?',
       icon: ShieldCheck,
       a: 'Yes, the formulation consists of natural plant extracts and gentle carrier oils. However, as with all botanical topical products, we recommend performing a small patch test on the inner forearm 24 hours prior to regular use if you have particularly sensitive skin.'
     },

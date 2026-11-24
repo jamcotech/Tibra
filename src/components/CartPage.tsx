@@ -38,7 +38,7 @@ export const CartPage: React.FC = () => {
                 Your cart is currently empty
               </h2>
               <p className="text-sm text-botanical-700/80 mt-2">
-                Experience Tibra Natural Joint Oil — time-tested herbal relief for joints, back, and active living.
+                Experience TIBRA NATURALS Pain Relief Oil — time-tested herbal relief for joints, back, and active living.
               </p>
             </div>
             <button
@@ -213,7 +213,7 @@ export const CartPage: React.FC = () => {
                         onClick={() => {
                           const duo = {
                             id: 'tibra-natural-joint-oil-bundle-2',
-                            name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                            name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                             price: 2600,
                             originalPrice: 3980,
                             image: '/assets/purefix-bottle-box-showcase.jpg'

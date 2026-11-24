@@ -1,0 +1,38 @@
+# robots.txt for https://www.tibranaturals.com/
+# TIBRA NATURALS – Official Herbal Store & Botanical Wellness
+
+User-agent: *
+Allow: /
+Allow: /about-us/
+Allow: /products/
+Allow: /products/pain-relief-oil/
+Allow: /ingredients/
+Allow: /how-to-use/
+Allow: /our-quality/
+Allow: /blog/
+Allow: /blog/*
+Allow: /faq/
+Allow: /contact-us/
+Allow: /shipping-policy/
+Allow: /return-policy/
+Allow: /privacy-policy/
+Allow: /terms-and-conditions/
+
+# Public static assets
+Allow: /assets/
+Allow: /favicon.*
+Allow: /apple-touch-icon.png
+
+# Disallow private administration, checkout utility, and internal CRM paths
+Disallow: /admin
+Disallow: /admin/
+Disallow: /checkout
+Disallow: /checkout/
+Disallow: /order-success
+Disallow: /order-success/
+Disallow: /*?*admin=
+Disallow: /*?*token=
+Disallow: /*?*session=
+
+# XML Sitemap Index
+Sitemap: https://www.tibranaturals.com/sitemap.xml

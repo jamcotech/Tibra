@@ -3,6 +3,7 @@ import { ArrowLeft, ShieldCheck, CheckCircle2, Lock, Truck, CreditCard, Sparkles
 import confetti from 'canvas-confetti';
 import { useShop } from '../context/ShopContext';
 import { storeService, calculateItemPrice } from '../services/storeService';
+import analyticsService from '../services/analyticsService';
 
 export const CheckoutPage: React.FC = () => {
   const { cart, cartSubtotal, cartDiscount, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart, addToCart } = useShop();
@@ -25,6 +26,20 @@ export const CheckoutPage: React.FC = () => {
 
   const shippingFee = cart.length === 0 ? 0 : 200;
   const total = cartSubtotal + shippingFee;
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      analyticsService.trackBeginCheckout(
+        cart.map(i => ({
+          item_id: i.product.id,
+          item_name: i.product.name,
+          price: i.product.price,
+          quantity: i.quantity,
+        })),
+        total
+      );
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -65,6 +80,17 @@ export const CheckoutPage: React.FC = () => {
       setLastCreatedOrder(order);
       clearCart();
 
+      analyticsService.trackPurchase(
+        order.orderNumber,
+        total,
+        order.items.map(i => ({
+          item_id: i.productId,
+          item_name: i.productName,
+          price: i.price,
+          quantity: i.quantity,
+        }))
+      );
+
       confetti({
         particleCount: 90,
         spread: 70,
@@ -86,7 +112,7 @@ export const CheckoutPage: React.FC = () => {
       <div className="min-h-screen bg-[#FAF8F5] pt-32 pb-20 text-center">
         <div className="max-w-md mx-auto p-8 bg-white rounded-3xl border border-cream-200 shadow-sm space-y-4">
           <h2 className="font-serif font-bold text-xl text-botanical-950">No items to checkout</h2>
-          <p className="text-xs text-botanical-700">Please add Tibra Natural Joint Oil to your cart first.</p>
+          <p className="text-xs text-botanical-700">Please add TIBRA NATURALS Pain Relief Oil to your cart first.</p>
           <button
             onClick={() => setCurrentView('home')}
             className="px-6 py-2.5 rounded-full text-xs font-bold uppercase bg-botanical-900 text-cream-50"
@@ -428,7 +454,7 @@ export const CheckoutPage: React.FC = () => {
                       onClick={() => {
                         const duoProduct = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
                           id: 'tibra-natural-joint-oil-bundle-2',
-                          name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+                          name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                           price: 2600,
                           originalPrice: 3980,
                           image: '/assets/purefix-bottle-box-showcase.jpg'
@@ -482,11 +508,11 @@ export const CheckoutPage: React.FC = () => {
                       {/* Name strictly formatted in 2 clean, elegant lines (never breaks awkwardly) */}
                       <div className="flex-1 min-w-0">
                         <h4 className="font-serif font-bold text-xs sm:text-sm text-botanical-950 leading-tight">
-                          <span className="block truncate">Tibra Natural</span>
+                          <span className="block truncate">TIBRA NATURALS</span>
                           <span className="block text-[11px] sm:text-xs text-botanical-800 font-medium truncate">
                             {item.quantity >= 2
                               ? `Joint Oil (${item.quantity} Bottles Duo Bundle)`
-                              : 'Joint Oil (30 ML)'}
+                              : 'Pain Relief Oil (30 ML)'}
                           </span>
                         </h4>
                         <span className="text-[10px] font-mono text-botanical-600 block mt-0.5">
@@ -580,7 +606,7 @@ export const CheckoutPage: React.FC = () => {
             <div className="p-4 rounded-2xl bg-cream-50/80 border border-cream-200 space-y-2 text-[11px] text-botanical-700">
               <div className="flex items-center gap-2 text-botanical-900 font-semibold">
                 <CheckCircle2 className="w-4 h-4 text-botanical-600" />
-                <span>Tibra Natural Authenticity Guarantee</span>
+                <span>TIBRA NATURALS Authenticity Guarantee</span>
               </div>
               <p>
                 Each bottle arrives factory sealed in amber glass with security mark and batch registration.
@@ -589,7 +615,7 @@ export const CheckoutPage: React.FC = () => {
 
             <div className="flex items-center justify-center gap-2 text-[11px] text-botanical-600/80 pt-1">
               <ShieldCheck className="w-3.5 h-3.5 text-botanical-600" />
-              <span>Official Tibra Natural Brand Checkout</span>
+              <span>Official TIBRA NATURALS Brand Checkout</span>
             </div>
           </div>
 

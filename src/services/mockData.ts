@@ -3,7 +3,7 @@ import type { Product, Order, StoreInventory } from '../types/ecommerce';
 export const TIBRA_PRODUCTS: Product[] = [
   {
     id: 'tibra-natural-joint-oil-30ml',
-    name: 'Tibra Natural Joint Oil (30 ML)',
+    name: 'TIBRA NATURALS Pain Relief Joint Oil (30 ML)',
     subtitle: 'Natural Relief for Active Living',
     size: '30 ML',
     price: 1500,
@@ -18,7 +18,7 @@ export const TIBRA_PRODUCTS: Product[] = [
   },
   {
     id: 'tibra-natural-joint-oil-bundle-2',
-    name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
+    name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
     subtitle: 'Complete 60-Day Mobility Ritual',
     size: '2 x 30 ML',
     price: 2600,
@@ -33,7 +33,7 @@ export const TIBRA_PRODUCTS: Product[] = [
   },
   {
     id: 'tibra-natural-joint-oil-family-pack',
-    name: 'Tibra Natural Complete Family Care (Pack of 3)',
+    name: 'TIBRA NATURALS Complete Family Care (Pack of 3)',
     subtitle: 'Triple Protection Bundle',
     size: '3 x 30 ML',
     price: 3900,
@@ -54,7 +54,7 @@ export const PUREFIX_PRODUCTS = TIBRA_PRODUCTS;
 export const INITIAL_INVENTORY: StoreInventory[] = [
   {
     productId: 'tibra-natural-joint-oil-30ml',
-    productName: 'Tibra Natural Joint Oil (30 ML Single)',
+    productName: 'TIBRA NATURALS Joint Oil (30 ML Single)',
     sku: 'TN-JO-030',
     stock: 48,
     threshold: 15,
@@ -62,7 +62,7 @@ export const INITIAL_INVENTORY: StoreInventory[] = [
   },
   {
     productId: 'tibra-natural-joint-oil-bundle-2',
-    productName: 'Tibra Natural Joint Oil (Pack of 2)',
+    productName: 'TIBRA NATURALS Joint Oil (Pack of 2)',
     sku: 'TN-JO-060-DUO',
     stock: 35,
     threshold: 10,
@@ -70,7 +70,7 @@ export const INITIAL_INVENTORY: StoreInventory[] = [
   },
   {
     productId: 'tibra-natural-joint-oil-family-pack',
-    productName: 'Tibra Natural Joint Oil (Family Pack of 3)',
+    productName: 'TIBRA NATURALS Joint Oil (Family Pack of 3)',
     sku: 'TN-JO-090-TRIO',
     stock: 22,
     threshold: 8,

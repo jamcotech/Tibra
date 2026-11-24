@@ -29,7 +29,7 @@ export const BrandStorySection: React.FC = () => {
             </h2>
 
             <p className="text-xs sm:text-sm md:text-base text-cream-200/90 leading-relaxed font-normal">
-              At <strong className="text-white font-semibold">Tibra Natural — The Herbal Store</strong>, we believe genuine wellness starts where synthetic shortcuts end. Our purpose is simple: formulate uncompromised herbal remedies that empower individuals to stay active, resilient, and confident in their everyday movements.
+              At <strong className="text-white font-semibold">TIBRA NATURALS — The Herbal Store</strong>, we believe genuine wellness starts where synthetic shortcuts end. Our purpose is simple: formulate uncompromised herbal remedies that empower individuals to stay active, resilient, and confident in their everyday movements.
             </p>
 
             <blockquote className="p-4 rounded-2xl bg-white/5 border-l-2 border-gold text-xs sm:text-sm italic text-cream-100">
@@ -37,7 +37,7 @@ export const BrandStorySection: React.FC = () => {
             </blockquote>
 
             <p className="text-xs sm:text-sm text-cream-300 leading-relaxed">
-              Every drop of Tibra Natural Joint Oil represents our uncompromising focus on botanical integrity, authentic plant extracts, and mindful packaging that preserves natural potency.
+              Every drop of TIBRA NATURALS Pain Relief Oil represents our uncompromising focus on botanical integrity, authentic plant extracts, and mindful packaging that preserves natural potency.
             </p>
 
           </div>

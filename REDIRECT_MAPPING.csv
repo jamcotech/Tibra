@@ -1,0 +1,15 @@
+Old URL,New Canonical URL,Redirect Type,Intent / Rationale
+http://tibranaturals.com/,https://www.tibranaturals.com/,301 Permanent,HTTP to HTTPS and apex to www canonical consolidation
+http://www.tibranaturals.com/,https://www.tibranaturals.com/,301 Permanent,HTTP to HTTPS security consolidation
+https://tibranaturals.com/,https://www.tibranaturals.com/,301 Permanent,Apex to primary www subdomain consolidation
+https://www.tibranaturals.com/index.html,https://www.tibranaturals.com/,301 Permanent,Directory root normalization
+https://www.tibranaturals.com/product/purefix-joint-oil,https://www.tibranaturals.com/products/pain-relief-oil/,301 Permanent,Legacy PureFix URL mapped to official TIBRA NATURALS product
+https://www.tibranaturals.com/product/tibra-natural-joint-oil,https://www.tibranaturals.com/products/pain-relief-oil/,301 Permanent,Legacy unhyphenated product slug mapped to official canonical
+https://www.tibranaturals.com/products/joint-oil/,https://www.tibranaturals.com/products/pain-relief-oil/,301 Permanent,Short product alias mapped to official product URL
+https://www.tibranaturals.com/about/,https://www.tibranaturals.com/about-us/,301 Permanent,Standardized hyphenated informational route
+https://www.tibranaturals.com/contact/,https://www.tibranaturals.com/contact-us/,301 Permanent,Standardized hyphenated informational route
+https://www.tibranaturals.com/faqs/,https://www.tibranaturals.com/faq/,301 Permanent,Plural alias mapped to canonical singular FAQ
+https://www.tibranaturals.com/shipping/,https://www.tibranaturals.com/shipping-policy/,301 Permanent,Policy alias mapped to canonical policy URL
+https://www.tibranaturals.com/returns/,https://www.tibranaturals.com/return-policy/,301 Permanent,Policy alias mapped to canonical policy URL
+https://www.tibranaturals.com/privacy/,https://www.tibranaturals.com/privacy-policy/,301 Permanent,Policy alias mapped to canonical policy URL
+https://www.tibranaturals.com/terms/,https://www.tibranaturals.com/terms-and-conditions/,301 Permanent,Policy alias mapped to canonical policy URL

@@ -64,7 +64,7 @@ export const ProductAnatomySection: React.FC = () => {
             </span>
           </h2>
           <p className="text-sm text-botanical-800/80 leading-relaxed">
-            Every element of the Tibra Natural Joint Oil packaging is selected to protect the botanical integrity and make daily application seamless.
+            Every element of the TIBRA NATURALS Pain Relief Oil packaging is selected to protect the botanical integrity and make daily application seamless.
           </p>
         </div>
 
@@ -132,7 +132,7 @@ export const ProductAnatomySection: React.FC = () => {
                 <div className="relative flex justify-center items-center">
                   <img
                     src="/assets/purefix-bottle-004-transparent.png"
-                    alt="Tibra Natural Joint Oil Anatomy"
+                    alt="TIBRA NATURALS Pain Relief Oil Anatomy"
                     className="relative z-10 max-h-[280px] sm:max-h-[380px] lg:max-h-[460px] w-auto object-contain drop-shadow-[0_22px_36px_rgba(20,56,35,0.26)] drop-shadow-[0_8px_16px_rgba(0,0,0,0.16)] transition-transform duration-500 hover:scale-102"
                   />
 

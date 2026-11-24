@@ -21,9 +21,9 @@ const STORAGE_KEYS = {
 };
 
 const DEFAULT_SETTINGS: StoreSettings = {
-  storeName: 'Tibra Natural Joint Oil Official',
-  legalBusinessName: 'Tibra Natural Health Innovations Ltd.',
-  supportEmail: 'orders@tibranatural.pk',
+  storeName: 'TIBRA NATURALS Official Store',
+  legalBusinessName: 'Tibra Naturals Botanical Wellness Ltd.',
+  supportEmail: 'orders@tibranaturals.com',
   supportPhone: '+92 300 1234567',
   currency: 'PKR',
   timezone: 'Asia/Karachi (UTC+5)',
@@ -36,8 +36,8 @@ const DEFAULT_SETTINGS: StoreSettings = {
 
 const DEFAULT_ADMIN: AdminUser = {
   id: 'usr-admin-1',
-  name: 'Spree Admin',
-  email: 'admin@tibranatural.com',
+  name: 'Store Administrator',
+  email: 'admin@tibranaturals.com',
   role: 'Store Administrator & Owner',
 };
 
@@ -403,7 +403,7 @@ export const storeService = {
 
   login(email: string, pass: string): boolean {
     const cleanEmail = email.trim().toLowerCase();
-    if ((cleanEmail === 'admin@tibranatural.com' || cleanEmail === 'admin@purefix.com') && pass === 'admin123') {
+    if ((cleanEmail === 'admin@tibranaturals.com' || cleanEmail === 'admin@tibranatural.com' || cleanEmail === 'admin@purefix.com') && pass === 'admin123') {
       localStorage.setItem(STORAGE_KEYS.AUTH, 'true');
       return true;
     }

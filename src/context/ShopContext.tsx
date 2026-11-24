@@ -1,6 +1,74 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { CartItem, Product, Order, StoreInventory } from '../types/ecommerce';
 import { storeService, calculateCartTotal } from '../services/storeService';
+import analyticsService from '../services/analyticsService';
+
+export type AppView =
+  | 'home'
+  | 'cart'
+  | 'checkout'
+  | 'order-success'
+  | 'product-detail'
+  | 'ingredients'
+  | 'how-to-use'
+  | 'our-quality'
+  | 'about-us'
+  | 'blog'
+  | 'blog-post'
+  | 'faq'
+  | 'contact'
+  | 'policy-shipping'
+  | 'policy-returns'
+  | 'policy-privacy'
+  | 'policy-terms';
+
+export function parsePathnameToView(pathname: string): { view: AppView; blogSlug?: string } {
+  const clean = pathname.toLowerCase().replace(/\/+$/, '') || '/';
+  if (clean === '' || clean === '/') return { view: 'home' };
+  if (clean === '/cart') return { view: 'cart' };
+  if (clean === '/checkout') return { view: 'checkout' };
+  if (clean === '/order-success') return { view: 'order-success' };
+  if (clean === '/products' || clean.startsWith('/products/')) return { view: 'product-detail' };
+  if (clean === '/ingredients') return { view: 'ingredients' };
+  if (clean === '/how-to-use') return { view: 'how-to-use' };
+  if (clean === '/our-quality') return { view: 'our-quality' };
+  if (clean === '/about-us' || clean === '/about') return { view: 'about-us' };
+  if (clean === '/blog') return { view: 'blog' };
+  if (clean.startsWith('/blog/')) {
+    const slug = clean.replace('/blog/', '');
+    return { view: 'blog-post', blogSlug: slug };
+  }
+  if (clean === '/faq') return { view: 'faq' };
+  if (clean === '/contact-us' || clean === '/contact') return { view: 'contact' };
+  if (clean === '/shipping-policy') return { view: 'policy-shipping' };
+  if (clean === '/return-policy') return { view: 'policy-returns' };
+  if (clean === '/privacy-policy') return { view: 'policy-privacy' };
+  if (clean === '/terms-and-conditions' || clean === '/terms') return { view: 'policy-terms' };
+  return { view: 'home' };
+}
+
+export function getViewCanonicalPath(view: AppView, blogSlug?: string): string {
+  switch (view) {
+    case 'home': return '/';
+    case 'cart': return '/cart/';
+    case 'checkout': return '/checkout/';
+    case 'order-success': return '/order-success/';
+    case 'product-detail': return '/products/pain-relief-oil/';
+    case 'ingredients': return '/ingredients/';
+    case 'how-to-use': return '/how-to-use/';
+    case 'our-quality': return '/our-quality/';
+    case 'about-us': return '/about-us/';
+    case 'blog': return '/blog/';
+    case 'blog-post': return blogSlug ? `/blog/${blogSlug}/` : '/blog/';
+    case 'faq': return '/faq/';
+    case 'contact': return '/contact-us/';
+    case 'policy-shipping': return '/shipping-policy/';
+    case 'policy-returns': return '/return-policy/';
+    case 'policy-privacy': return '/privacy-policy/';
+    case 'policy-terms': return '/terms-and-conditions/';
+    default: return '/';
+  }
+}
 
 interface ShopContextType {
   cart: CartItem[];
@@ -15,8 +83,11 @@ interface ShopContextType {
   clearCart: () => void;
   isCartDrawerOpen: boolean;
   setIsCartDrawerOpen: (open: boolean) => void;
-  currentView: 'home' | 'cart' | 'checkout' | 'order-success';
-  setCurrentView: (view: 'home' | 'cart' | 'checkout' | 'order-success') => void;
+  currentView: AppView;
+  setCurrentView: (view: AppView) => void;
+  activeBlogSlug?: string;
+  setActiveBlogSlug: (slug?: string) => void;
+  navigate: (view: AppView, slug?: string) => void;
   isAdminOpen: boolean;
   setIsAdminOpen: (open: boolean) => void;
   lastCreatedOrder: Order | null;
@@ -34,7 +105,15 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'home' | 'cart' | 'checkout' | 'order-success'>('home');
+  
+  // Initialize view from pathname
+  const initialRoute = typeof window !== 'undefined'
+    ? parsePathnameToView(window.location.pathname)
+    : { view: 'home' as AppView };
+
+  const [currentView, setCurrentView] = useState<AppView>(initialRoute.view);
+  const [activeBlogSlug, setActiveBlogSlug] = useState<string | undefined>(initialRoute.blogSlug);
+
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
@@ -44,9 +123,24 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
     return false;
   });
+
   const [lastCreatedOrder, setLastCreatedOrder] = useState<Order | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [inventory, setInventory] = useState<StoreInventory[]>([]);
+
+  // Navigation function with HTML5 pushState
+  const navigate = (view: AppView, slug?: string) => {
+    setCurrentView(view);
+    setActiveBlogSlug(slug);
+    if (typeof window !== 'undefined') {
+      const targetPath = getViewCanonicalPath(view, slug);
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState({}, '', targetPath);
+      }
+      analyticsService.trackPageView(targetPath);
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  };
 
   // Sync state
   const syncProducts = () => {
@@ -70,6 +164,7 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     syncCart();
     refreshOrders();
     refreshInventory();
+    analyticsService.init();
 
     const handleCartUpdate = () => syncCart();
     const handleProductsUpdate = () => {
@@ -94,7 +189,7 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     window.addEventListener('purefix_orders_updated', handleOrdersUpdate);
     window.addEventListener('purefix_inventory_updated', handleInventoryUpdate);
 
-    // Support popstate and hash change for /admin route
+    // Support popstate (browser back/forward buttons)
     const handleLocationChange = () => {
       const path = window.location.pathname;
       const search = window.location.search;
@@ -103,6 +198,9 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsAdminOpen(true);
       } else {
         setIsAdminOpen(false);
+        const resolved = parsePathnameToView(path);
+        setCurrentView(resolved.view);
+        setActiveBlogSlug(resolved.blogSlug);
       }
     };
 
@@ -126,15 +224,24 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const addToCart = (product: Product, quantity = 1, selectedBundle?: string) => {
     storeService.addToCart(product, quantity, selectedBundle);
     setIsCartDrawerOpen(true);
+    analyticsService.trackAddToCart({
+      item_id: product.id,
+      item_name: product.name,
+      price: product.price,
+      quantity,
+    });
   };
 
   const quickBuyNow = (product: Product, quantity = 1) => {
     storeService.addToCart(product, quantity);
-    setCurrentView('checkout');
+    navigate('checkout');
     setIsCartDrawerOpen(false);
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    }
+    analyticsService.trackAddToCart({
+      item_id: product.id,
+      item_name: product.name,
+      price: product.price,
+      quantity,
+    });
   };
 
   useEffect(() => {
@@ -178,6 +285,9 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsCartDrawerOpen,
         currentView,
         setCurrentView,
+        activeBlogSlug,
+        setActiveBlogSlug,
+        navigate,
         isAdminOpen,
         setIsAdminOpen,
         lastCreatedOrder,

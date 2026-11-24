@@ -87,7 +87,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
 
   const handleWhatsAppInquiry = () => {
     const text = encodeURIComponent(
-      `Hello Tibra Natural Team! I want to confirm my order for Tibra Natural Joint Oil (30 ML).\n` +
+      `Hello TIBRA NATURALS Team! I want to confirm my order for TIBRA NATURALS Pain Relief Oil (30 ML).\n` +
       `Order: ${createdOrder ? createdOrder.orderNumber : 'Pending'}\n` +
       `Quantity: ${quantity} bottle(s) - Rs. ${totalPrice.toLocaleString()}\n` +
       `Name: ${name || 'Customer'}\n` +
@@ -127,7 +127,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                 Confirm Quick Order
               </h3>
               <p className="text-[11px] sm:text-xs text-botanical-700 mt-0.5">
-                Tibra Natural Joint Oil (30 ML) • Cash on Delivery
+                TIBRA NATURALS Pain Relief Oil (30 ML) • Cash on Delivery
               </p>
             </div>
 
