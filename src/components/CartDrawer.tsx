@@ -174,7 +174,7 @@ export const CartDrawer: React.FC = () => {
                                 </div>
                                 <span className="text-[9px] font-bold text-[#748C48] bg-[#748C48]/10 px-1.5 py-0.5 rounded-full inline-block">
                                   {calc.isDuoApplied
-                                    ? 'Save 37% (Flat Rs. 1,480 OFF)'
+                                    ? `Save ${calc.percentOff}% (Flat Rs. ${calc.discount.toLocaleString()} OFF)`
                                     : 'Save 25% (Flat Rs. 490 OFF)'}
                                 </span>
                               </div>
@@ -197,17 +197,17 @@ export const CartDrawer: React.FC = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-[9px] font-bold uppercase tracking-wider bg-[#748C48] text-white px-2 py-0.5 rounded-full">Duo Offer</span>
-                    <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">Save 37%</span>
+                    <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">Save 35%</span>
                   </div>
-                  <p className="text-xs font-bold text-botanical-950 mt-1">Buy 2 Bottles for Rs. 2,500 Only!</p>
-                  <p className="text-[10px] text-botanical-700">Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> (Flat Rs. 1,480 OFF)</p>
+                  <p className="text-xs font-bold text-botanical-950 mt-1">Buy 2 Bottles for Rs. 2,600 Only!</p>
+                  <p className="text-[10px] text-botanical-700">Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> (Flat Rs. 1,380 OFF)</p>
                   <button
                     type="button"
                     onClick={() => {
                       const duo = {
                         id: 'tibra-natural-joint-oil-bundle-2',
                         name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
-                        price: 2500,
+                        price: 2600,
                         originalPrice: 3980,
                         image: '/assets/purefix-bottle-box-showcase.jpg'
                       };
@@ -216,7 +216,7 @@ export const CartDrawer: React.FC = () => {
                     }}
                     className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-xs cursor-pointer"
                   >
-                    <span>Upgrade to 2-Pack (Rs. 2,500)</span>
+                    <span>Upgrade to 2-Pack (Rs. 2,600)</span>
                   </button>
                 </div>
               </div>

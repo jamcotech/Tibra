@@ -117,7 +117,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                   🔥 Special Duo Offer
                 </span>
                 <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
-                  Save 37% (Flat Rs. 1,480 OFF)
+                  Save 35% (Flat Rs. 1,380 OFF)
                 </span>
               </div>
 
@@ -144,17 +144,17 @@ export const PackagingShowcaseSection: React.FC = () => {
               {/* Offer Narrative & Pricing */}
               <div className="text-center space-y-1">
                 <h4 className="font-serif font-bold text-sm sm:text-base text-botanical-950">
-                  Buy 2 Bottles for Rs. 2,500 Only!
+                  Buy 2 Bottles for Rs. 2,600 Only!
                 </h4>
                 <div className="flex items-center justify-center gap-2.5">
-                  <span className="text-base sm:text-lg font-bold text-[#748C48] font-sans">Rs. 2,500</span>
+                  <span className="text-base sm:text-lg font-bold text-[#748C48] font-sans">Rs. 2,600</span>
                   <span className="text-xs text-stone-400 line-through font-mono">Rs. 3,980</span>
                   <span className="text-[11px] font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
-                    Save 37%
+                    Save 35%
                   </span>
                 </div>
                 <p className="text-[11px] text-botanical-800/80 leading-relaxed max-w-sm mx-auto">
-                  Complete 60-Day continuous botanical joint relief routine. Flat Rs. 1,480 discount on twin pack.
+                  Complete 60-Day continuous botanical joint relief routine. Flat Rs. 1,380 discount on twin pack (Rs. 1,300/bottle).
                 </p>
               </div>
 
@@ -166,7 +166,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                     const duo = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
                       id: 'tibra-natural-joint-oil-bundle-2',
                       name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
-                      price: 2500,
+                      price: 2600,
                       originalPrice: 3980,
                       image: '/assets/purefix-bottle-box-showcase.jpg'
                     };
@@ -175,7 +175,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                   className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-md shadow-[#748C48]/30 flex items-center justify-center gap-1.5 cursor-pointer transition-all hover:-translate-y-0.5 border border-[#62773C]"
                 >
                   <ShoppingCart className="w-3.5 h-3.5 text-white" />
-                  <span>Buy 2 Bottles (Rs. 2,500)</span>
+                  <span>Buy 2 Bottles (Rs. 2,600)</span>
                 </button>
                 <button
                   type="button"
@@ -183,7 +183,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                     const duo = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
                       id: 'tibra-natural-joint-oil-bundle-2',
                       name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
-                      price: 2500,
+                      price: 2600,
                       originalPrice: 3980,
                       image: '/assets/purefix-bottle-box-showcase.jpg'
                     };

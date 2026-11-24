@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
   CART: 'tibra_cart_v1',
   ORDERS: 'tibra_orders_v1',
   INVENTORY: 'tibra_inventory_v1',
-  PRODUCTS: 'tibra_products_v2',
+  PRODUCTS: 'tibra_products_v3',
   AUTH: 'tibra_spree_auth_v1',
   SETTINGS: 'tibra_store_settings_v1',
 };
@@ -53,8 +53,8 @@ export function calculateItemPrice(product: Product, quantity: number): {
   const originalRegularTotal = regularUnitPrice * quantity;
 
   if (product.id === 'tibra-natural-joint-oil-30ml' || product.price === 1500) {
-    // 1 bottle = Rs. 1,500; 2 or more bottles = Rs. 1,250 each (2 = Rs. 2,500, 3 = Rs. 3,750, etc.)
-    const total = quantity >= 2 ? quantity * 1250 : 1500 * quantity;
+    // 1 bottle = Rs. 1,500; 2 or more bottles = Rs. 1,300 each (2 = Rs. 2,600, 3 = Rs. 3,900, 4 = Rs. 5,200, etc.)
+    const total = quantity >= 2 ? quantity * 1300 : 1500 * quantity;
     const discount = originalRegularTotal - total;
     const percentOff = Math.round((discount / originalRegularTotal) * 100);
     return {
@@ -76,7 +76,7 @@ export function calculateItemPrice(product: Product, quantity: number): {
     originalRegularTotal: regularTotal,
     discount,
     percentOff,
-    isDuoApplied: false,
+    isDuoApplied: product.id.includes('bundle') || quantity >= 2,
   };
 }
 
@@ -108,7 +108,15 @@ export const storeService = {
       return TIBRA_PRODUCTS;
     }
     try {
-      return JSON.parse(data);
+      const parsed: Product[] = JSON.parse(data);
+      const updated = parsed.map(item => {
+        const canonical = TIBRA_PRODUCTS.find(p => p.id === item.id);
+        if (canonical && (item.price !== canonical.price || item.originalPrice !== canonical.originalPrice)) {
+          return { ...item, price: canonical.price, originalPrice: canonical.originalPrice, bundleOffer: canonical.bundleOffer };
+        }
+        return item;
+      });
+      return updated;
     } catch {
       return TIBRA_PRODUCTS;
     }

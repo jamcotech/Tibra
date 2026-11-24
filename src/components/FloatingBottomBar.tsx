@@ -47,7 +47,7 @@ export const FloatingBottomBar: React.FC = () => {
     const text = encodeURIComponent(
       `Hello Tibra Natural Team! I want to order Tibra Natural Joint Oil (30 ML Bottle).\n` +
       `Quantity: ${quantity} bottle(s)\n` +
-      `Total: Rs. ${calc.total.toLocaleString()}${calc.isDuoApplied ? ' (Special Duo Offer: Rs. 2,500)' : ''}\n` +
+      `Total: Rs. ${calc.total.toLocaleString()}${quantity === 2 ? ' (Special Duo Offer: Rs. 2,600)' : quantity > 2 ? ` (Combo Offer: Rs. 1,300/bottle)` : ''}\n` +
       `Please confirm my order with Cash on Delivery.`
     );
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');

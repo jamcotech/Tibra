@@ -59,7 +59,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
           productId: primaryProduct.id,
           productName: primaryProduct.name,
           quantity: quantity,
-          price: unitPrice,
+          price: quantity >= 2 ? 1300 : unitPrice,
           image: primaryProduct.image,
         },
       ],

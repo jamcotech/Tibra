@@ -414,11 +414,11 @@ export const CheckoutPage: React.FC = () => {
                         🔥 Special Duo Offer
                       </span>
                       <span className="text-[10px] font-bold text-red-700 bg-red-100/90 border border-red-200 px-1.5 py-0.5 rounded-full">
-                        Save 37% (Flat Rs. 1,480 OFF)
+                        Save 35% (Flat Rs. 1,380 OFF)
                       </span>
                     </div>
                     <h4 className="font-serif font-bold text-xs sm:text-sm text-botanical-950 mt-1">
-                      Buy 2 Bottles for Rs. 2,500 Only!
+                      Buy 2 Bottles for Rs. 2,600 Only!
                     </h4>
                     <p className="text-[11px] text-botanical-800/85 mt-0.5 leading-snug">
                       Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> • Continuous 60-Day Mobility Relief.
@@ -429,7 +429,7 @@ export const CheckoutPage: React.FC = () => {
                         const duoProduct = storeService.getProducts().find(p => p.id === 'tibra-natural-joint-oil-bundle-2') || {
                           id: 'tibra-natural-joint-oil-bundle-2',
                           name: 'Tibra Natural Joint Oil (Duo Pack of 2)',
-                          price: 2500,
+                          price: 2600,
                           originalPrice: 3980,
                           image: '/assets/purefix-bottle-box-showcase.jpg'
                         };
@@ -438,7 +438,7 @@ export const CheckoutPage: React.FC = () => {
                       }}
                       className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-xs transition-all active:scale-95 cursor-pointer"
                     >
-                      <span>Upgrade to 2-Bottle Pack (Rs. 2,500)</span>
+                      <span>Upgrade to 2-Bottle Pack (Rs. 2,600)</span>
                     </button>
                   </div>
                 </div>
