@@ -132,19 +132,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             <div className="relative flex items-center">
               <img
                 src="/assets/tibra-logo-white.png"
-                alt="TIBRA"
+                alt="TIBRA NATURALS"
                 style={{
                   filter:
                     'drop-shadow(0 0 1px rgba(0, 0, 0, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.70)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.40))',
                 }}
-                className="relative h-6 sm:h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
+                className="relative h-7 sm:h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
               />
             </div>
             <div className="hidden sm:flex flex-col border-l border-white/30 pl-3">
-              <span className="text-[11px] font-bold tracking-widest uppercase text-white leading-none drop-shadow-sm">
-                Tibra Natural
-              </span>
-              <span className="text-[9px] font-mono tracking-wider uppercase text-[#F5E6A3] leading-tight mt-0.5 font-medium drop-shadow-sm">
+              <span className="text-[10px] font-mono tracking-wider uppercase text-[#F5E6A3] leading-tight font-bold drop-shadow-sm">
                 The Herbal Store
               </span>
             </div>
@@ -312,21 +309,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
               <div className="flex items-center gap-2.5">
                 <img
                   src="/assets/tibra-logo-white.png"
-                  alt="TIBRA"
-                  className="h-8 w-auto object-contain"
+                  alt="TIBRA NATURALS"
+                  className="h-7 sm:h-8 w-auto object-contain"
                   style={{
                     filter:
                       'drop-shadow(0 0 1px rgba(0, 0, 0, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.70)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.40))',
                   }}
                 />
-                <div className="flex flex-col">
-                  <span className="text-xs font-bold uppercase tracking-wider text-white">
-                    Tibra Natural
-                  </span>
-                  <span className="text-[9px] font-mono uppercase tracking-widest text-[#F5E6A3]">
-                    The Herbal Store
-                  </span>
-                </div>
+                <span className="text-[9px] font-mono uppercase tracking-widest text-[#F5E6A3] border-l border-white/30 pl-2.5 font-bold">
+                  The Herbal Store
+                </span>
               </div>
 
               {/* Explicit Cross (X) Close Button */}

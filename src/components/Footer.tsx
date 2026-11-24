@@ -18,8 +18,12 @@ export const Footer: React.FC = () => {
             <div className="flex items-center gap-3">
               <img
                 src="/assets/tibra-logo-white.png"
-                alt="TIBRA"
-                className="h-8 w-auto object-contain filter drop-shadow-sm"
+                alt="TIBRA NATURALS"
+                className="h-8 sm:h-9 w-auto object-contain"
+                style={{
+                  filter:
+                    'drop-shadow(0 0 1px rgba(0, 0, 0, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.70)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.40))',
+                }}
               />
               <span className="text-xs uppercase tracking-widest text-[#F5E6A3] font-bold border-l border-white/30 pl-3">
                 The Herbal Store
