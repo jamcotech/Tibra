@@ -97,12 +97,12 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             style={{
               objectFit: 'cover',
             }}
-            src="/assets/hero-video-002.mp4"
+            src="/assets/hero-video-002.mp4?v=2"
             autoPlay
             muted
             loop
             playsInline
-            poster="/assets/bottle.png"
+            preload="auto"
           />
         </div>
 
