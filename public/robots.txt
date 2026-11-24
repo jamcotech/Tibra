@@ -4,9 +4,12 @@
 User-agent: *
 Allow: /
 
-# Private and utility pages
+# Private and utility pages (exact & trailing-slash)
+Disallow: /admin
 Disallow: /admin/
+Disallow: /checkout
 Disallow: /checkout/
+Disallow: /order-success
 Disallow: /order-success/
 Disallow: /*?*admin=
 Disallow: /*?*token=
