@@ -6,6 +6,7 @@ import metaPixelService from '../services/metaPixelService';
 
 export type AppView =
   | 'home'
+  | 'products'
   | 'cart'
   | 'checkout'
   | 'order-success'
@@ -29,7 +30,8 @@ export function parsePathnameToView(pathname: string): { view: AppView; blogSlug
   if (clean === '/cart') return { view: 'cart' };
   if (clean === '/checkout') return { view: 'checkout' };
   if (clean === '/order-success') return { view: 'order-success' };
-  if (clean === '/products' || clean.startsWith('/products/')) return { view: 'product-detail' };
+  if (clean === '/products') return { view: 'products' };
+  if (clean.startsWith('/products/')) return { view: 'product-detail' };
   if (clean === '/ingredients') return { view: 'ingredients' };
   if (clean === '/how-to-use') return { view: 'how-to-use' };
   if (clean === '/our-quality') return { view: 'our-quality' };
@@ -51,6 +53,7 @@ export function parsePathnameToView(pathname: string): { view: AppView; blogSlug
 export function getViewCanonicalPath(view: AppView, blogSlug?: string): string {
   switch (view) {
     case 'home': return '/';
+    case 'products': return '/products/';
     case 'cart': return '/cart/';
     case 'checkout': return '/checkout/';
     case 'order-success': return '/order-success/';

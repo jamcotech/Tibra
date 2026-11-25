@@ -13,6 +13,31 @@ const baseHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
 
 const routes = [
   {
+    path: '/products/',
+    title: 'Our Herbal Products | TIBRA NATURALS Pakistan',
+    description: 'Explore authentic botanical wellness formulations from TIBRA NATURALS Pakistan. 100% natural herbal joint comfort and massage oils.',
+    h1: 'Our Herbal Products – Natural Relief for Active Living',
+    content: 'Explore authentic botanical massage oils handcrafted with 100% natural extracts. Cold-extracted, sealed in UV-protective amber glass, and delivered with Cash on Delivery across Pakistan.',
+    schema: {
+      '@context': 'https://schema.org/',
+      '@type': 'CollectionPage',
+      name: 'Our Herbal Products | TIBRA NATURALS Pakistan',
+      url: 'https://www.tibranaturals.com/products/',
+      description: 'Explore authentic botanical wellness formulations from TIBRA NATURALS Pakistan. 100% natural herbal joint comfort and massage oils.',
+      mainEntity: {
+        '@type': 'ItemList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'TIBRA NATURALS Pain Relief Oil – 30ml',
+            url: 'https://www.tibranaturals.com/products/pain-relief-oil/'
+          }
+        ]
+      }
+    }
+  },
+  {
     path: '/products/pain-relief-oil/',
     title: 'TIBRA NATURALS Pain Relief Oil | Herbal Massage Oil 30ml Pakistan',
     description: 'Buy authentic TIBRA NATURALS Pain Relief Oil (30ml). 100% natural herbal formula with Turmeric, Ginger & Boswellia. Cash on Delivery across Pakistan. Rs. 1,500.',
@@ -155,7 +180,7 @@ const routes = [
   }
 ];
 
-console.log(`Generating pre-rendered static HTML routes for ${routes.length} deep paths (plus root dist/index.html = 17 total sitemap canonical URLs)...`);
+console.log(`Generating pre-rendered static HTML routes for ${routes.length} deep paths (plus root dist/index.html = ${routes.length + 1} total sitemap canonical URLs)...`);
 
 routes.forEach((route) => {
   const canonicalUrl = `https://www.tibranaturals.com${route.path}`;
@@ -226,4 +251,4 @@ routes.forEach((route) => {
   console.log(`  ✓ Prerendered: ${route.path} -> ${targetFile}`);
 });
 
-console.log('Static route prerendering completed successfully! (Total 17 indexable pages: 1 root + 16 deep routes)');
+console.log(`Static route prerendering completed successfully! (Total ${routes.length + 1} indexable pages: 1 root + ${routes.length} deep routes)`);

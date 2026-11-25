@@ -25,11 +25,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
     cartCount,
     setIsCartDrawerOpen,
     currentView,
-    setCurrentView
+    navigate
   } = useShop();
 
   const navLinks = [
-    { label: 'Overview', href: '#hero', id: 'hero' },
+    { label: 'Home', href: '/', id: 'home' },
+    { label: 'Products', href: '/products/', id: 'products' },
     { label: 'Formula', href: '#ingredients', id: 'ingredients' },
     { label: 'Targets', href: '#targets', id: 'targets' },
     { label: 'How to Use', href: '#ritual', id: 'ritual' },
@@ -66,16 +67,45 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
 
   const handleNavClick = (href: string, id: string) => {
     setActiveSection(id);
+    if (id === 'home' || href === '/') {
+      if (currentView !== 'home') {
+        navigate('home');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+    if (id === 'products' || href === '/products/') {
+      if (currentView !== 'products') {
+        navigate('products');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
     if (currentView !== 'home') {
-      setCurrentView('home');
+      navigate('home');
       setTimeout(() => {
         const el = document.querySelector(href);
         el?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      }, 150);
     } else {
       const el = document.querySelector(href);
       el?.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const isLinkActive = (id: string) => {
+    if (currentView === 'products') {
+      return id === 'products';
+    }
+    if (currentView === 'home') {
+      if (id === 'home') {
+        return activeSection === 'hero' || activeSection === 'home';
+      }
+      return activeSection === id;
+    }
+    return false;
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -83,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
     if (!searchQuery.trim()) return;
 
     if (currentView !== 'home') {
-      setCurrentView('home');
+      navigate('home');
     }
 
     const q = searchQuery.toLowerCase();
@@ -126,7 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
           
           {/* Brand Logo & Tag — in Actual Brand Color with Whitish Outer Glow */}
           <button
-            onClick={() => setCurrentView('home')}
+            onClick={() => handleNavClick('/', 'home')}
             className="flex items-center gap-3 group focus:outline-none rounded-full py-1 pr-2 text-left cursor-pointer"
           >
             <div className="relative flex items-center">
@@ -150,7 +180,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
           {/* Desktop Floating Pill Navigation Links */}
           <nav className="hidden lg:flex items-center gap-0.5 sm:gap-1 bg-white/80 backdrop-blur-md p-1 rounded-full border border-white/60 shadow-xs shrink-0">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.id;
+              const isActive = isLinkActive(link.id);
               return (
                 <a
                   key={link.href}
@@ -335,7 +365,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             {/* Menu Links with sober luxury styling */}
             <nav className="py-1 space-y-1">
               {navLinks.map((link) => {
-                const isActive = activeSection === link.id;
+                const isActive = isLinkActive(link.id);
                 return (
                   <a
                     key={link.href}

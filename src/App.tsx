@@ -22,6 +22,7 @@ import { SpreeAdminApp } from './admin/SpreeAdminApp';
 import { SeoHead } from './components/SeoHead';
 
 // Dedicated SEO Pages
+import { ProductsPage } from './components/pages/ProductsPage';
 import { ProductDetailPage } from './components/pages/ProductDetailPage';
 import { IngredientsPage } from './components/pages/IngredientsPage';
 import { HowToUsePage } from './components/pages/HowToUsePage';
@@ -130,6 +131,9 @@ function ShopAppContent() {
         )}
 
         {/* Dedicated Inner Pages */}
+        {currentView === 'products' && (
+          <ProductsPage onOpenOrderModal={() => setIsOrderModalOpen(true)} />
+        )}
         {currentView === 'product-detail' && (
           <ProductDetailPage onOpenOrderModal={() => setIsOrderModalOpen(true)} />
         )}
