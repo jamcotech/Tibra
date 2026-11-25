@@ -1,188 +1,157 @@
-# TIBRA NATURALS – FINAL PRODUCTION DEPLOYMENT & VERIFICATION REPORT
+# TIBRA NATURALS – ONE-SHOT FINAL PRODUCTION DEPLOYMENT & ANALYTICS AUDIT REPORT
 
 **Target Production Domain:** [https://www.tibranaturals.com/](https://www.tibranaturals.com/)  
 **Brand:** TIBRA NATURALS  
 **GitHub Repository:** [https://github.com/jamcotech/Tibra](https://github.com/jamcotech/Tibra)  
 **Production Branch:** `main`  
-**Final Production Commit Hash:** `e37e82aeaa8964df59e7cdb3c930370af9cff947` (short: `e37e82a`)  
+**Latest Production Commit Hash:** `25afdecadd6b996ec06a8cf4994fe4ae16391b0f` (short: `25afdec`)  
 **GTM Container ID:** `GTM-5Q8BQXJ6`  
-**GA4 Measurement ID (Env):** `VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX` (Placeholder pending Vercel production env injection)  
+**GA4 Measurement ID:** `G-9ZZ9VMPDQ2` (Verified & active in live production client bundle `assets/index-CJdsleaU.js`)  
 **Hosting Target:** Vercel Edge Network  
-**Live Production Deployment Header:** `X-Vercel-Id: bom1::wfptl-1795577647730-e5a526ecf39b`  
-**Deployment Date:** November 25, 2026  
-**Status:** **DEPLOYED TO PRODUCTION & VERIFIED**
+**Live Production Vercel ID:** `bom1::vbn6c-1795587905725-ba415c6cb670`  
+**Audit Timestamp:** November 25, 2026, 11:26 AM PKT  
+**Status:** **DEPLOYED TO PRODUCTION, TESTED & VERIFIED**
 
 ---
 
 ## 1. Executive Summary & Verification Matrix
 
-Every check is categorized strictly according to audit standards with objective statuses (`PASS`, `FAIL`, or `NOT TESTED`). No external service or cloud configuration is claimed as verified unless independently tested and confirmed.
+All checks are classified strictly using objective statuses (`PASS`, `FAIL`, or `NOT TESTED`) based on independent runtime evidence.
 
-| Verification Section | Status | Verified Evidence & Test Output |
+| Audit Section | Status | Verified Evidence & Test Output |
 |---|:---:|---|
-| **1. Code Verification & Build** | **PASS** | `npm run build` executed cleanly (code 0) with TypeScript compiler (`tsc -b`), Vite minification, and static route prerendering. |
-| **2. Route Audit (17 Pages)** | **PASS** | 1 Root page (`dist/index.html`) + 16 deep sub-routes (`dist/<route>/index.html`) = 17 total pre-rendered static HTML entrypoints. All 17 live URLs return `HTTP 200 OK`. |
-| **3. Google Consent Mode v2** | **PASS** | `gtag('consent', 'default', ...)` executes in `<head>` *before* GTM script loader. All 4 parameters default to `'denied'`. Interactive banner supports Accept All, Essential Only, Custom settings, persistence, and footer revocation. Verified live on production domain. |
-| **4. E-commerce Subtotal Tracking** | **PASS** | In `analyticsService.ts`, `CheckoutPage.tsx`, and `OrderInquiryModal.tsx`, `value` strictly represents item merchandise subtotal excluding shipping. Shipping is passed separately as PKR 200. Zero duplicate purchases. |
-| **5. Customer PII Protection** | **PASS** | Free-text subject input completely removed. Form submissions use controlled programmatic slugs (`form_id: 'contact_form'`, `inquiry_type: 'order_status' | 'product_dosage' | 'wholesale' | 'general'`). Zero personal customer data in dataLayer. |
-| **6. GitHub Remote Push** | **PASS** | Successfully pushed to `origin/main` (`https://github.com/jamcotech/Tibra.git`). Remote HEAD confirmed at commit `e37e82aeaa8964df59e7cdb3c930370af9cff947`. |
-| **7. Vercel Production Deployment** | **PASS** | Production deployment automatically triggered and completed by Vercel from GitHub `main`. Live site served with `Server: Vercel`, `X-Vercel-Id: bom1::wfptl-1795577647730-e5a526ecf39b`. |
-| **8. Live Production Smoke Test** | **PASS** | Live HTTPS domain returns 200 OK, non-WWW `https://tibranaturals.com/` returns 308 redirect to WWW, `robots.txt` returns 200 OK, `sitemap.xml` returns 200 OK, live HTML contains GTM and Consent Mode v2 scripts. |
-| **9. GTM Cloud Workspace Publication** | **NOT TESTED** | Container `GTM-5Q8BQXJ6` cloud configuration resides in Google's cloud console and requires manual publishing by the container administrator. Complete tag/trigger specifications provided below. |
-| **10. GA4 Cloud Data Ingestion** | **NOT TESTED** | Live data reception in GA4 Realtime/DebugView requires the site owner to configure the real GA4 Measurement ID in Vercel Project Settings &rarr; Environment Variables and publish the GTM container. |
+| **1. Code Architecture & Build** | **PASS** | `npm run build` executed cleanly (code 0) with `tsc -b`, Vite minification, and prerendering of 1 root + 16 deep routes = 17 static HTML entrypoints. |
+| **2. Six Core Events Standardization** | **PASS** | Standardized to `Website -> dataLayer.push() -> GTM Custom Event Trigger -> GA4 Event Tag -> GA4`. Removed all direct `gtag('event', ...)` dispatches for `page_view`, `view_item`, `add_to_cart`, `begin_checkout`, `purchase`, and `generate_lead`. Exactly 1 dataLayer dispatch per action. |
+| **3. Preserved Interaction Events** | **PASS** | Dual tracking for `whatsapp_click` and `contact_click` preserved without modification or duplication. |
+| **4. Google Consent Mode v2** | **PASS** | `gtag('consent', 'default', ...)` executes in `<head>` *prior* to GTM loader. All 4 parameters (`analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization`) default to `'denied'`. Interactive banner supports Accept All, Essential Only, Custom settings, and footer revocation. |
+| **5. E-commerce Subtotal & Deduction** | **PASS** | `purchase.value` and `begin_checkout.value` strictly represent merchandise subtotal excluding shipping. Shipping is passed separately as `shipping: 200`. Zero duplicate purchase dispatches (deduplicated via memory Set + sessionStorage). |
+| **6. Zero Customer PII in GA4** | **PASS** | Free-text subject field removed. Lead tracking uses controlled programmatic slugs only (`inquiry_type: 'order_status' \| 'product_dosage' \| 'wholesale' \| 'general'`). Zero personal names, emails, phone numbers, or delivery addresses are sent. |
+| **7. GitHub Remote Push** | **PASS** | Pushed to `origin/main` ([https://github.com/jamcotech/Tibra.git](https://github.com/jamcotech/Tibra.git)). Remote HEAD confirmed at commit `25afdecadd6b996ec06a8cf4994fe4ae16391b0f`. |
+| **8. Vercel Production Deployment** | **PASS** | Vercel production build automatically triggered and served live. Live HTTP response confirmed (`Server: Vercel`, `X-Vercel-Id: bom1::vbn6c-1795587905725-ba415c6cb670`, `Etag: "3e0c716a2362fcc2e925e2c07b127b05"`). |
+| **9. Live Production Smoke Test** | **PASS** | All 17 canonical routes return `HTTP 200 OK`. Non-WWW `https://tibranaturals.com/` returns `308 Permanent Redirect` to `https://www.tibranaturals.com/`. `robots.txt` returns `200 OK`, `sitemap.xml` returns `200 OK`. |
+| **10. Live GA4 Measurement ID** | **PASS** | Deployed live bundle `/assets/index-CJdsleaU.js` verified to contain `G-9ZZ9VMPDQ2`. |
+| **11. GTM Cloud Workspace Publication** | **NOT TESTED** | Browser subagent verified navigation to `https://tagmanager.google.com/` redirects to `accounts.google.com` (requires interactive Google account authentication by the container owner). Complete tag/trigger specifications provided below. |
+| **12. GA4 Console Stream Setting** | **NOT TESTED** | Direct inspection of GA4 Admin console requires interactive Google account sign-in. Setting recommendation to disable "Page changes based on browser history events" is detailed below. |
 
 ---
 
-## 2. GitHub Push & Production Deployment Verification
+## 2. Six Core Events Standardization (Website &rarr; dataLayer &rarr; GTM &rarr; GA4)
 
-### GitHub Commit History (Pushed to `origin/main`):
+In [`src/services/analyticsService.ts`](file:///d:/E/PureFix/Pure%20Fix%20website%20for%20Chat%20GPT/src/services/analyticsService.ts), duplicate direct `window.gtag('event', ...)` calls were removed for all six GTM-managed events:
+
 ```text
-Commit Hash: e37e82aeaa8964df59e7cdb3c930370af9cff947
-Branch: main
-Author: Jamco Tech
-Date: Wed Nov 25 2026
-Message: fix(gtm): correct ecommerce value calculation, remove free-text PII, and update audit report
-Remote URL: https://github.com/jamcotech/Tibra.git
-Status: Successfully pushed (f2ce637..e37e82a)
+1. page_view        → dataLayer.push({ event: 'page_view', page_path, page_title, page_location })
+2. view_item        → dataLayer.push({ ecommerce: null }); dataLayer.push({ event: 'view_item', ecommerce: {...} })
+3. add_to_cart      → dataLayer.push({ ecommerce: null }); dataLayer.push({ event: 'add_to_cart', ecommerce: {...} })
+4. begin_checkout   → dataLayer.push({ ecommerce: null }); dataLayer.push({ event: 'begin_checkout', ecommerce: {...} })
+5. purchase         → dataLayer.push({ ecommerce: null }); dataLayer.push({ event: 'purchase', ecommerce: {...} })
+6. generate_lead    → dataLayer.push({ event: 'generate_lead', form_id, form_name, inquiry_type, currency: 'PKR' })
 ```
 
-### Live Vercel Production HTTP Response:
+### Direct `gtag('event', ...)` Audit:
+- **Core 6 events:** **0** direct `gtag('event')` dispatches (Prevents double counting in GA4).
+- **Consent calls:** Preserved (`gtag('consent', 'default', ...)` and `gtag('consent', 'update', ...)`).
+- **Engagement clicks:** Preserved (`whatsapp_click` and `contact_click`).
+
+---
+
+## 3. GitHub & Vercel Deployment Verification
+
+### Git Commit Chain on `origin/main`:
+```text
+25afdec fix(analytics): standardize six core events to dataLayer and configure GA4 ID G-9ZZ9VMPDQ2
+435dd36 fix(analytics): remove duplicate direct gtag page_view call and rely on GTM dataLayer
+744e5ad docs(deployment): add final production deployment and verification reports
+e37e82a fix(gtm): correct ecommerce value calculation, remove free-text PII, and update audit report
+```
+
+### Live Vercel Production Headers:
 ```http
 HTTP/1.1 200 OK
 Server: Vercel
-Strict-Transport-Security: max-age=63072000
 Content-Type: text/html; charset=utf-8
 Cache-Control: public, max-age=0, must-revalidate
-Date: Wed, 25 Nov 2026 03:34:08 GMT
-X-Vercel-Id: bom1::wfptl-1795577647730-e5a526ecf39b
+Date: Wed, 25 Nov 2026 06:25:06 GMT
+Etag: "3e0c716a2362fcc2e925e2c07b127b05"
+Last-Modified: Wed, 25 Nov 2026 06:25:06 GMT
+X-Vercel-Id: bom1::vbn6c-1795587905725-ba415c6cb670
 ```
 
-### Non-WWW Canonical 308 Redirect:
-```http
-Request: https://tibranaturals.com/
-Status: HTTP/1.1 308 Permanent Redirect
-Location: https://www.tibranaturals.com/
-Server: Vercel
-X-Vercel-Id: bom1::27hjv-1795577661563-23532b08d2e6
-```
-
----
-
-## 3. Live Production Smoke Test: All 17 Canonical URLs
-
-Every canonical route listed in `public/sitemap.xml` was queried live against `https://www.tibranaturals.com/`:
-
-| Route | Live URL | HTTP Status |
-|---|---|:---:|
-| Root Homepage | `https://www.tibranaturals.com/` | `200 OK` |
-| Product Detail | `https://www.tibranaturals.com/products/pain-relief-oil/` | `200 OK` |
-| Ingredients | `https://www.tibranaturals.com/ingredients/` | `200 OK` |
-| How to Use | `https://www.tibranaturals.com/how-to-use/` | `200 OK` |
-| Our Quality | `https://www.tibranaturals.com/our-quality/` | `200 OK` |
-| About Us | `https://www.tibranaturals.com/about-us/` | `200 OK` |
-| Blog Index | `https://www.tibranaturals.com/blog/` | `200 OK` |
-| Blog: Herbal Massage Oil Guide | `https://www.tibranaturals.com/blog/herbal-massage-oil-guide/` | `200 OK` |
-| Blog: Natural Oils Care | `https://www.tibranaturals.com/blog/natural-oils-and-personal-care/` | `200 OK` |
-| Blog: Herbal Ingredients | `https://www.tibranaturals.com/blog/understanding-herbal-ingredients/` | `200 OK` |
-| Blog: Safe Use | `https://www.tibranaturals.com/blog/safe-use-of-topical-oils/` | `200 OK` |
-| FAQ | `https://www.tibranaturals.com/faq/` | `200 OK` |
-| Contact Us | `https://www.tibranaturals.com/contact-us/` | `200 OK` |
-| Shipping Policy | `https://www.tibranaturals.com/shipping-policy/` | `200 OK` |
-| Return Policy | `https://www.tibranaturals.com/return-policy/` | `200 OK` |
-| Privacy Policy | `https://www.tibranaturals.com/privacy-policy/` | `200 OK` |
-| Terms & Conditions | `https://www.tibranaturals.com/terms-and-conditions/` | `200 OK` |
-| **Robots.txt** | `https://www.tibranaturals.com/robots.txt` | `200 OK` |
-| **XML Sitemap** | `https://www.tibranaturals.com/sitemap.xml` | `200 OK` |
-
----
-
-## 4. Live Production Code Verification
-
-Inspection of the raw HTML delivered by `https://www.tibranaturals.com/` confirms that the following scripts are active in production:
-
+### Live Production JavaScript Bundle:
 ```html
-<!-- Google Consent Mode v2 Defaults (Must execute BEFORE Google Tag Manager) -->
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+<script type="module" crossorigin src="/assets/index-CJdsleaU.js"></script>
+```
+*Verification:* Evaluated `/assets/index-CJdsleaU.js` on `https://www.tibranaturals.com/` &rarr; confirmed string `G-9ZZ9VMPDQ2` is active.
 
-  (function() {
-    try {
-      var stored = localStorage.getItem('tibra_consent_state');
-      if (stored) {
-        var parsed = JSON.parse(stored);
-        ...
-      }
-    } catch(e) {}
+---
 
-    gtag('consent', 'default', {
-      'analytics_storage': analyticsVal,
-      'ad_storage': marketingVal,
-      'ad_user_data': marketingVal,
-      'ad_personalization': marketingVal,
-      'wait_for_update': 500
-    });
-    gtag('js', new Date());
-  })();
-</script>
+## 4. Live Production Smoke Test: All 17 Canonical Routes
 
-<!-- Official Google Tag Manager Container -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});...
-})(window,document,'script','dataLayer','GTM-5Q8BQXJ6');</script>
+All 17 canonical URLs were queried directly on `https://www.tibranaturals.com/`:
 
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5Q8BQXJ6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+```text
+/                                          200 OK
+/products/pain-relief-oil/                 200 OK
+/ingredients/                              200 OK
+/how-to-use/                               200 OK
+/our-quality/                              200 OK
+/about-us/                                 200 OK
+/blog/                                     200 OK
+/blog/herbal-massage-oil-guide/            200 OK
+/blog/natural-oils-and-personal-care/      200 OK
+/blog/understanding-herbal-ingredients/    200 OK
+/blog/safe-use-of-topical-oils/            200 OK
+/faq/                                      200 OK
+/contact-us/                               200 OK
+/shipping-policy/                          200 OK
+/return-policy/                            200 OK
+/privacy-policy/                           200 OK
+/terms-and-conditions/                     200 OK
+https://www.tibranaturals.com/robots.txt   200 OK
+https://www.tibranaturals.com/sitemap.xml  200 OK
+https://tibranaturals.com/ (Non-WWW)       308 Permanent Redirect (-> www)
 ```
 
 ---
 
-## 5. Google Tag Manager Cloud Setup Specification (Status: NOT TESTED - External Cloud Action Required)
+## 5. Google Tag Manager Cloud Specification (`GTM-5Q8BQXJ6`)
 
-Because external Google Tag Manager cloud API credentials are not provisioned in this environment, container configuration must be published via the Google Tag Manager console ([tagmanager.google.com](https://tagmanager.google.com)). Below is the complete, validated configuration guide:
+*Note: The browser subagent confirmed that accessing `https://tagmanager.google.com/` redirects to `accounts.google.com` (no active Google account authenticated). Therefore, container publication must be submitted by the container owner using the exact verified configuration below:*
 
-### Container ID: `GTM-5Q8BQXJ6`
-
-### 1. Google Tag (Base GA4 Configuration):
+### A. Google Analytics Base Tag
 - **Tag Type:** Google tag
-- **Tag ID:** `{{Constant - GA4 Measurement ID}}` (or your real `G-XXXXXXXXXX`)
-- **Trigger:** **`Initialization – All Pages`**
-- **Configuration Parameters:**
-  - `send_page_view`: `false` *(Critical: Eliminates duplicate hits with manual SPA pageviews)*
+- **Tag ID:** `G-9ZZ9VMPDQ2`
+- **Firing Trigger:** `Initialization – All Pages`
+- **Configuration Parameter:** `send_page_view: false`
 
-### 2. GA4 Enhanced Measurement Setting (Inside GA4 Web Stream):
-- Open GA4 Admin &rarr; Data Streams &rarr; Web Stream Details &rarr; Enhanced Measurement Settings.
-- Click the gear icon and **uncheck "Page changes based on browser history events"**.
-- *Reason:* The SPA application fires explicit, deduplicated `page_view` events via `dataLayer` on every route change.
+### B. Required Data Layer Variables (Data Layer Version 2)
+1. `dlv - page_path` &rarr; `page_path`
+2. `dlv - page_title` &rarr; `page_title`
+3. `dlv - page_location` &rarr; `page_location`
+4. `dlv - form_id` &rarr; `form_id`
+5. `dlv - form_name` &rarr; `form_name`
+6. `dlv - inquiry_type` &rarr; `inquiry_type`
 
-### 3. GA4 Custom Event Tags:
-| Tag Name | Tag Type | Trigger | Parameters / Configuration |
+### C. Required GA4 Event Tags
+| Tag Name | Event Name | Trigger | Configuration / Parameters |
 |---|---|---|---|
-| **GA4 - page_view** | GA4 Event | Custom Event: `page_view` | `page_path: {{dlv - page_path}}`<br>`page_title: {{dlv - page_title}}`<br>`page_location: {{dlv - page_location}}` |
-| **GA4 - view_item** | GA4 Event | Custom Event: `view_item` | Send Ecommerce Data: `true` (Data Layer) |
-| **GA4 - add_to_cart** | GA4 Event | Custom Event: `add_to_cart` | Send Ecommerce Data: `true` (Data Layer) |
-| **GA4 - begin_checkout** | GA4 Event | Custom Event: `begin_checkout` | Send Ecommerce Data: `true` (Data Layer) |
-| **GA4 - purchase** | GA4 Event | Custom Event: `purchase` | Send Ecommerce Data: `true` (Data Layer) |
-| **GA4 - generate_lead** | GA4 Event | Custom Event: `generate_lead` | `form_id: {{dlv - form_id}}`<br>`form_name: {{dlv - form_name}}`<br>`inquiry_type: {{dlv - inquiry_type}}`<br>`value: {{dlv - value}}` |
-| **GA4 - whatsapp_click** | GA4 Event | Custom Event: `whatsapp_click` | `event_category: {{dlv - event_category}}`<br>`event_label: {{dlv - event_label}}` |
-| **GA4 - contact_click** | GA4 Event | Custom Event: `contact_click` | `event_category: {{dlv - event_category}}`<br>`event_label: {{dlv - event_label}}` |
+| **GA4 - page_view** | `page_view` | Custom Event: `CE - page_view` | `page_path: {{dlv - page_path}}`<br>`page_title: {{dlv - page_title}}`<br>`page_location: {{dlv - page_location}}` |
+| **GA4 - view_item** | `view_item` | Custom Event: `CE - view_item` | Send Ecommerce Data: `true` (Data Layer) |
+| **GA4 - add_to_cart** | `add_to_cart` | Custom Event: `CE - add_to_cart` | Send Ecommerce Data: `true` (Data Layer) |
+| **GA4 - begin_checkout** | `begin_checkout` | Custom Event: `CE - begin_checkout` | Send Ecommerce Data: `true` (Data Layer) |
+| **GA4 - purchase** | `purchase` | Custom Event: `CE - purchase` | Send Ecommerce Data: `true` (Data Layer) |
+| **GA4 - generate_lead** | `generate_lead` | Custom Event: `CE - generate_lead` | `form_id: {{dlv - form_id}}`<br>`form_name: {{dlv - form_name}}`<br>`inquiry_type: {{dlv - inquiry_type}}` |
 
-### 4. Publishing Recommendation:
-Publish container `GTM-5Q8BQXJ6` with version name:  
-`TIBRA NATURALS – Production GA4 & Ecommerce Tracking`
+### D. Publication Recommendation
+In [Google Tag Manager](https://tagmanager.google.com/), click **Submit** &rarr; **Publish** with Version Name:  
+`TIBRA NATURALS — Final GA4 Ecommerce & Consent Mode v2 Production Tracking`
 
 ---
 
-## 6. Action Items for Project Owner
+## 6. GA4 Web Data Stream Recommendation
 
-1. **Provide Real GA4 Measurement ID in Vercel:**
-   - Go to [Vercel Dashboard](https://vercel.com/) &rarr; Select project **Tibra** &rarr; Settings &rarr; Environment Variables.
-   - Add/Update:
-     - Name: `VITE_GA_MEASUREMENT_ID`
-     - Value: `G-XXXXXXXXXX` (replace with your actual GA4 Measurement ID from your Google Analytics Web Stream).
-     - Environment: Production, Preview, Development.
-   - Redeploy the latest commit in Vercel (or trigger a new build) to bake the real ID into the client bundle.
-2. **Publish GTM Container:**
-   - Log into [Google Tag Manager](https://tagmanager.google.com/) with the container owner account for `GTM-5Q8BQXJ6`.
-   - Ensure the Google tag and 8 custom event tags match Section 5 above.
-   - Click **Submit** &rarr; **Publish**.
+In the Google Analytics 4 console:
+1. Navigate to **Admin** &rarr; **Data Streams** &rarr; select Web Data Stream for `G-9ZZ9VMPDQ2`.
+2. Under **Enhanced measurement**, click the settings gear.
+3. Under **Page views**, expand Advanced Settings and **uncheck "Page changes based on browser history events"**.
+4. *Reason:* The SPA application fires explicit, deduplicated `page_view` events through the dataLayer on every route transition. Disabling browser-history page views guarantees that no secondary automated pageview is triggered.
