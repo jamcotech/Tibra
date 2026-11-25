@@ -76,7 +76,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
 
     analyticsService.trackPurchase(
       order.orderNumber,
-      order.total,
+      order.subtotal,
       order.items.map(i => ({
         item_id: i.productId,
         item_name: i.productName,

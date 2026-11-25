@@ -36,7 +36,7 @@ export const CheckoutPage: React.FC = () => {
           price: i.product.price,
           quantity: i.quantity,
         })),
-        total
+        cartSubtotal
       );
     }
   }, []);
@@ -82,7 +82,7 @@ export const CheckoutPage: React.FC = () => {
 
       analyticsService.trackPurchase(
         order.orderNumber,
-        total,
+        order.subtotal,
         order.items.map(i => ({
           item_id: i.productId,
           item_name: i.productName,

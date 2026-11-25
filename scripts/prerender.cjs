@@ -155,7 +155,7 @@ const routes = [
   }
 ];
 
-console.log(`Generating pre-rendered static HTML routes for ${routes.length} paths...`);
+console.log(`Generating pre-rendered static HTML routes for ${routes.length} deep paths (plus root dist/index.html = 17 total sitemap canonical URLs)...`);
 
 routes.forEach((route) => {
   const canonicalUrl = `https://www.tibranaturals.com${route.path}`;
@@ -226,4 +226,4 @@ routes.forEach((route) => {
   console.log(`  ✓ Prerendered: ${route.path} -> ${targetFile}`);
 });
 
-console.log('Static route prerendering completed successfully!');
+console.log('Static route prerendering completed successfully! (Total 17 indexable pages: 1 root + 16 deep routes)');

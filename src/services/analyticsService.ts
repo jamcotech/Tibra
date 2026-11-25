@@ -30,8 +30,9 @@ export interface EcommerceItem {
 }
 
 export interface ContactFormData {
+  form_id: string;
   form_name: string;
-  subject?: string;
+  inquiry_type?: string; // Controlled fixed slug only (never free-text)
 }
 
 export const GTM_CONTAINER_ID = 'GTM-5Q8BQXJ6';
@@ -229,13 +230,17 @@ class AnalyticsService {
 
   /**
    * Tracks checkout initialization.
+   * GA4 event value must strictly represent the item subtotal, excluding shipping.
    */
-  trackBeginCheckout(items: EcommerceItem[], totalValue: number): void {
+  trackBeginCheckout(items: EcommerceItem[], itemSubtotal?: number): void {
     if (typeof window === 'undefined') return;
+
+    const calculatedValue = items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    const subtotalValue = typeof itemSubtotal === 'number' && itemSubtotal > 0 ? itemSubtotal : calculatedValue;
 
     const ecommerceData = {
       currency: 'PKR',
-      value: totalValue,
+      value: subtotalValue,
       items: items.map((i) => ({
         item_id: i.item_id,
         item_name: i.item_name,
@@ -261,8 +266,9 @@ class AnalyticsService {
 
   /**
    * Tracks completed purchases with transaction deduplication.
+   * GA4 event value must equal the sum of item prices * quantity, EXCLUDING shipping.
    */
-  trackPurchase(orderNumber: string, total: number, items: EcommerceItem[], shipping = 200): void {
+  trackPurchase(orderNumber: string, itemSubtotal: number, items: EcommerceItem[], shipping = 200): void {
     if (typeof window === 'undefined' || !orderNumber) return;
 
     // Check memory cache
@@ -283,10 +289,13 @@ class AnalyticsService {
 
     this.trackedOrders.add(orderNumber);
 
+    const calculatedValue = items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    const finalItemSubtotal = typeof itemSubtotal === 'number' && itemSubtotal > 0 ? itemSubtotal : calculatedValue;
+
     const ecommerceData = {
       transaction_id: orderNumber,
       currency: 'PKR',
-      value: total,
+      value: finalItemSubtotal, // Strictly item subtotal, excluding shipping
       shipping,
       items: items.map((i) => ({
         item_id: i.item_id,
@@ -313,15 +322,16 @@ class AnalyticsService {
 
   /**
    * Tracks contact form submission as a conversion lead.
-   * Excludes any customer PII.
+   * Uses fixed controlled identifiers only; strictly excludes free-text and customer PII.
    */
   trackContactSubmit(formData: ContactFormData): void {
     if (typeof window === 'undefined') return;
 
     const leadData = {
       currency: 'PKR',
+      form_id: formData.form_id || 'contact_form',
       form_name: formData.form_name || 'contact_us',
-      subject: formData.subject || 'General Inquiry',
+      inquiry_type: formData.inquiry_type || 'general',
     };
 
     // GTM dataLayer push
