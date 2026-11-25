@@ -1,15 +1,16 @@
 /**
- * TIBRA NATURALS – Google Analytics 4 (GA4) & Conversion Tracking Service
+ * TIBRA NATURALS – Google Tag Manager (GTM) & Google Analytics 4 (GA4) Service
  * 
- * Standardized, Privacy-Compliant E-Commerce Event Dispatcher for GA4.
- * Uses VITE_GA_MEASUREMENT_ID environment variable (e.g. G-XXXXXXXXXX).
+ * Container ID: GTM-5Q8BQXJ6
+ * Measurement ID: VITE_GA_MEASUREMENT_ID (e.g. G-XXXXXXXXXX)
  * 
  * Features:
- * - Initializes dynamically ONLY when a valid non-placeholder Measurement ID exists.
- * - Prevents duplicate script injection, duplicate page_view events, and duplicate purchase events.
- * - Google Consent Mode v2 default configuration.
- * - Strictly strips all Customer PII (no names, phone numbers, emails, or delivery addresses).
- * - Safe no-op execution when running in development or when Measurement ID is unset.
+ * - Dual compatibility: Pushes structured events to GTM `dataLayer` and dispatches via `gtag`.
+ * - Strictly distinguishes GTM Container ID (GTM-XXXXXXX) from GA4 Measurement ID (G-XXXXXXXXXX).
+ * - Avoids duplicate tracking scripts: GTM container is loaded once in <head>; gtag helper routes to dataLayer.
+ * - Prevents duplicate SPA page_view and purchase events.
+ * - Supports Google Consent Mode v2.
+ * - Zero PII transmission.
  */
 
 declare global {
@@ -33,6 +34,8 @@ export interface ContactFormData {
   subject?: string;
 }
 
+export const GTM_CONTAINER_ID = 'GTM-5Q8BQXJ6';
+
 class AnalyticsService {
   private initialized = false;
   private lastTrackedPath: string | null = null;
@@ -40,7 +43,8 @@ class AnalyticsService {
   private trackedOrders = new Set<string>();
 
   /**
-   * Retrieves the Measurement ID from Vite environment variables.
+   * Retrieves the GA4 Measurement ID from Vite environment variables.
+   * Note: This is separate and distinct from the GTM Container ID.
    */
   getMeasurementId(): string | undefined {
     const rawId = typeof import.meta !== 'undefined' && import.meta.env?.VITE_GA_MEASUREMENT_ID;
@@ -48,8 +52,8 @@ class AnalyticsService {
   }
 
   /**
-   * Validates if a Measurement ID conforms to the GA4 format (G-XXXXXXXXXX)
-   * and is not an unconfigured placeholder.
+   * Validates if a string conforms to the GA4 Measurement ID format (G-XXXXXXXXXX).
+   * Explicitly rejects GTM Container IDs (GTM-XXXXXXX) and placeholder values.
    */
   isValidMeasurementId(id?: string): boolean {
     if (!id) return false;
@@ -57,33 +61,28 @@ class AnalyticsService {
     if (cleanId === 'G-XXXXXXXXXX' || cleanId === 'G-XXXXXXXX' || cleanId === '') {
       return false;
     }
+    // Must start with 'G-' and NOT 'GTM-'
+    if (cleanId.startsWith('GTM-')) {
+      return false;
+    }
     return /^G-[A-Z0-9]+$/i.test(cleanId);
   }
 
   /**
-   * Initializes GA4 gtag.js script and sets up base configuration.
+   * Initializes analytics configuration and Consent Mode v2.
+   * GTM container script is embedded in index.html.
    */
   init(): void {
     if (typeof window === 'undefined') return;
     if (this.initialized) return;
 
-    const measurementId = this.getMeasurementId();
-
-    // Prepare dataLayer and fallback gtag
     window.dataLayer = window.dataLayer || [];
+
+    // Ensure gtag function exists and forwards arguments to dataLayer
     if (!window.gtag) {
       window.gtag = function () {
         window.dataLayer.push(arguments);
       };
-    }
-
-    if (!this.isValidMeasurementId(measurementId)) {
-      if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
-        console.info(
-          `[Analytics] GA4 tracking disabled: Measurement ID is unset or placeholder ("${measurementId || 'undefined'}"). Set VITE_GA_MEASUREMENT_ID in your environment to enable live tracking.`
-        );
-      }
-      return;
     }
 
     // Set Google Consent Mode v2 defaults
@@ -94,37 +93,36 @@ class AnalyticsService {
       ad_personalization: 'denied',
     });
 
-    window.gtag('js', new Date());
+    const measurementId = this.getMeasurementId();
 
-    // Configure GA4 Measurement ID with manual page_view handling
-    window.gtag('config', measurementId!, {
-      send_page_view: false, // Managed explicitly per SPA route transition
-      currency: 'PKR',
-      anonymize_ip: true,
-    });
+    if (this.isValidMeasurementId(measurementId)) {
+      // If a valid GA4 Measurement ID is provided, configure it via gtag without auto page_view
+      window.gtag('config', measurementId!, {
+        send_page_view: false, // Managed manually per SPA route transition
+        currency: 'PKR',
+        anonymize_ip: true,
+      });
 
-    // Inject gtag.js script if not already present
-    if (!document.getElementById('ga4-gtag-script')) {
-      const script = document.createElement('script');
-      script.id = 'ga4-gtag-script';
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId!)}`;
-      document.head.appendChild(script);
+      if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+        console.info(`[Analytics] GA4 configured with Measurement ID: ${measurementId} (via GTM container ${GTM_CONTAINER_ID})`);
+      }
+    } else {
+      if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+        console.info(`[Analytics] GTM container ${GTM_CONTAINER_ID} active. GA4 direct config bypassed (Measurement ID unset or placeholder).`);
+      }
     }
 
     this.initialized = true;
-    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
-      console.info(`[Analytics] GA4 initialized successfully with Measurement ID: ${measurementId}`);
-    }
   }
 
   /**
    * Tracks SPA route page views with deduplication.
+   * Pushes to dataLayer and triggers gtag page_view event.
    */
   trackPageView(path: string, title?: string): void {
     if (typeof window === 'undefined') return;
 
-    // Deduplicate rapid consecutive hits for the same path
+    // Deduplicate rapid consecutive hits for the identical path
     const now = Date.now();
     if (this.lastTrackedPath === path && now - this.lastTrackedTime < 600) {
       return;
@@ -134,6 +132,15 @@ class AnalyticsService {
 
     const pageTitle = title || document.title;
     const pageLocation = window.location.href;
+
+    // Push standard GTM page_view event to dataLayer
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'page_view',
+      page_path: path,
+      page_title: pageTitle,
+      page_location: pageLocation,
+    });
 
     if (window.gtag) {
       window.gtag('event', 'page_view', {
@@ -145,12 +152,12 @@ class AnalyticsService {
   }
 
   /**
-   * Tracks viewing an individual product detail or showcase.
+   * Tracks viewing an individual product detail.
    */
   trackViewItem(item: EcommerceItem): void {
-    if (typeof window === 'undefined' || !window.gtag) return;
+    if (typeof window === 'undefined') return;
 
-    window.gtag('event', 'view_item', {
+    const ecommerceData = {
       currency: 'PKR',
       value: item.price * (item.quantity || 1),
       items: [
@@ -163,16 +170,28 @@ class AnalyticsService {
           quantity: item.quantity || 1,
         },
       ],
+    };
+
+    // GTM Enhanced Ecommerce push
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object
+    window.dataLayer.push({
+      event: 'view_item',
+      ecommerce: ecommerceData,
     });
+
+    if (window.gtag) {
+      window.gtag('event', 'view_item', ecommerceData);
+    }
   }
 
   /**
    * Tracks adding an item to the shopping cart.
    */
   trackAddToCart(item: EcommerceItem): void {
-    if (typeof window === 'undefined' || !window.gtag) return;
+    if (typeof window === 'undefined') return;
 
-    window.gtag('event', 'add_to_cart', {
+    const ecommerceData = {
       currency: 'PKR',
       value: item.price * (item.quantity || 1),
       items: [
@@ -185,16 +204,28 @@ class AnalyticsService {
           quantity: item.quantity || 1,
         },
       ],
+    };
+
+    // GTM Enhanced Ecommerce push
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: 'add_to_cart',
+      ecommerce: ecommerceData,
     });
+
+    if (window.gtag) {
+      window.gtag('event', 'add_to_cart', ecommerceData);
+    }
   }
 
   /**
    * Tracks checkout initialization.
    */
   trackBeginCheckout(items: EcommerceItem[], totalValue: number): void {
-    if (typeof window === 'undefined' || !window.gtag) return;
+    if (typeof window === 'undefined') return;
 
-    window.gtag('event', 'begin_checkout', {
+    const ecommerceData = {
       currency: 'PKR',
       value: totalValue,
       items: items.map((i) => ({
@@ -205,36 +236,46 @@ class AnalyticsService {
         price: i.price,
         quantity: i.quantity,
       })),
+    };
+
+    // GTM Enhanced Ecommerce push
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: 'begin_checkout',
+      ecommerce: ecommerceData,
     });
+
+    if (window.gtag) {
+      window.gtag('event', 'begin_checkout', ecommerceData);
+    }
   }
 
   /**
    * Tracks completed purchases with transaction deduplication.
-   * Guarantees verified transaction ID and strictly excludes PII.
    */
   trackPurchase(orderNumber: string, total: number, items: EcommerceItem[], shipping = 200): void {
-    if (typeof window === 'undefined' || !window.gtag) return;
-    if (!orderNumber) return;
+    if (typeof window === 'undefined' || !orderNumber) return;
 
     // Check memory cache
     if (this.trackedOrders.has(orderNumber)) {
       return;
     }
 
-    // Check session storage to prevent duplicate events on page reload
+    // Check session storage to prevent duplicate events on reload
     try {
-      const storageKey = `tibra_ga_order_${orderNumber}`;
+      const storageKey = `tibra_gtm_order_${orderNumber}`;
       if (sessionStorage.getItem(storageKey)) {
         return;
       }
       sessionStorage.setItem(storageKey, '1');
     } catch {
-      // Fallback if sessionStorage is disabled or restricted
+      // Fallback if sessionStorage is restricted
     }
 
     this.trackedOrders.add(orderNumber);
 
-    window.gtag('event', 'purchase', {
+    const ecommerceData = {
       transaction_id: orderNumber,
       currency: 'PKR',
       value: total,
@@ -247,39 +288,74 @@ class AnalyticsService {
         price: i.price,
         quantity: i.quantity,
       })),
+    };
+
+    // GTM Enhanced Ecommerce purchase push
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: 'purchase',
+      ecommerce: ecommerceData,
     });
+
+    if (window.gtag) {
+      window.gtag('event', 'purchase', ecommerceData);
+    }
   }
 
   /**
    * Tracks contact form submission as a conversion lead.
-   * Strictly excludes any customer PII (no name, email, phone, or raw message).
+   * Excludes any customer PII.
    */
   trackContactSubmit(formData: ContactFormData): void {
-    if (typeof window === 'undefined' || !window.gtag) return;
+    if (typeof window === 'undefined') return;
 
-    window.gtag('event', 'generate_lead', {
+    const leadData = {
       currency: 'PKR',
       form_name: formData.form_name || 'contact_us',
       subject: formData.subject || 'General Inquiry',
+    };
+
+    // GTM dataLayer push
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'generate_lead',
+      ...leadData,
+    });
+    window.dataLayer.push({
+      event: 'contact_form_submit',
+      event_category: 'engagement',
+      ...leadData,
     });
 
-    window.gtag('event', 'contact_form_submit', {
-      event_category: 'engagement',
-      form_name: formData.form_name || 'contact_us',
-      subject: formData.subject || 'General Inquiry',
-    });
+    if (window.gtag) {
+      window.gtag('event', 'generate_lead', leadData);
+      window.gtag('event', 'contact_form_submit', {
+        event_category: 'engagement',
+        ...leadData,
+      });
+    }
   }
 
   /**
-   * Tracks WhatsApp order reservation or inquiry clicks.
+   * Tracks WhatsApp click events.
    */
   trackWhatsAppClick(context: string): void {
-    if (typeof window === 'undefined' || !window.gtag) return;
+    if (typeof window === 'undefined') return;
 
-    window.gtag('event', 'whatsapp_click', {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'whatsapp_click',
       event_category: 'engagement',
       event_label: context,
     });
+
+    if (window.gtag) {
+      window.gtag('event', 'whatsapp_click', {
+        event_category: 'engagement',
+        event_label: context,
+      });
+    }
   }
 }
 
