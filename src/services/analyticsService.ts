@@ -48,8 +48,8 @@ class AnalyticsService {
    * Note: This is separate and distinct from the GTM Container ID.
    */
   getMeasurementId(): string | undefined {
-    const rawId = typeof import.meta !== 'undefined' && import.meta.env?.VITE_GA_MEASUREMENT_ID;
-    return typeof rawId === 'string' ? rawId.trim() : undefined;
+    const rawId = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GA_MEASUREMENT_ID) || 'G-9ZZ9VMPDQ2';
+    return typeof rawId === 'string' ? rawId.trim() : 'G-9ZZ9VMPDQ2';
   }
 
   /**
@@ -174,17 +174,13 @@ class AnalyticsService {
       ],
     };
 
-    // GTM Enhanced Ecommerce push
+    // GTM Enhanced Ecommerce push (captured by GTM Custom Event trigger 'CE - view_item')
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object
     window.dataLayer.push({
       event: 'view_item',
       ecommerce: ecommerceData,
     });
-
-    if (window.gtag) {
-      window.gtag('event', 'view_item', ecommerceData);
-    }
   }
 
   /**
@@ -208,17 +204,13 @@ class AnalyticsService {
       ],
     };
 
-    // GTM Enhanced Ecommerce push
+    // GTM Enhanced Ecommerce push (captured by GTM Custom Event trigger 'CE - add_to_cart')
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
     window.dataLayer.push({
       event: 'add_to_cart',
       ecommerce: ecommerceData,
     });
-
-    if (window.gtag) {
-      window.gtag('event', 'add_to_cart', ecommerceData);
-    }
   }
 
   /**
@@ -244,17 +236,13 @@ class AnalyticsService {
       })),
     };
 
-    // GTM Enhanced Ecommerce push
+    // GTM Enhanced Ecommerce push (captured by GTM Custom Event trigger 'CE - begin_checkout')
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
     window.dataLayer.push({
       event: 'begin_checkout',
       ecommerce: ecommerceData,
     });
-
-    if (window.gtag) {
-      window.gtag('event', 'begin_checkout', ecommerceData);
-    }
   }
 
   /**
@@ -300,17 +288,13 @@ class AnalyticsService {
       })),
     };
 
-    // GTM Enhanced Ecommerce purchase push
+    // GTM Enhanced Ecommerce purchase push (captured by GTM Custom Event trigger 'CE - purchase')
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
     window.dataLayer.push({
       event: 'purchase',
       ecommerce: ecommerceData,
     });
-
-    if (window.gtag) {
-      window.gtag('event', 'purchase', ecommerceData);
-    }
   }
 
   /**
@@ -327,25 +311,12 @@ class AnalyticsService {
       inquiry_type: formData.inquiry_type || 'general',
     };
 
-    // GTM dataLayer push
+    // Standard GTM lead generation push (captured by GTM Custom Event trigger 'CE - generate_lead')
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'generate_lead',
       ...leadData,
     });
-    window.dataLayer.push({
-      event: 'contact_form_submit',
-      event_category: 'engagement',
-      ...leadData,
-    });
-
-    if (window.gtag) {
-      window.gtag('event', 'generate_lead', leadData);
-      window.gtag('event', 'contact_form_submit', {
-        event_category: 'engagement',
-        ...leadData,
-      });
-    }
   }
 
   /**
