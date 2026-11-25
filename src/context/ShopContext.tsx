@@ -165,6 +165,9 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     refreshOrders();
     refreshInventory();
     analyticsService.init();
+    if (typeof window !== 'undefined') {
+      analyticsService.trackPageView(window.location.pathname);
+    }
 
     const handleCartUpdate = () => syncCart();
     const handleProductsUpdate = () => {
@@ -201,6 +204,7 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const resolved = parsePathnameToView(path);
         setCurrentView(resolved.view);
         setActiveBlogSlug(resolved.blogSlug);
+        analyticsService.trackPageView(path);
       }
     };
 

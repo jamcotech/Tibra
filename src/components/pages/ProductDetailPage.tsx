@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck,
   Droplets,
@@ -12,6 +12,7 @@ import { useShop } from '../../context/ShopContext';
 import { storeService } from '../../services/storeService';
 import BRAND_CONFIG from '../../config/brandConfig';
 import { SeoHead } from '../SeoHead';
+import { analyticsService } from '../../services/analyticsService';
 
 interface ProductDetailPageProps {
   onOpenOrderModal?: () => void;
@@ -43,6 +44,17 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
   const currentRegular = selectedQty * product.originalPrice;
   const currentDiscount = currentRegular - currentPrice;
   const currentPercent = Math.round((currentDiscount / currentRegular) * 100);
+
+  useEffect(() => {
+    analyticsService.trackViewItem({
+      item_id: storeProd.id,
+      item_name: storeProd.name,
+      price: storeProd.price,
+      quantity: 1,
+      item_brand: BRAND_CONFIG.brandName,
+      item_category: 'Herbal Massage Oils',
+    });
+  }, [storeProd.id]);
 
   const productSchema = {
     '@context': 'https://schema.org/',

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, MessageCircle, Clock, ChevronRight, Send } from 'lucide-react';
 import { SeoHead } from '../SeoHead';
 import BRAND_CONFIG from '../../config/brandConfig';
+import { analyticsService } from '../../services/analyticsService';
 
 export const ContactUsPage: React.FC = () => {
+  const [subject, setSubject] = useState('Order Status / Courier Tracking');
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -104,6 +107,10 @@ export const ContactUsPage: React.FC = () => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                analyticsService.trackContactSubmit({
+                  form_name: 'contact_us',
+                  subject,
+                });
                 alert('Thank you for reaching out! A TIBRA NATURALS representative will contact you shortly.');
               }}
               className="space-y-4 text-xs"
@@ -141,7 +148,11 @@ export const ContactUsPage: React.FC = () => {
 
               <div>
                 <label className="block font-semibold text-botanical-900 mb-1">Subject</label>
-                <select className="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 focus:border-[#748C48] outline-none bg-[#FAF8F5]">
+                <select
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 focus:border-[#748C48] outline-none bg-[#FAF8F5]"
+                >
                   <option>Order Status / Courier Tracking</option>
                   <option>Product Dosage / Application Advice</option>
                   <option>Wholesale &amp; Retailer Inquiry</option>

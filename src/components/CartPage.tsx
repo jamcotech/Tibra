@@ -4,7 +4,7 @@ import { useShop } from '../context/ShopContext';
 import { calculateItemPrice } from '../services/storeService';
 
 export const CartPage: React.FC = () => {
-  const { cart, cartSubtotal, cartDiscount, updateQuantity, removeFromCart, setCurrentView, clearCart, addToCart } = useShop();
+  const { cart, cartSubtotal, cartDiscount, updateQuantity, removeFromCart, setCurrentView, clearCart, addToCart, navigate } = useShop();
 
   const shippingFee = cart.length === 0 ? 0 : 200;
   const grandTotal = cartSubtotal + shippingFee;
@@ -262,7 +262,7 @@ export const CartPage: React.FC = () => {
               </div>
 
               <button
-                onClick={() => setCurrentView('checkout')}
+                onClick={() => navigate('checkout')}
                 className="w-full flex items-center justify-center gap-2.5 py-4 rounded-full text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white transition-all shadow-lg shadow-[#748C48]/30 hover:shadow-xl border border-[#62773C] group cursor-pointer"
               >
                 <span>Proceed to Checkout</span>

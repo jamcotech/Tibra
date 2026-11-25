@@ -12,7 +12,7 @@ export const CartDrawer: React.FC = () => {
     updateQuantity,
     removeFromCart,
     addToCart,
-    setCurrentView
+    navigate
   } = useShop();
 
   if (!isCartDrawerOpen) return null;
@@ -249,7 +249,7 @@ export const CartDrawer: React.FC = () => {
                 <button
                   onClick={() => {
                     setIsCartDrawerOpen(false);
-                    setCurrentView('checkout');
+                    navigate('checkout');
                   }}
                   className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#748C48] hover:bg-[#5F7339] text-white transition-all shadow-md shadow-[#748C48]/30 hover:shadow-xl border border-[#62773C] group cursor-pointer"
                 >
@@ -260,7 +260,7 @@ export const CartDrawer: React.FC = () => {
                 <button
                   onClick={() => {
                     setIsCartDrawerOpen(false);
-                    setCurrentView('cart');
+                    navigate('cart');
                   }}
                   className="w-full text-center py-2 text-xs font-semibold text-botanical-700 hover:text-botanical-950"
                 >

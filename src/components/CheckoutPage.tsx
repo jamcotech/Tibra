@@ -88,7 +88,8 @@ export const CheckoutPage: React.FC = () => {
           item_name: i.productName,
           price: i.price,
           quantity: i.quantity,
-        }))
+        })),
+        order.shippingFee
       );
 
       confetti({

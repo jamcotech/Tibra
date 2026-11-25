@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { storeService, calculateItemPrice } from '../services/storeService';
+import { analyticsService } from '../services/analyticsService';
 import type { Order } from '../types/ecommerce';
 
 interface OrderInquiryModalProps {
@@ -72,6 +73,18 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
 
     setCreatedOrder(order);
     setSubmitted(true);
+
+    analyticsService.trackPurchase(
+      order.orderNumber,
+      order.total,
+      order.items.map(i => ({
+        item_id: i.productId,
+        item_name: i.productName,
+        price: i.price,
+        quantity: i.quantity,
+      })),
+      order.shippingFee
+    );
 
     try {
       confetti({
