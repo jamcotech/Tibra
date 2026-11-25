@@ -85,13 +85,21 @@ class AnalyticsService {
       };
     }
 
-    // Set Google Consent Mode v2 defaults
-    window.gtag('consent', 'default', {
-      analytics_storage: 'granted',
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-    });
+    // Sync consent state from storage if available, defaulting to denied for GDPR / privacy compliance
+    try {
+      const stored = localStorage.getItem('tibra_consent_state');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        window.gtag('consent', 'update', {
+          analytics_storage: parsed.analytics ? 'granted' : 'denied',
+          ad_storage: parsed.marketing ? 'granted' : 'denied',
+          ad_user_data: parsed.marketing ? 'granted' : 'denied',
+          ad_personalization: parsed.marketing ? 'granted' : 'denied',
+        });
+      }
+    } catch {
+      // Fallback
+    }
 
     const measurementId = this.getMeasurementId();
 
@@ -354,6 +362,27 @@ class AnalyticsService {
       window.gtag('event', 'whatsapp_click', {
         event_category: 'engagement',
         event_label: context,
+      });
+    }
+  }
+
+  /**
+   * Tracks contact channel clicks (phone, email, inquiry).
+   */
+  trackContactClick(channel: 'phone' | 'email' | 'form'): void {
+    if (typeof window === 'undefined') return;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'contact_click',
+      event_category: 'engagement',
+      event_label: channel,
+    });
+
+    if (window.gtag) {
+      window.gtag('event', 'contact_click', {
+        event_category: 'engagement',
+        event_label: channel,
       });
     }
   }

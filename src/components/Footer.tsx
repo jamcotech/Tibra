@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck, ArrowUp } from 'lucide-react';
+import { analyticsService } from '../services/analyticsService';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
@@ -73,8 +74,26 @@ export const Footer: React.FC = () => {
             </p>
             <div className="p-3 rounded-xl bg-black/15 border border-white/20 text-[11px] text-white/90 space-y-1">
               <p><strong>Official Product:</strong> 30 ML Amber Glass</p>
-              <p><strong>Email:</strong> orders@tibranaturals.com</p>
-              <p><strong>Support:</strong> +92 300 1234567</p>
+              <p>
+                <strong>Email:</strong>{' '}
+                <a
+                  href="mailto:orders@tibranaturals.com"
+                  onClick={() => analyticsService.trackContactClick('email')}
+                  className="hover:underline hover:text-white"
+                >
+                  orders@tibranaturals.com
+                </a>
+              </p>
+              <p>
+                <strong>Support:</strong>{' '}
+                <a
+                  href="tel:+923001234567"
+                  onClick={() => analyticsService.trackContactClick('phone')}
+                  className="hover:underline hover:text-white"
+                >
+                  +92 300 1234567
+                </a>
+              </p>
             </div>
           </div>
 
@@ -96,6 +115,13 @@ export const Footer: React.FC = () => {
               <a href="/privacy-policy/" className="hover:text-white transition-colors">Privacy</a>
               <a href="/return-policy/" className="hover:text-white transition-colors">Returns</a>
               <a href="/terms-and-conditions/" className="hover:text-white transition-colors">Terms</a>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('tibra_open_cookie_preferences'))}
+                className="hover:text-white transition-colors underline cursor-pointer"
+              >
+                Cookie Preferences
+              </button>
             </div>
           </div>
 

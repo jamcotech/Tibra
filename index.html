@@ -2,17 +2,43 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
+    <!-- Google Consent Mode v2 Defaults (Must execute BEFORE Google Tag Manager) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      // Check for user-persisted consent in localStorage
+      (function() {
+        var analyticsVal = 'denied';
+        var marketingVal = 'denied';
+        try {
+          var stored = localStorage.getItem('tibra_consent_state');
+          if (stored) {
+            var parsed = JSON.parse(stored);
+            if (parsed.analytics) analyticsVal = 'granted';
+            if (parsed.marketing) marketingVal = 'granted';
+          }
+        } catch (e) {}
+
+        // Google Consent Mode v2 key parameters (denied by default until user consents)
+        gtag('consent', 'default', {
+          'analytics_storage': analyticsVal,
+          'ad_storage': marketingVal,
+          'ad_user_data': marketingVal,
+          'ad_personalization': marketingVal,
+          'wait_for_update': 500
+        });
+
+        gtag('js', new Date());
+      })();
+    </script>
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-5Q8BQXJ6');</script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    </script>
     <!-- End Google Tag Manager -->
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

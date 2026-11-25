@@ -13,6 +13,7 @@ import { FinalCtaSection } from './components/FinalCtaSection';
 import { Footer } from './components/Footer';
 import { FloatingBottomBar } from './components/FloatingBottomBar';
 import { OrderInquiryModal } from './components/OrderInquiryModal';
+import { CookieConsentBanner } from './components/CookieConsentBanner';
 import { CartDrawer } from './components/CartDrawer';
 import { CartPage } from './components/CartPage';
 import { CheckoutPage } from './components/CheckoutPage';
@@ -173,6 +174,9 @@ function ShopAppContent() {
         isOpen={isOrderModalOpen}
         onClose={() => setIsOrderModalOpen(false)}
       />
+
+      {/* Privacy-Compliant Cookie Consent Mode v2 Banner */}
+      <CookieConsentBanner />
     </div>
   );
 }

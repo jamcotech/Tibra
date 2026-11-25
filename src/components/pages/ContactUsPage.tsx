@@ -61,6 +61,7 @@ export const ContactUsPage: React.FC = () => {
                 href={`https://wa.me/${BRAND_CONFIG.whatsappNumber.replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => analyticsService.trackWhatsAppClick('contact_page_whatsapp')}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#1EBE5D] transition-colors"
               >
                 <span>Chat on WhatsApp ({BRAND_CONFIG.whatsappDisplay})</span>
@@ -77,6 +78,7 @@ export const ContactUsPage: React.FC = () => {
               </p>
               <a
                 href={`mailto:${BRAND_CONFIG.supportEmail}`}
+                onClick={() => analyticsService.trackContactClick('email')}
                 className="text-xs font-mono font-bold text-[#748C48] hover:underline block"
               >
                 {BRAND_CONFIG.supportEmail}
