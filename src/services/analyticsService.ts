@@ -126,7 +126,8 @@ class AnalyticsService {
 
   /**
    * Tracks SPA route page views with deduplication.
-   * Pushes to dataLayer and triggers gtag page_view event.
+   * Pushes to dataLayer for the GTM GA4 page_view tag ('CE - page_view' trigger).
+   * Note: Direct gtag page_view event dispatch is omitted to prevent duplicate hits.
    */
   trackPageView(path: string, title?: string): void {
     if (typeof window === 'undefined') return;
@@ -142,7 +143,7 @@ class AnalyticsService {
     const pageTitle = title || document.title;
     const pageLocation = window.location.href;
 
-    // Push standard GTM page_view event to dataLayer
+    // Push standard GTM page_view event to dataLayer (captured by GTM Custom Event trigger)
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'page_view',
@@ -150,14 +151,6 @@ class AnalyticsService {
       page_title: pageTitle,
       page_location: pageLocation,
     });
-
-    if (window.gtag) {
-      window.gtag('event', 'page_view', {
-        page_path: path,
-        page_title: pageTitle,
-        page_location: pageLocation,
-      });
-    }
   }
 
   /**
