@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { useShop } from '../context/ShopContext';
 import { storeService, calculateItemPrice } from '../services/storeService';
 import analyticsService from '../services/analyticsService';
+import metaPixelService from '../services/metaPixelService';
 
 export const CheckoutPage: React.FC = () => {
   const { cart, cartSubtotal, cartDiscount, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart, addToCart } = useShop();
@@ -33,6 +34,15 @@ export const CheckoutPage: React.FC = () => {
         cart.map(i => ({
           item_id: i.product.id,
           item_name: i.product.name,
+          price: i.product.price,
+          quantity: i.quantity,
+        })),
+        cartSubtotal
+      );
+      metaPixelService.trackInitiateCheckout(
+        cart.map(i => ({
+          id: i.product.id,
+          name: i.product.name,
           price: i.product.price,
           quantity: i.quantity,
         })),
@@ -90,6 +100,17 @@ export const CheckoutPage: React.FC = () => {
           quantity: i.quantity,
         })),
         order.shippingFee
+      );
+
+      metaPixelService.trackPurchase(
+        order.orderNumber,
+        order.items.map(i => ({
+          id: i.productId,
+          name: i.productName,
+          price: i.price,
+          quantity: i.quantity,
+        })),
+        order.subtotal
       );
 
       confetti({

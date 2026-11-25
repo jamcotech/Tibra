@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Cookie, Settings, Check, X } from 'lucide-react';
+import { metaPixelService } from '../services/metaPixelService';
 
 export interface ConsentPreferences {
   necessary: boolean;
@@ -83,6 +84,13 @@ export const CookieConsentBanner: React.FC = () => {
         consent_analytics: analytics,
         consent_marketing: marketing,
       });
+    }
+
+    // Update Meta Pixel consent state
+    if (marketing) {
+      metaPixelService.grantConsent();
+    } else {
+      metaPixelService.revokeConsent();
     }
 
     setAnalyticsConsent(analytics);
@@ -178,7 +186,7 @@ export const CookieConsentBanner: React.FC = () => {
               <div className="pr-4">
                 <span className="font-bold block text-sm text-[#252E15]">Marketing &amp; Personalization</span>
                 <span className="text-[11px] text-[#252E15]/70">
-                  Enables personalized wellness guidance and relevant promotion measurement.
+                  Enables marketing attribution and campaign measurement (e.g. Meta Pixel) without transmitting sensitive health information.
                 </span>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0">

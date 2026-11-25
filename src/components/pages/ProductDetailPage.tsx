@@ -13,6 +13,7 @@ import { storeService } from '../../services/storeService';
 import BRAND_CONFIG from '../../config/brandConfig';
 import { SeoHead } from '../SeoHead';
 import { analyticsService } from '../../services/analyticsService';
+import { metaPixelService } from '../../services/metaPixelService';
 
 interface ProductDetailPageProps {
   onOpenOrderModal?: () => void;
@@ -53,6 +54,11 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
       quantity: 1,
       item_brand: BRAND_CONFIG.brandName,
       item_category: 'Herbal Massage Oils',
+    });
+    metaPixelService.trackViewContent({
+      id: storeProd.id,
+      name: storeProd.name,
+      price: storeProd.price,
     });
   }, [storeProd.id]);
 

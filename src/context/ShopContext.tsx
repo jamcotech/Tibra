@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 import type { CartItem, Product, Order, StoreInventory } from '../types/ecommerce';
 import { storeService, calculateCartTotal } from '../services/storeService';
 import analyticsService from '../services/analyticsService';
+import metaPixelService from '../services/metaPixelService';
 
 export type AppView =
   | 'home'
@@ -138,6 +139,7 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         window.history.pushState({}, '', targetPath);
       }
       analyticsService.trackPageView(targetPath);
+      metaPixelService.trackPageView(targetPath);
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
   };
@@ -165,8 +167,10 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     refreshOrders();
     refreshInventory();
     analyticsService.init();
+    metaPixelService.init();
     if (typeof window !== 'undefined') {
       analyticsService.trackPageView(window.location.pathname);
+      metaPixelService.trackPageView(window.location.pathname);
     }
 
     const handleCartUpdate = () => syncCart();
@@ -205,6 +209,7 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setCurrentView(resolved.view);
         setActiveBlogSlug(resolved.blogSlug);
         analyticsService.trackPageView(path);
+        metaPixelService.trackPageView(path);
       }
     };
 
@@ -234,6 +239,12 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       price: product.price,
       quantity,
     });
+    metaPixelService.trackAddToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity,
+    });
   };
 
   const quickBuyNow = (product: Product, quantity = 1) => {
@@ -243,6 +254,12 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     analyticsService.trackAddToCart({
       item_id: product.id,
       item_name: product.name,
+      price: product.price,
+      quantity,
+    });
+    metaPixelService.trackAddToCart({
+      id: product.id,
+      name: product.name,
       price: product.price,
       quantity,
     });

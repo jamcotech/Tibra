@@ -81,6 +81,14 @@ export const PolicyPage: React.FC<PolicyPageProps> = ({ type }) => {
         {
           heading: '3. Data Security & Storage',
           body: 'We implement industry-standard encryption protocols and secure internal access controls to safeguard your transaction and delivery records.'
+        },
+        {
+          heading: '4. Cookies & Advertising Measurement (Google Analytics & Meta Pixel)',
+          body: 'We use necessary cookies to maintain your shopping cart and secure checkout session. Subject to your explicit consent, we may use first-party analytics (Google Analytics) and privacy-gated marketing measurement (Meta Pixel) to analyze aggregate store performance and measure advertising campaigns. In accordance with Meta Business Tools Terms and data privacy standards, we strictly prohibit the transmission of sensitive health conditions, medical details, customer contact information, or personal identifiers.'
+        },
+        {
+          heading: '5. Managing and Revoking Cookie Consent',
+          body: 'You retain full control over non-essential cookies. Non-essential analytics and marketing tracking remain disabled by default. You can accept, customize, or revoke your cookie choices at any time by clicking "Cookie Preferences" located in our website footer.'
         }
       ]
     },

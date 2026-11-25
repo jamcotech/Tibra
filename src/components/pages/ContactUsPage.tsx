@@ -3,6 +3,7 @@ import { Mail, Phone, MessageCircle, Clock, ChevronRight, Send } from 'lucide-re
 import { SeoHead } from '../SeoHead';
 import BRAND_CONFIG from '../../config/brandConfig';
 import { analyticsService } from '../../services/analyticsService';
+import { metaPixelService } from '../../services/metaPixelService';
 
 export const ContactUsPage: React.FC = () => {
   const [inquiryType, setInquiryType] = useState('order_status');
@@ -114,6 +115,7 @@ export const ContactUsPage: React.FC = () => {
                   form_name: 'contact_us',
                   inquiry_type: inquiryType,
                 });
+                metaPixelService.trackLead('contact_form');
                 alert('Thank you for reaching out! A TIBRA NATURALS representative will contact you shortly.');
               }}
               className="space-y-4 text-xs"

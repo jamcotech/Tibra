@@ -15,6 +15,7 @@ import {
 import confetti from 'canvas-confetti';
 import { storeService, calculateItemPrice } from '../services/storeService';
 import { analyticsService } from '../services/analyticsService';
+import { metaPixelService } from '../services/metaPixelService';
 import type { Order } from '../types/ecommerce';
 
 interface OrderInquiryModalProps {
@@ -84,6 +85,17 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
         quantity: i.quantity,
       })),
       order.shippingFee
+    );
+
+    metaPixelService.trackPurchase(
+      order.orderNumber,
+      order.items.map(i => ({
+        id: i.productId,
+        name: i.productName,
+        price: i.price,
+        quantity: i.quantity,
+      })),
+      order.subtotal
     );
 
     try {

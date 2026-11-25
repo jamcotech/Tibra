@@ -144,7 +144,7 @@ const routes = [
     title: 'Privacy Policy | TIBRA NATURALS',
     description: 'Privacy Policy for TIBRA NATURALS. We respect customer privacy, protect personal delivery data, and never sell or rent your personal information.',
     h1: 'Privacy Policy',
-    content: 'We collect necessary delivery information solely to fulfill courier shipping. We never sell or rent customer data.'
+    content: 'We collect necessary delivery information solely to fulfill courier shipping. We never sell or rent customer data. Subject to explicit consent, privacy-gated analytics (Google Analytics) and advertising measurement (Meta Pixel) are used without transmitting sensitive health information.'
   },
   {
     path: '/terms-and-conditions/',
