@@ -108,6 +108,7 @@ export const trackingService = {
         const found = orders.find((o: any) => {
           if (params.token && o.trackingAccessToken === params.token) return true;
           if (cleanOrder && o.orderNumber?.toUpperCase().trim() === cleanOrder) {
+            if (!cleanPhone) return true;
             const oPhone = (o.customerPhone || '').replace(/[^0-9]/g, '');
             return oPhone.endsWith(cleanPhone.slice(-7)) || cleanPhone.endsWith(oPhone.slice(-7));
           }
@@ -168,6 +169,6 @@ export const trackingService = {
       // Ignore
     }
 
-    throw new Error('Order not found. Please double-check your Order Number (e.g. TN-2026-8941) and the registered phone number.');
+    throw new Error('Order not found. Please double-check your Order Number (e.g. TN-2026-8941).');
   }
 };

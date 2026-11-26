@@ -52,20 +52,23 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     if (token) {
       // Token-based secure lookup
       order = await db.getOrderByToken(token);
-    } else if (orderNumber && phone) {
-      // Order Number + Mobile Number lookup
-      order = await db.getOrderByNumberAndPhone(orderNumber, phone);
+    } else if (orderNumber) {
+      if (phone) {
+        order = await db.getOrderByNumberAndPhone(orderNumber, phone);
+      } else {
+        order = await db.getOrderByNumber(orderNumber);
+      }
     } else {
       return res.status(400).json({
         success: false,
-        error: 'Please provide both Order Number and registered Mobile Number (or a valid tracking token).'
+        error: 'Please provide your Order Number.'
       });
     }
 
     if (!order) {
       return res.status(404).json({
         success: false,
-        error: 'Order not found. Please verify your Order Number (e.g. TN-2026-8941) and the registered phone number entered during checkout.'
+        error: 'Order not found. Please verify your Order Number (e.g. TN-2026-8941).'
       });
     }
 

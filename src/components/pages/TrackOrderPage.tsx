@@ -120,11 +120,7 @@ export const TrackOrderPage: React.FC = () => {
         setError('Please enter your Order Number (e.g. TN-2026-8941).');
         return;
       }
-      if (!phone.trim()) {
-        setError('Please enter the registered mobile number used during checkout.');
-        return;
-      }
-      executeLookup({ order: orderNumber, phone });
+      executeLookup({ order: orderNumber });
     }
   };
 
@@ -178,7 +174,7 @@ export const TrackOrderPage: React.FC = () => {
             Track Your Order
           </h1>
           <p className="text-sm sm:text-base text-zinc-300 max-w-xl mx-auto leading-relaxed">
-            Enter your Order Number and registered mobile number to view live consignment milestones, scan locations, and estimated delivery across Pakistan.
+            Enter your Order Number to view live consignment milestones, scan locations, and estimated delivery across Pakistan.
           </p>
         </div>
       </div>
@@ -198,40 +194,24 @@ export const TrackOrderPage: React.FC = () => {
               }}
               className="text-xs font-medium text-[#506326] hover:text-[#252E15] underline cursor-pointer"
             >
-              {useTokenMode ? '← Use Order # & Mobile Number' : 'Use Tracking Token Instead →'}
+              {useTokenMode ? '← Use Order Number' : 'Use Tracking Token Instead →'}
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {!useTokenMode ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1.5">
-                    Order Number <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    <input
-                      type="text"
-                      value={orderNumber}
-                      onChange={(e) => setOrderNumber(e.target.value.toUpperCase())}
-                      placeholder="e.g. TN-2026-8941"
-                      className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-zinc-300 rounded-xl text-sm font-mono font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#748C48] focus:border-transparent transition"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1.5">
-                    Registered Mobile Number <span className="text-red-500">*</span>
-                  </label>
+              <div>
+                <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1.5">
+                  Order Number <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="e.g. 0300 1234567 or +92 300..."
-                    className="w-full px-4 py-3 bg-[#FAF8F5] border border-zinc-300 rounded-xl text-sm font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#748C48] focus:border-transparent transition"
+                    type="text"
+                    value={orderNumber}
+                    onChange={(e) => setOrderNumber(e.target.value.toUpperCase())}
+                    placeholder="e.g. TN-2026-8941"
+                    className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-zinc-300 rounded-xl text-sm font-mono font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#748C48] focus:border-transparent transition"
                     required
                   />
                 </div>
