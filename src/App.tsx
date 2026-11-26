@@ -143,8 +143,8 @@ function ShopAppContent() {
           </>
         )}
 
-        {/* Dedicated Inner Pages (Suspense-wrapped code-split routes) */}
-        <Suspense fallback={<div className="min-h-[50vh] bg-[#FAF8F5] flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#748C48] border-t-transparent rounded-full animate-spin" /></div>}>
+        {/* Dedicated Inner Pages (Suspense-wrapped code-split routes with stable min-h-screen to eliminate CLS) */}
+        <Suspense fallback={<div className="min-h-screen bg-[#FAF8F5]" />}>
           {currentView === 'products' && (
             <ProductsPage onOpenOrderModal={() => setIsOrderModalOpen(true)} />
           )}

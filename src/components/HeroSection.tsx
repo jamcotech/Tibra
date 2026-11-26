@@ -104,24 +104,25 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         id="hero"
         className="relative min-h-screen flex items-center overflow-hidden"
       >
-        {/* ── FULL-BLEED HARDWARE-ACCELERATED VISUAL HERO (LCP OPTIMIZED) ── */}
+        {/* ── FULL-BLEED HARDWARE-ACCELERATED VISUAL HERO (LCP & CLS OPTIMIZED) ── */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* High-Priority LCP Image Poster for Mobile & Instant Render */}
-          <img
-            src="/assets/hero-video-poster.webp"
-            alt="TIBRA NATURALS Pain Relief Oil Botanical Formulation Bottle"
-            width={720}
-            height={1280}
-            fetchPriority="high"
-            className="hero-video-media absolute h-full w-auto max-w-none will-change-transform object-cover select-none pointer-events-none"
-          />
-
-          {/* Desktop High-Definition Ambient Video */}
-          {!isMobile && (
+          {/* Mobile: Ultra-fast 39KB WebP Image (Zero video network overhead) */}
+          {isMobile ? (
+            <img
+              src="/assets/hero-video-poster.webp"
+              alt="TIBRA NATURALS Pain Relief Oil Botanical Formulation Bottle"
+              width={720}
+              height={1280}
+              fetchPriority="high"
+              className="hero-video-media absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+            />
+          ) : (
+            /* Desktop: Cinematic Slow-Motion Video with Native Poster */
             <video
               ref={videoRef}
-              className="hero-video-media absolute h-full w-auto max-w-none will-change-transform object-cover"
+              className="hero-video-media absolute inset-0 w-full h-full object-cover"
               src="/assets/hero-video-002.mp4"
+              poster="/assets/hero-video-poster.webp"
               autoPlay
               muted
               loop

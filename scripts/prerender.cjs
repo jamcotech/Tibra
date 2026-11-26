@@ -648,6 +648,12 @@ routes.forEach((route) => {
   html = html.replace(/<meta name="twitter:description" content=".*?" \/>/s, () => `<meta name="twitter:description" content="${route.description}" />`);
   html = html.replace(/<meta name="twitter:url" content=".*?" \/>/s, () => `<meta name="twitter:url" content="${canonicalUrl}" />`);
 
+  // Strip Homepage-specific hero poster preload from deep routes
+  html = html.replace(
+    /<link rel="preload" as="image" href="\/assets\/hero-video-poster\.webp".*?\/>\s*/s,
+    ''
+  );
+
   // Replace Homepage JSON-LD schema with page-specific schema
   if (route.schema) {
     const newSchemaTag = `<!-- Page-Specific JSON-LD Schema -->\n    <script type="application/ld+json">\n${JSON.stringify(route.schema, null, 2)}\n    </script>`;

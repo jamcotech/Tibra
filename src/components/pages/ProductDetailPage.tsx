@@ -165,7 +165,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
                 alt="TIBRA NATURALS Pain Relief Oil 30ml amber glass dropper bottle with green herbal label"
                 width={384}
                 height={384}
-                className="h-80 sm:h-96 w-auto object-contain drop-shadow-xl transition-all duration-300 hover:scale-105"
+                className="w-full max-w-[384px] h-auto aspect-square object-contain drop-shadow-xl transition-all duration-300 hover:scale-105"
                 fetchPriority="high"
               />
               <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#748C48] text-white text-[11px] font-bold uppercase tracking-wider shadow-xs">
