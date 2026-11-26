@@ -79,7 +79,7 @@ const routes = [
     description: 'Buy authentic TIBRA NATURALS Pain Relief Oil (30ml). 100% natural herbal formula with Turmeric, Ginger & Boswellia. Cash on Delivery across Pakistan. Rs. 1,500.',
     h1: 'TIBRA NATURALS Pain Relief Oil – 30ml',
     content: 'Authentic 100% natural herbal blend formulated with Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia for active mobility and soothing joint massage in Pakistan.',
-    preloadImage: '/assets/purefix-bottle-transparent.webp',
+    preloadImage: '/assets/tibra-bottle-transparent.webp',
     schema: {
       '@context': 'https://schema.org',
       '@graph': [
@@ -87,7 +87,7 @@ const routes = [
           '@type': 'Product',
           name: 'TIBRA NATURALS Pain Relief Oil',
           image: [
-            'https://www.tibranaturals.com/assets/purefix-bottle-box-showcase.webp',
+            'https://www.tibranaturals.com/assets/tibra-bottle-box-showcase.webp',
             'https://www.tibranaturals.com/assets/packaging-showcase-003.webp'
           ],
           description: '100% Natural Herbal Topical Blend formulated with Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia for soothing joint and muscle massage.',
@@ -761,4 +761,29 @@ adminHtml = adminHtml.replace(/<!-- Schema\.org JSON-LD.*?<\/script>/s, '');
 fs.writeFileSync(path.join(adminDir, 'index.html'), adminHtml, 'utf-8');
 console.log(`  ✓ Generated Admin Portal entry: dist/admin/index.html (noindex, nofollow)`);
 
-console.log(`Static route prerendering completed successfully! (Total ${routes.length + 1} indexable pages + 1 private admin portal: 1 root + ${routes.length} deep routes + admin)`);
+// Generate Transactional Pages (cart, checkout, order-success) with noindex, follow
+const transactionalRoutes = [
+  { path: '/cart/', title: 'Your Shopping Cart | TIBRA NATURALS Pakistan' },
+  { path: '/checkout/', title: 'Secure Checkout | TIBRA NATURALS Pakistan' },
+  { path: '/order-success/', title: 'Order Confirmed | TIBRA NATURALS Pakistan' }
+];
+
+transactionalRoutes.forEach(tr => {
+  const trDir = path.join(distDir, tr.path.replace(/^\/|\/$/g, ''));
+  if (!fs.existsSync(trDir)) {
+    fs.mkdirSync(trDir, { recursive: true });
+  }
+  let trHtml = baseHtml;
+  trHtml = trHtml.replace(/<title>.*?<\/title>/s, () => `<title>${tr.title}</title>`);
+  trHtml = trHtml.replace(/<link rel="canonical" href=".*?" \/>/s, () => `<link rel="canonical" href="https://www.tibranaturals.com${tr.path}" />`);
+  trHtml = trHtml.replace(/<meta name="robots" content=".*?" \/>/s, () => `<meta name="robots" content="noindex, follow" />`);
+  if (!trHtml.includes('noindex')) {
+    trHtml = trHtml.replace('</head>', () => `    <meta name="robots" content="noindex, follow" />\n  </head>`);
+  }
+  trHtml = trHtml.replace(/<link rel="preload" as="image" href="\/assets\/hero-video-poster\.webp".*?\/>\s*/s, '');
+  trHtml = trHtml.replace(/<!-- Schema\.org JSON-LD.*?<\/script>/s, '');
+  fs.writeFileSync(path.join(trDir, 'index.html'), trHtml, 'utf-8');
+  console.log(`  ✓ Generated Transactional entry: dist${tr.path}index.html (noindex, follow)`);
+});
+
+console.log(`Static route prerendering completed successfully! (Total ${routes.length + 1} indexable pages + 4 app routes: 1 root + ${routes.length} deep routes + admin, cart, checkout, order-success)`);
