@@ -62,7 +62,7 @@ export class LeopardsAdapter implements CourierAdapter {
       });
 
       if (!response.ok) throw new Error(`Leopards API HTTP ${response.status}`);
-      const data = await response.json();
+      const data = (await response.json()) as any;
       const trackingNumber = data.track_number || data.consignment_no;
       return {
         success: true,
@@ -109,7 +109,7 @@ export class LeopardsAdapter implements CourierAdapter {
     try {
       const response = await fetch(`https://merchantapi.leopardscourier.com/api/trackBookedPacket/format/json/?api_key=${encodeURIComponent(process.env.LEOPARDS_API_KEY || '')}&api_password=${encodeURIComponent(process.env.LEOPARDS_PASSWORD || '')}&track_numbers=${encodeURIComponent(trackingNumber)}`);
       if (!response.ok) throw new Error(`Leopards Track API HTTP ${response.status}`);
-      const data = await response.json();
+      const data = (await response.json()) as any;
       const packet = data.packet_list?.[0] || {};
       const statusText = packet.status || 'IN TRANSIT';
       const normalized = this.normalizeStatus(statusText);

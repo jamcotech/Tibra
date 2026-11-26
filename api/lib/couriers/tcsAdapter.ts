@@ -71,7 +71,7 @@ export class TcsAdapter implements CourierAdapter {
       if (!response.ok) {
         throw new Error(`TCS API returned HTTP ${response.status}`);
       }
-      const data = await response.json();
+      const data = (await response.json()) as any;
       const trackingNumber = data.consignmentNumber || data.trackingNumber;
       return {
         success: true,
@@ -123,7 +123,7 @@ export class TcsAdapter implements CourierAdapter {
         }
       });
       if (!response.ok) throw new Error(`TCS Track API error ${response.status}`);
-      const data = await response.json();
+      const data = (await response.json()) as any;
       const rawStatus = data.status || data.deliveryStatus || 'IN TRANSIT';
       const normalized = this.normalizeStatus(rawStatus);
 

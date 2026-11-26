@@ -66,7 +66,7 @@ export class PostexAdapter implements CourierAdapter {
       if (!response.ok) {
         throw new Error(`PostEx API HTTP ${response.status}`);
       }
-      const data = await response.json();
+      const data = (await response.json()) as any;
       const trackingNumber = data.distrCode || data.trackingNumber || data.statusCode;
       return {
         success: true,
@@ -117,7 +117,7 @@ export class PostexAdapter implements CourierAdapter {
         }
       });
       if (!response.ok) throw new Error(`PostEx Track API HTTP ${response.status}`);
-      const data = await response.json();
+      const data = (await response.json()) as any;
       const statusText = data.distrStatus || data.orderStatus || 'In-Transit';
       const normalized = this.normalizeStatus(statusText);
 
