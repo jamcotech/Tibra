@@ -7,7 +7,6 @@ import {
   ShoppingCart,
   ShoppingBag,
   Truck,
-  Star,
   CheckCircle2,
   ArrowRight,
   Sparkles
@@ -186,15 +185,12 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onOpenOrderModal }) 
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                   <div className="space-y-2.5">
                     
-                    {/* Star Rating & Reviews */}
+                    {/* Authentic Botanical Formulation Quality Assurance (Zero Fabricated Reviews) */}
                     <div className="flex items-center gap-1.5 text-xs text-botanical-700">
-                      <div className="flex items-center text-amber-500">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                        ))}
-                      </div>
-                      <span className="font-bold text-botanical-900">{product.rating || 4.9}</span>
-                      <span className="text-botanical-500">({product.reviewsCount || 384}+ Reviews)</span>
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#748C48]" />
+                      <span className="font-semibold text-botanical-900">100% Herbal Actives</span>
+                      <span className="text-botanical-400">•</span>
+                      <span className="text-botanical-600">Pure Botanical Quality</span>
                     </div>
 
                     {/* Product Title */}

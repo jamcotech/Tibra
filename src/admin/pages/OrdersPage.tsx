@@ -376,7 +376,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
                   <div key={idx} className="p-3.5 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700/60 overflow-hidden flex items-center justify-center shrink-0">
-                        <img src={item.image} alt={item.productName} className="w-full h-full object-contain" />
+                        <img src={item.image} alt={item.productName} width={40} height={40} loading="lazy" className="w-full h-full object-contain" />
                       </div>
                       <div>
                         <p className="font-medium text-white">{item.productName}</p>

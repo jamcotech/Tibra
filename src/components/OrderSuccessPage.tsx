@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle, Home, PhoneCall } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
+import { SeoHead } from './SeoHead';
 
 export const OrderSuccessPage: React.FC = () => {
   const { lastCreatedOrder, setCurrentView } = useShop();
@@ -20,6 +21,12 @@ export const OrderSuccessPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] pt-32 pb-24 flex items-center justify-center px-4">
+      <SeoHead
+        title="Order Confirmed | TIBRA NATURALS"
+        description="Your TIBRA NATURALS order has been placed successfully."
+        canonicalPath="/order-success"
+        noindex={true}
+      />
       <div className="max-w-xl w-full bg-white rounded-3xl border border-cream-200/90 shadow-luxury p-8 sm:p-12 text-center space-y-6">
         
         {/* Animated Success Badge */}

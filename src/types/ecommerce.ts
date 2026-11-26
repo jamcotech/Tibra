@@ -8,8 +8,8 @@ export interface Product {
   costPrice?: number;
   sku?: string;
   status?: 'active' | 'draft' | 'archived';
-  rating: number;
-  reviewsCount: number;
+  rating?: number;
+  reviewsCount?: number;
   stock: number;
   image: string;
   description: string;

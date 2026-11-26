@@ -83,14 +83,17 @@ export const AboutUsPage: React.FC = () => {
 
           <div className="lg:col-span-5">
             <div className="rounded-3xl overflow-hidden bg-cream-100 border border-cream-200 p-8 shadow-luxury text-center space-y-4">
-              <img
-                src="/assets/purefix-bottle-box-showcase.webp"
-                alt="TIBRA NATURALS Botanical Packaging Set"
-                width={400}
-                height={288}
-                loading="lazy"
-                className="max-h-72 mx-auto object-contain drop-shadow-md"
-              />
+              <picture>
+                <source srcSet="/assets/purefix-bottle-box-showcase.webp" type="image/webp" />
+                <img
+                  src="/assets/purefix-bottle-box-showcase.jpg"
+                  alt="TIBRA NATURALS Botanical Packaging Set"
+                  width={400}
+                  height={288}
+                  loading="lazy"
+                  className="max-h-72 mx-auto object-contain drop-shadow-md"
+                />
+              </picture>
               <p className="text-xs font-mono uppercase tracking-wider text-botanical-600 font-bold">
                 Official 30 ML Botanical Presentation
               </p>

@@ -52,6 +52,15 @@ export const CookieConsentBanner: React.FC = () => {
     return () => window.removeEventListener('tibra_open_cookie_preferences', handleReopen);
   }, []);
 
+  useEffect(() => {
+    // Dispatch visibility event to prevent collision with mobile FloatingBottomBar
+    window.dispatchEvent(
+      new CustomEvent('tibra_consent_banner_visibility', {
+        detail: { isVisible },
+      })
+    );
+  }, [isVisible]);
+
   const applyConsent = (analytics: boolean, marketing: boolean) => {
     const preferences: ConsentPreferences = {
       necessary: true,
@@ -106,8 +115,8 @@ export const CookieConsentBanner: React.FC = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 p-4 sm:p-6 pointer-events-none">
-      <div className="max-w-2xl mx-auto bg-white/95 backdrop-blur-md rounded-3xl border border-cream-300 shadow-2xl p-6 sm:p-7 pointer-events-auto text-[#252E15] transition-all duration-300">
+    <div className="fixed bottom-0 inset-x-0 z-50 p-2.5 sm:p-6 pointer-events-none pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <div className="max-w-2xl mx-auto bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-cream-300 shadow-2xl p-4 sm:p-7 pointer-events-auto text-[#252E15] transition-all duration-300">
         
         {/* Header */}
         <div className="flex items-start justify-between gap-4 pb-3 border-b border-cream-200">

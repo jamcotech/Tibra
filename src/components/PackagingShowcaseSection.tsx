@@ -57,14 +57,17 @@ export const PackagingShowcaseSection: React.FC = () => {
           {/* Left Column: Authentic Studio Photography Mockup */}
           <div className="lg:col-span-7 relative">
             <div className="relative rounded-3xl overflow-hidden border border-cream-200 shadow-luxury bg-cream-100/50 group">
-              <img
-                src="/assets/packaging-showcase-003.webp"
-                alt="TIBRA NATURALS Pain Relief Oil Official Bottle and Box Packaging Showcase"
-                width={670}
-                height={500}
-                loading="lazy"
-                className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-700"
-              />
+              <picture>
+                <source srcSet="/assets/packaging-showcase-003.webp" type="image/webp" />
+                <img
+                  src="/assets/packaging-showcase-003.png"
+                  alt="TIBRA NATURALS Pain Relief Oil Official Bottle and Box Packaging Showcase"
+                  width={670}
+                  height={500}
+                  loading="lazy"
+                  className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-700"
+                />
+              </picture>
               
               {/* Floating Verified Badge */}
               <div className="absolute top-4 left-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-botanical-950/85 text-cream-50 backdrop-blur-md border border-white/20 text-[11px] font-medium shadow-lg">

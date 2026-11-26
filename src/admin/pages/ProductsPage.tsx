@@ -157,6 +157,9 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                           <img
                             src={p.image}
                             alt={p.name}
+                            width={48}
+                            height={48}
+                            loading="lazy"
                             className="w-full h-full object-contain p-1"
                           />
                         </div>

@@ -6,9 +6,28 @@ import { storeService, calculateItemPrice } from '../services/storeService';
 export const FloatingBottomBar: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [isCookieBannerVisible, setIsCookieBannerVisible] = useState(() => {
+    try {
+      return !localStorage.getItem('tibra_consent_state');
+    } catch {
+      return false;
+    }
+  });
   const { quickBuyNow, addToCart, products, currentView } = useShop();
 
   const primaryProduct = products[0] || storeService.getProducts()[0];
+
+  useEffect(() => {
+    const handleBannerChange = (e: Event) => {
+      const customEvent = e as CustomEvent<{ isVisible: boolean }>;
+      if (customEvent.detail && typeof customEvent.detail.isVisible === 'boolean') {
+        setIsCookieBannerVisible(customEvent.detail.isVisible);
+      }
+    };
+
+    window.addEventListener('tibra_consent_banner_visibility', handleBannerChange);
+    return () => window.removeEventListener('tibra_consent_banner_visibility', handleBannerChange);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,8 +45,8 @@ export const FloatingBottomBar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Only show on home view to avoid overlapping checkout or cart pages
-  if (currentView !== 'home') {
+  // Only show on home view, and hide if the cookie consent banner is open to eliminate screen collision
+  if (currentView !== 'home' || isCookieBannerVisible) {
     return null;
   }
 

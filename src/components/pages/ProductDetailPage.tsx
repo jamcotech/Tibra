@@ -159,13 +159,13 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
           
           {/* Left Column: Visual Showcase */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="relative rounded-3xl overflow-hidden bg-cream-100/60 border border-cream-200 p-8 flex items-center justify-center shadow-luxury aspect-square">
+            <div className="relative rounded-3xl overflow-hidden bg-cream-100/60 border border-cream-200 p-8 flex items-center justify-center shadow-luxury aspect-square min-h-[320px] sm:min-h-[384px]">
               <img
                 src={selectedQty >= 2 ? product.boxImage : product.image}
                 alt="TIBRA NATURALS Pain Relief Oil 30ml amber glass dropper bottle with green herbal label"
                 width={384}
                 height={384}
-                className="max-h-80 sm:max-h-96 w-auto object-contain drop-shadow-xl transition-all duration-300 hover:scale-105"
+                className="h-80 sm:h-96 w-auto object-contain drop-shadow-xl transition-all duration-300 hover:scale-105"
                 fetchPriority="high"
               />
               <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#748C48] text-white text-[11px] font-bold uppercase tracking-wider shadow-xs">
