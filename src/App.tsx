@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { ShopProvider, useShop, parsePathnameToView } from './context/ShopContext';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -8,6 +8,7 @@ import { BenefitsTargetSection } from './components/BenefitsTargetSection';
 import { PackagingShowcaseSection } from './components/PackagingShowcaseSection';
 import { RitualUsageSection } from './components/RitualUsageSection';
 import { BrandStorySection } from './components/BrandStorySection';
+import { LatestBlogSection } from './components/LatestBlogSection';
 import { FAQSection } from './components/FAQSection';
 import { FinalCtaSection } from './components/FinalCtaSection';
 import { Footer } from './components/Footer';
@@ -15,25 +16,27 @@ import { FloatingBottomBar } from './components/FloatingBottomBar';
 import { OrderInquiryModal } from './components/OrderInquiryModal';
 import { CookieConsentBanner } from './components/CookieConsentBanner';
 import { CartDrawer } from './components/CartDrawer';
-import { CartPage } from './components/CartPage';
-import { CheckoutPage } from './components/CheckoutPage';
-import { OrderSuccessPage } from './components/OrderSuccessPage';
-import { SpreeAdminApp } from './admin/SpreeAdminApp';
 import { SeoHead } from './components/SeoHead';
-
-// Dedicated SEO Pages
-import { ProductsPage } from './components/pages/ProductsPage';
-import { ProductDetailPage } from './components/pages/ProductDetailPage';
-import { IngredientsPage } from './components/pages/IngredientsPage';
-import { HowToUsePage } from './components/pages/HowToUsePage';
-import { OurQualityPage } from './components/pages/OurQualityPage';
-import { AboutUsPage } from './components/pages/AboutUsPage';
-import { BlogHubPage } from './components/pages/BlogHubPage';
-import { BlogPostPage } from './components/pages/BlogPostPage';
-import { FaqPage } from './components/pages/FaqPage';
-import { ContactUsPage } from './components/pages/ContactUsPage';
-import { PolicyPage } from './components/pages/PolicyPage';
 import { BLOG_POSTS } from './data/blogArticles';
+
+// Lazy-loaded routes to minimize initial JavaScript bundle execution and optimize LCP/FID/TBT
+const SpreeAdminApp = lazy(() => import('./admin/SpreeAdminApp').then(m => ({ default: m.SpreeAdminApp })));
+const CartPage = lazy(() => import('./components/CartPage').then(m => ({ default: m.CartPage })));
+const CheckoutPage = lazy(() => import('./components/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
+const OrderSuccessPage = lazy(() => import('./components/OrderSuccessPage').then(m => ({ default: m.OrderSuccessPage })));
+
+// Dedicated SEO Pages (Code-split)
+const ProductsPage = lazy(() => import('./components/pages/ProductsPage').then(m => ({ default: m.ProductsPage })));
+const ProductDetailPage = lazy(() => import('./components/pages/ProductDetailPage').then(m => ({ default: m.ProductDetailPage })));
+const IngredientsPage = lazy(() => import('./components/pages/IngredientsPage').then(m => ({ default: m.IngredientsPage })));
+const HowToUsePage = lazy(() => import('./components/pages/HowToUsePage').then(m => ({ default: m.HowToUsePage })));
+const OurQualityPage = lazy(() => import('./components/pages/OurQualityPage').then(m => ({ default: m.OurQualityPage })));
+const AboutUsPage = lazy(() => import('./components/pages/AboutUsPage').then(m => ({ default: m.AboutUsPage })));
+const BlogHubPage = lazy(() => import('./components/pages/BlogHubPage').then(m => ({ default: m.BlogHubPage })));
+const BlogPostPage = lazy(() => import('./components/pages/BlogPostPage').then(m => ({ default: m.BlogPostPage })));
+const FaqPage = lazy(() => import('./components/pages/FaqPage').then(m => ({ default: m.FaqPage })));
+const ContactUsPage = lazy(() => import('./components/pages/ContactUsPage').then(m => ({ default: m.ContactUsPage })));
+const PolicyPage = lazy(() => import('./components/pages/PolicyPage').then(m => ({ default: m.PolicyPage })));
 
 function ShopAppContent() {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -70,15 +73,17 @@ function ShopAppContent() {
 
   if (isAdminOpen) {
     return (
-      <SpreeAdminApp
-        onBackToStore={() => {
-          setIsAdminOpen(false);
-          window.location.hash = '';
-          if (window.location.pathname.startsWith('/admin') || window.location.search.includes('admin')) {
-            window.history.pushState({}, '', '/');
-          }
-        }}
-      />
+      <Suspense fallback={<div className="min-h-screen bg-[#252E15] flex items-center justify-center text-white font-mono text-sm">Loading Admin Portal...</div>}>
+        <SpreeAdminApp
+          onBackToStore={() => {
+            setIsAdminOpen(false);
+            window.location.hash = '';
+            if (window.location.pathname.startsWith('/admin') || window.location.search.includes('admin')) {
+              window.history.pushState({}, '', '/');
+            }
+          }}
+        />
+      </Suspense>
     );
   }
 
@@ -125,43 +130,48 @@ function ShopAppContent() {
             {/* Section 8: TIBRA NATURALS Brand Heritage */}
             <BrandStorySection />
 
-            {/* Section 9: Frequently Asked Questions */}
+            {/* Section 9: Latest from Our Blog Preview */}
+            <LatestBlogSection />
+
+            {/* Section 10: Frequently Asked Questions */}
             <FAQSection />
           </>
         )}
 
-        {/* Dedicated Inner Pages */}
-        {currentView === 'products' && (
-          <ProductsPage onOpenOrderModal={() => setIsOrderModalOpen(true)} />
-        )}
-        {currentView === 'product-detail' && (
-          <ProductDetailPage onOpenOrderModal={() => setIsOrderModalOpen(true)} />
-        )}
-        {currentView === 'ingredients' && <IngredientsPage />}
-        {currentView === 'how-to-use' && <HowToUsePage />}
-        {currentView === 'our-quality' && <OurQualityPage />}
-        {currentView === 'about-us' && <AboutUsPage />}
-        {currentView === 'faq' && <FaqPage />}
-        {currentView === 'contact' && <ContactUsPage />}
+        {/* Dedicated Inner Pages (Suspense-wrapped code-split routes) */}
+        <Suspense fallback={<div className="min-h-[50vh] bg-[#FAF8F5] flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#748C48] border-t-transparent rounded-full animate-spin" /></div>}>
+          {currentView === 'products' && (
+            <ProductsPage onOpenOrderModal={() => setIsOrderModalOpen(true)} />
+          )}
+          {currentView === 'product-detail' && (
+            <ProductDetailPage onOpenOrderModal={() => setIsOrderModalOpen(true)} />
+          )}
+          {currentView === 'ingredients' && <IngredientsPage />}
+          {currentView === 'how-to-use' && <HowToUsePage />}
+          {currentView === 'our-quality' && <OurQualityPage />}
+          {currentView === 'about-us' && <AboutUsPage />}
+          {currentView === 'faq' && <FaqPage />}
+          {currentView === 'contact' && <ContactUsPage />}
 
-        {/* Blog Views */}
-        {currentView === 'blog' && (
-          <BlogHubPage onSelectPost={(slug) => navigate('blog-post', slug)} />
-        )}
-        {currentView === 'blog-post' && selectedPost && (
-          <BlogPostPage post={selectedPost} onBackToBlog={() => navigate('blog')} />
-        )}
+          {/* Blog Views */}
+          {currentView === 'blog' && (
+            <BlogHubPage onSelectPost={(slug) => navigate('blog-post', slug)} />
+          )}
+          {currentView === 'blog-post' && selectedPost && (
+            <BlogPostPage post={selectedPost} onBackToBlog={() => navigate('blog')} />
+          )}
 
-        {/* Policy Pages */}
-        {currentView === 'policy-shipping' && <PolicyPage type="shipping" />}
-        {currentView === 'policy-returns' && <PolicyPage type="returns" />}
-        {currentView === 'policy-privacy' && <PolicyPage type="privacy" />}
-        {currentView === 'policy-terms' && <PolicyPage type="terms" />}
+          {/* Policy Pages */}
+          {currentView === 'policy-shipping' && <PolicyPage type="shipping" />}
+          {currentView === 'policy-returns' && <PolicyPage type="returns" />}
+          {currentView === 'policy-privacy' && <PolicyPage type="privacy" />}
+          {currentView === 'policy-terms' && <PolicyPage type="terms" />}
 
-        {/* Transactional Views */}
-        {currentView === 'cart' && <CartPage />}
-        {currentView === 'checkout' && <CheckoutPage />}
-        {currentView === 'order-success' && <OrderSuccessPage />}
+          {/* Transactional Views */}
+          {currentView === 'cart' && <CartPage />}
+          {currentView === 'checkout' && <CheckoutPage />}
+          {currentView === 'order-success' && <OrderSuccessPage />}
+        </Suspense>
       </main>
 
       {/* Footer */}

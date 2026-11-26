@@ -23,7 +23,7 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Curcuma Longa',
       category: 'Key Actives',
       benefit: 'Powerful anti-inflammatory and natural pain relief.',
-      image: '/assets/ingredients/turmeric.jpg',
+      image: '/assets/ingredients/turmeric.webp',
       tag: 'Pain Relief'
     },
     {
@@ -31,21 +31,21 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Zingiber Officinale',
       category: 'Key Actives',
       benefit: 'Provides warming effect, reduces stiffness and improves circulation.',
-      image: '/assets/ingredients/ginger.jpg',
+      image: '/assets/ingredients/ginger.webp',
       tag: 'Warming Effect'
     },
     {
       name: 'Eucalyptus Oil',
       category: 'Herbal Oils',
       benefit: 'Cooling sensation, relieves muscle tension and joint stiffness.',
-      image: '/assets/ingredients/eucalyptus.jpg',
+      image: '/assets/ingredients/eucalyptus.webp',
       tag: 'Cooling Relief'
     },
     {
       name: 'Peppermint Oil',
       category: 'Herbal Oils',
       benefit: 'Provides cooling effect, soothes pain and refreshes tired muscles.',
-      image: '/assets/ingredients/peppermint.jpg',
+      image: '/assets/ingredients/peppermint.webp',
       tag: 'Refreshes Muscles'
     },
     {
@@ -53,7 +53,7 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Gaultheria Procumbens',
       category: 'Herbal Oils',
       benefit: 'Natural source of methyl salicylate, helps relieve joint and muscle pain.',
-      image: '/assets/ingredients/wintergreen.jpg',
+      image: '/assets/ingredients/wintergreen.webp',
       tag: 'Deep Relief'
     },
 
@@ -63,7 +63,7 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Frankincense',
       category: 'Natural Extracts',
       benefit: 'Reduces inflammation and supports long-term joint mobility.',
-      image: '/assets/ingredients/boswellia.jpg',
+      image: '/assets/ingredients/boswellia.webp',
       tag: 'Mobility Support'
     },
     {
@@ -71,28 +71,28 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Fenugreek',
       category: 'Natural Extracts',
       benefit: 'Helps reduce joint swelling and improves natural joint flexibility.',
-      image: '/assets/ingredients/methi.jpg',
+      image: '/assets/ingredients/methi.webp',
       tag: 'Reduces Swelling'
     },
     {
       name: 'Garlic Oil',
       category: 'Herbal Oils',
       benefit: 'Improves blood circulation and helps reduce muscle stiffness.',
-      image: '/assets/ingredients/garlic.jpg',
+      image: '/assets/ingredients/garlic.webp',
       tag: 'Circulation'
     },
     {
       name: 'Cinnamon Oil',
       category: 'Herbal Oils',
       benefit: 'Deep warming effect, improves blood flow and eases persistent muscle pain.',
-      image: '/assets/ingredients/cinnamon.jpg',
+      image: '/assets/ingredients/cinnamon.webp',
       tag: 'Warming Comfort'
     },
     {
       name: 'Clove Oil',
       category: 'Herbal Oils',
       benefit: 'Natural analgesic, numbs localized pain and provides long-lasting comfort.',
-      image: '/assets/ingredients/clove.jpg',
+      image: '/assets/ingredients/clove.webp',
       tag: 'Natural Analgesic'
     },
 
@@ -102,28 +102,28 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Kalonji',
       category: 'Herbal Oils',
       benefit: 'Supports overall joint vitality, cellular recovery and immune health.',
-      image: '/assets/ingredients/blackseed.jpg',
+      image: '/assets/ingredients/blackseed.webp',
       tag: 'Cellular Care'
     },
     {
       name: 'Rosemary Oil',
       category: 'Herbal Oils',
       benefit: 'Stimulates circulation and helps relieve chronic muscle fatigue.',
-      image: '/assets/ingredients/rosemary.jpg',
+      image: '/assets/ingredients/rosemary.webp',
       tag: 'Anti-Fatigue'
     },
     {
       name: 'Camphor',
       category: 'Key Actives',
       benefit: 'Provides rapid cooling relief, reduces localized swelling sensation.',
-      image: '/assets/ingredients/camphor.jpg',
+      image: '/assets/ingredients/camphor.webp',
       tag: 'Rapid Cooling'
     },
     {
       name: 'Menthol',
       category: 'Key Actives',
       benefit: 'Cooling and soothing effect that refreshes sore, overworked muscle fibers.',
-      image: '/assets/ingredients/menthol.jpg',
+      image: '/assets/ingredients/menthol.webp',
       tag: 'Instant Refresh'
     },
     {
@@ -131,7 +131,7 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Pure Carrier Base',
       category: 'Base Oils',
       benefit: 'Deep skin penetration, deeply nourishes joints and carries herbal actives.',
-      image: '/assets/ingredients/sesame.jpg',
+      image: '/assets/ingredients/sesame.webp',
       tag: 'Deep Dermal Base'
     },
     {
@@ -139,7 +139,7 @@ export const IngredientsSection: React.FC = () => {
       botanicalName: 'Antioxidant Base',
       category: 'Base Oils',
       benefit: 'Rich in antioxidants, moisturizes the skin and supports tissue health.',
-      image: '/assets/ingredients/olive.jpg',
+      image: '/assets/ingredients/olive.webp',
       tag: 'Antioxidant Base'
     }
   ];
@@ -183,7 +183,9 @@ export const IngredientsSection: React.FC = () => {
                 <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full p-0.5 sm:p-1 bg-white border-2 border-cream-300/90 shadow-2xs group-hover:border-botanical-500 group-hover:shadow-md group-hover:scale-105 transition-all duration-300 flex items-center justify-center shrink-0">
                   <img
                     src={item.image}
-                    alt={item.name}
+                    alt={`${item.name} natural herbal ingredient`}
+                    width={80}
+                    height={80}
                     className="w-full h-full object-cover rounded-full select-none"
                     loading="lazy"
                   />

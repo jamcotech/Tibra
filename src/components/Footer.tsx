@@ -18,8 +18,11 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
               <img
-                src="/assets/tibra-logo-white.png"
+                src="/assets/tibra-logo-white.webp"
                 alt="TIBRA NATURALS"
+                width={108}
+                height={36}
+                loading="lazy"
                 className="h-8 sm:h-9 w-auto object-contain"
                 style={{
                   filter:

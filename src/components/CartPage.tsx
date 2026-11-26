@@ -2,6 +2,7 @@ import React from 'react';
 import { ShoppingBag, ArrowLeft, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 import { calculateItemPrice } from '../services/storeService';
+import { SeoHead } from './SeoHead';
 
 export const CartPage: React.FC = () => {
   const { cart, cartSubtotal, cartDiscount, updateQuantity, removeFromCart, setCurrentView, clearCart, addToCart, navigate } = useShop();
@@ -11,6 +12,12 @@ export const CartPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] pt-20 sm:pt-28 pb-12 sm:pb-20">
+      <SeoHead
+        title="Shopping Cart | TIBRA NATURALS"
+        description="Your TIBRA NATURALS shopping cart. Review selected herbal wellness oils before checkout."
+        canonicalPath="/cart"
+        noindex={true}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb */}
@@ -75,20 +82,23 @@ export const CartPage: React.FC = () => {
                             <img
                               src={item.product.image}
                               alt={item.product.name}
+                              width={96}
+                              height={96}
+                              loading="lazy"
                               className="w-full h-full object-contain"
                             />
                           )}
                           {item.quantity === 2 && (
                             <div className="flex items-end justify-center gap-1.5">
-                              <img src={item.product.image} alt="Bottle 1" className="h-18 object-contain" />
-                              <img src={item.product.image} alt="Bottle 2" className="h-18 object-contain" />
+                              <img src={item.product.image} alt="Bottle 1" width={48} height={72} loading="lazy" className="h-18 object-contain" />
+                              <img src={item.product.image} alt="Bottle 2" width={48} height={72} loading="lazy" className="h-18 object-contain" />
                             </div>
                           )}
                           {item.quantity >= 3 && (
                             <div className="flex flex-col items-center justify-center">
                               <div className="flex items-end justify-center gap-1.5">
-                                <img src={item.product.image} alt="Bottle 1" className="h-14 object-contain" />
-                                <img src={item.product.image} alt="Bottle 2" className="h-14 object-contain" />
+                                <img src={item.product.image} alt="Bottle 1" width={36} height={56} loading="lazy" className="h-14 object-contain" />
+                                <img src={item.product.image} alt="Bottle 2" width={36} height={56} loading="lazy" className="h-14 object-contain" />
                               </div>
                               <span className="text-xs font-bold font-mono text-[#748C48] bg-[#748C48]/15 px-2.5 py-0.5 rounded-full leading-none mt-1 border border-[#748C48]/25">
                                 +{item.quantity - 2}
@@ -216,7 +226,7 @@ export const CartPage: React.FC = () => {
                             name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                             price: 2600,
                             originalPrice: 3980,
-                            image: '/assets/purefix-bottle-box-showcase.jpg'
+                            image: '/assets/purefix-bottle-box-showcase.webp'
                           };
                           clearCart();
                           addToCart(duo as any, 1);

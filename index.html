@@ -120,8 +120,8 @@
           "@id": "https://www.tibranaturals.com/products/pain-relief-oil/#product",
           "name": "TIBRA NATURALS Pain Relief Oil",
           "image": [
-            "https://www.tibranaturals.com/assets/purefix-bottle-box-showcase.jpg",
-            "https://www.tibranaturals.com/assets/packaging-showcase-003.png"
+            "https://www.tibranaturals.com/assets/purefix-bottle-box-showcase.webp",
+            "https://www.tibranaturals.com/assets/packaging-showcase-003.webp"
           ],
           "description": "100% Natural Herbal Topical Blend formulated with Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia for soothing joint and muscle massage.",
           "sku": "TN-PRO-030",
@@ -146,10 +146,14 @@
     }
     </script>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Optimized asynchronous loading with display=swap to prevent render blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+    </noscript>
   </head>
   <body class="bg-[#FAF8F5] text-[#252E15] antialiased selection:bg-[#748C48] selection:text-white overflow-x-hidden">
     <!-- Google Tag Manager (noscript) -->

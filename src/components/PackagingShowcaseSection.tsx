@@ -58,8 +58,11 @@ export const PackagingShowcaseSection: React.FC = () => {
           <div className="lg:col-span-7 relative">
             <div className="relative rounded-3xl overflow-hidden border border-cream-200 shadow-luxury bg-cream-100/50 group">
               <img
-                src="/assets/packaging-showcase-003.png"
+                src="/assets/packaging-showcase-003.webp"
                 alt="TIBRA NATURALS Pain Relief Oil Official Bottle and Box Packaging Showcase"
+                width={670}
+                height={500}
+                loading="lazy"
                 className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-700"
               />
               
@@ -125,16 +128,22 @@ export const PackagingShowcaseSection: React.FC = () => {
               <div className="py-2.5 flex items-center justify-center gap-6 sm:gap-8">
                 <div className="flex flex-col items-center">
                   <img
-                    src="/assets/purefix-bottle-transparent.png"
+                    src="/assets/purefix-bottle-transparent.webp"
                     alt="TIBRA NATURALS Pain Relief Oil Bottle 1"
+                    width={80}
+                    height={120}
+                    loading="lazy"
                     className="h-24 sm:h-30 object-contain drop-shadow-md transition-transform hover:scale-105"
                   />
                   <span className="text-[10px] font-mono text-botanical-700 font-semibold mt-1">Bottle 1 (30 ML)</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <img
-                    src="/assets/purefix-bottle-transparent.png"
+                    src="/assets/purefix-bottle-transparent.webp"
                     alt="TIBRA NATURALS Pain Relief Oil Bottle 2"
+                    width={80}
+                    height={120}
+                    loading="lazy"
                     className="h-24 sm:h-30 object-contain drop-shadow-md transition-transform hover:scale-105"
                   />
                   <span className="text-[10px] font-mono text-botanical-700 font-semibold mt-1">Bottle 2 (30 ML)</span>
@@ -168,7 +177,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                       name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                       price: 2600,
                       originalPrice: 3980,
-                      image: '/assets/purefix-bottle-box-showcase.jpg'
+                      image: '/assets/purefix-bottle-box-showcase.webp'
                     };
                     quickBuyNow(duo as any, 1);
                   }}
@@ -185,7 +194,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                       name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                       price: 2600,
                       originalPrice: 3980,
-                      image: '/assets/purefix-bottle-box-showcase.jpg'
+                      image: '/assets/purefix-bottle-box-showcase.webp'
                     };
                     addToCart(duo as any, 1);
                   }}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ShieldCheck, CheckCircle2, Lock, Truck, CreditCard, Sparkles, Minus, Plus } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { useShop } from '../context/ShopContext';
 import { storeService, calculateItemPrice } from '../services/storeService';
 import analyticsService from '../services/analyticsService';
 import metaPixelService from '../services/metaPixelService';
+import { SeoHead } from './SeoHead';
 
 export const CheckoutPage: React.FC = () => {
   const { cart, cartSubtotal, cartDiscount, clearCart, setCurrentView, setLastCreatedOrder, updateQuantity, removeFromCart, addToCart } = useShop();
@@ -55,7 +55,7 @@ export const CheckoutPage: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) return;
 
@@ -113,12 +113,18 @@ export const CheckoutPage: React.FC = () => {
         order.subtotal
       );
 
-      confetti({
-        particleCount: 90,
-        spread: 70,
-        origin: { y: 0.55 },
-        colors: ['#748C48', '#D4AF37', '#252E15', '#F5E6A3'],
-      });
+      // Dynamic import canvas-confetti on successful checkout to keep initial bundle ultra-light
+      try {
+        const confetti = (await import('canvas-confetti')).default;
+        confetti({
+          particleCount: 90,
+          spread: 70,
+          origin: { y: 0.55 },
+          colors: ['#748C48', '#D4AF37', '#252E15', '#F5E6A3'],
+        });
+      } catch (confettiErr) {
+        console.warn('Confetti animation error:', confettiErr);
+      }
 
       setCurrentView('order-success');
     } catch (err) {
@@ -148,6 +154,12 @@ export const CheckoutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] pt-20 sm:pt-28 pb-12 sm:pb-24">
+      <SeoHead
+        title="Secure Checkout | TIBRA NATURALS"
+        description="Secure checkout for TIBRA NATURALS herbal wellness orders with Cash on Delivery across Pakistan."
+        canonicalPath="/checkout"
+        noindex={true}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Back Link */}
@@ -479,7 +491,7 @@ export const CheckoutPage: React.FC = () => {
                           name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                           price: 2600,
                           originalPrice: 3980,
-                          image: '/assets/purefix-bottle-box-showcase.jpg'
+                          image: '/assets/purefix-bottle-box-showcase.webp'
                         };
                         clearCart();
                         addToCart(duoProduct as any, 1);
@@ -506,19 +518,19 @@ export const CheckoutPage: React.FC = () => {
                     <div className="flex items-start justify-between gap-3">
                       <div className="w-13 sm:w-15 h-15 rounded-xl bg-cream-50 border border-cream-200 flex items-center justify-center p-1 shrink-0 overflow-hidden">
                         {item.quantity === 1 && (
-                          <img src={item.product.image} alt={item.product.name} className="h-12 sm:h-13 object-contain" />
+                          <img src={item.product.image} alt={item.product.name} width={52} height={52} loading="lazy" className="h-12 sm:h-13 object-contain" />
                         )}
                         {item.quantity === 2 && (
                           <div className="flex items-end justify-center gap-0.5">
-                            <img src={item.product.image} alt="Bottle 1" className="h-10 object-contain" />
-                            <img src={item.product.image} alt="Bottle 2" className="h-10 object-contain" />
+                            <img src={item.product.image} alt="Bottle 1" width={36} height={40} loading="lazy" className="h-10 object-contain" />
+                            <img src={item.product.image} alt="Bottle 2" width={36} height={40} loading="lazy" className="h-10 object-contain" />
                           </div>
                         )}
                         {item.quantity >= 3 && (
                           <div className="flex flex-col items-center justify-center">
                             <div className="flex items-end justify-center gap-0.5">
-                              <img src={item.product.image} alt="Bottle 1" className="h-8.5 sm:h-9 object-contain" />
-                              <img src={item.product.image} alt="Bottle 2" className="h-8.5 sm:h-9 object-contain" />
+                              <img src={item.product.image} alt="Bottle 1" width={32} height={36} loading="lazy" className="h-8.5 sm:h-9 object-contain" />
+                              <img src={item.product.image} alt="Bottle 2" width={32} height={36} loading="lazy" className="h-8.5 sm:h-9 object-contain" />
                             </div>
                             <span className="text-[9px] font-bold font-mono text-[#748C48] bg-[#748C48]/15 px-1.5 py-0.2 rounded-full leading-none mt-0.5 border border-[#748C48]/25">
                               +{item.quantity - 2}

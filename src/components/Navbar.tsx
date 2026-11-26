@@ -161,8 +161,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
           >
             <div className="relative flex items-center">
               <img
-                src="/assets/tibra-logo-white.png"
+                src="/assets/tibra-logo-white.webp"
                 alt="TIBRA NATURALS"
+                width={108}
+                height={36}
+                fetchPriority="high"
                 style={{
                   filter:
                     'drop-shadow(0 0 1px rgba(0, 0, 0, 0.85)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.70)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.40))',
@@ -338,8 +341,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
             <div className="flex items-center justify-between pb-3.5 border-b border-white/20">
               <div className="flex items-center gap-2.5">
                 <img
-                  src="/assets/tibra-logo-white.png"
+                  src="/assets/tibra-logo-white.webp"
                   alt="TIBRA NATURALS"
+                  width={96}
+                  height={32}
                   className="h-7 sm:h-8 w-auto object-contain"
                   style={{
                     filter:

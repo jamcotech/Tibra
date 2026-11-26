@@ -173,7 +173,9 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onOpenOrderModal }) 
                   >
                     <img
                       src={product.image}
-                      alt={product.name}
+                      alt={`${product.name} herbal joint oil`}
+                      width={240}
+                      height={256}
                       className="max-h-56 sm:max-h-64 w-auto object-contain transition-transform duration-500 group-hover:scale-105 drop-shadow-md"
                       loading="lazy"
                     />

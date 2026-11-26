@@ -163,6 +163,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
               <img
                 src={selectedQty >= 2 ? product.boxImage : product.image}
                 alt="TIBRA NATURALS Pain Relief Oil 30ml amber glass dropper bottle with green herbal label"
+                width={384}
+                height={384}
                 className="max-h-80 sm:max-h-96 w-auto object-contain drop-shadow-xl transition-all duration-300 hover:scale-105"
                 fetchPriority="high"
               />
@@ -182,7 +184,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
                     : 'border-cream-200 bg-white/50 hover:bg-white'
                 }`}
               >
-                <img src={product.image} alt="Single Bottle" className="w-10 h-10 object-contain" />
+                <img src={product.image} alt="Single Bottle 30ml" width={40} height={40} loading="lazy" className="w-10 h-10 object-contain" />
                 <div>
                   <p className="text-xs font-bold text-botanical-950">1 Bottle (30 ML)</p>
                   <p className="text-[11px] font-mono text-[#748C48] font-bold">Rs. 1,500</p>
@@ -198,7 +200,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
                     : 'border-cream-200 bg-white/50 hover:bg-white'
                 }`}
               >
-                <img src={product.boxImage} alt="Duo Pack" className="w-10 h-10 object-contain" />
+                <img src={product.boxImage} alt="Duo Pack Box" width={40} height={40} loading="lazy" className="w-10 h-10 object-contain" />
                 <div>
                   <p className="text-xs font-bold text-botanical-950">Duo Pack (2 Bottles)</p>
                   <p className="text-[11px] font-mono text-[#748C48] font-bold">Rs. 2,600 <span className="text-[9px] text-red-600 bg-red-50 px-1 py-0.2 rounded font-sans">Save 35%</span></p>
@@ -320,6 +322,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
 
         {/* Detailed Information Tabs */}
         <div className="mt-16 bg-white rounded-3xl border border-cream-200 shadow-luxury p-6 sm:p-10">
+          <h2 className="sr-only">Detailed Product Overview, Ingredients, and Frequently Asked Questions</h2>
           <div className="flex items-center gap-4 border-b border-cream-200 pb-4 overflow-x-auto">
             {[
               { id: 'overview', label: 'Product Overview' },
@@ -405,6 +408,18 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
                   <p className="text-xs text-botanical-700">Yes, it is designed for continuous daily mobility rituals for adults of all activity levels.</p>
                 </div>
                 <div className="space-y-2 border-t border-cream-100 pt-3">
+                  <h4 className="font-bold text-botanical-950">How many days does one 30 ML bottle last?</h4>
+                  <p className="text-xs text-botanical-700">With 3 to 5 drops used twice daily on a targeted joint or muscle area, one 30 ML bottle lasts approximately 30 days of continuous application.</p>
+                </div>
+                <div className="space-y-2 border-t border-cream-100 pt-3">
+                  <h4 className="font-bold text-botanical-950">Can I use it on multiple joints (e.g. knees and lower back)?</h4>
+                  <p className="text-xs text-botanical-700">Yes. Dispense 3 to 4 drops for each joint area. Customers managing multiple stiffness zones often select the Duo Pack (2 Bottles - 60 ML) to maintain a complete 60-day morning and evening routine.</p>
+                </div>
+                <div className="space-y-2 border-t border-cream-100 pt-3">
+                  <h4 className="font-bold text-botanical-950">Does it leave clothes greasy or stained?</h4>
+                  <p className="text-xs text-botanical-700">No. The lightweight cold-extracted carrier lipids absorb smoothly within 2 to 3 minutes of circular massage, leaving skin hydrated with a silky, non-sticky finish.</p>
+                </div>
+                <div className="space-y-2 border-t border-cream-100 pt-3">
                   <h4 className="font-bold text-botanical-950">How is delivery handled in Pakistan?</h4>
                   <p className="text-xs text-botanical-700">We ship via express courier with Cash on Delivery nationwide. Flat shipping is Rs. 200, typically arriving within 2 to 4 business days.</p>
                 </div>
@@ -412,6 +427,38 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = () => {
             )}
           </div>
         </div>
+
+        {/* Quality & Trust Assurance Guarantee */}
+        <section className="mt-12 p-8 rounded-3xl bg-white border border-cream-200 shadow-sm">
+          <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-[#748C48] font-bold">Purity Commitment</span>
+            <h2 className="font-serif font-bold text-xl sm:text-2xl text-botanical-950">
+              The TIBRA NATURALS Quality Guarantee
+            </h2>
+            <p className="text-xs text-botanical-700">
+              Every drop is created with reverence for botanical authenticity and physical well-being.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-cream-200 space-y-1">
+              <span className="font-serif font-bold text-sm text-botanical-950 block">100% Herbal Actives</span>
+              <span className="text-[11px] text-botanical-600 block">Pure roots and essential foliage oils</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-cream-200 space-y-1">
+              <span className="font-serif font-bold text-sm text-botanical-950 block">Cold-Macerated</span>
+              <span className="text-[11px] text-botanical-600 block">Preserves heat-sensitive phytonutrients</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-cream-200 space-y-1">
+              <span className="font-serif font-bold text-sm text-botanical-950 block">UV Amber Glass</span>
+              <span className="text-[11px] text-botanical-600 block">Shields terpenes from light oxidation</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-cream-200 space-y-1">
+              <span className="font-serif font-bold text-sm text-botanical-950 block">Zero Synthetics</span>
+              <span className="text-[11px] text-botanical-600 block">No mineral oils, parabens, or artificial dyes</span>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

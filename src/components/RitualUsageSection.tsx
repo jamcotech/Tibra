@@ -12,7 +12,7 @@ export const RitualUsageSection: React.FC = () => {
       title: 'Precision Dispense',
       tagline: '3 to 5 Concentrated Drops',
       duration: 'Step 1',
-      image: '/assets/ritual/step1-dispense-3d-transparent.png',
+      image: '/assets/ritual/step1-dispense-3d-transparent.webp',
       icon: Pipette,
       color: 'from-amber-500/10 to-gold/10 text-gold-dark',
       badgeBg: 'bg-gold/15 text-botanical-900 border-gold/30',
@@ -24,7 +24,7 @@ export const RitualUsageSection: React.FC = () => {
       title: 'Warm & Activate',
       tagline: '5 Seconds Palm Rub',
       duration: 'Step 2',
-      image: '/assets/ritual/step2-warm-3d-transparent.png',
+      image: '/assets/ritual/step2-warm-3d-transparent.webp',
       icon: Sparkles,
       color: 'from-gold/10 to-botanical-500/10 text-botanical-700',
       badgeBg: 'bg-cream-200 text-botanical-900 border-cream-300',
@@ -36,7 +36,7 @@ export const RitualUsageSection: React.FC = () => {
       title: 'Circular Massage',
       tagline: '2 to 3 Minutes Absorption',
       duration: 'Step 3',
-      image: '/assets/ritual/step3-massage-3d-transparent.png',
+      image: '/assets/ritual/step3-massage-3d-transparent.webp',
       icon: RotateCw,
       color: 'from-botanical-500/10 to-botanical-800/10 text-botanical-800',
       badgeBg: 'bg-botanical-100 text-botanical-900 border-botanical-200',
@@ -93,7 +93,9 @@ export const RitualUsageSection: React.FC = () => {
                         <div className={`w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr ${step.color} p-2 flex items-center justify-center border border-cream-200/60 shadow-md group-hover:scale-105 transition-all duration-300`}>
                           <img
                             src={step.image}
-                            alt={step.title}
+                            alt={`${step.title} application ritual step`}
+                            width={112}
+                            height={112}
                             className="w-full h-full object-contain filter drop-shadow-md select-none"
                             loading="lazy"
                           />

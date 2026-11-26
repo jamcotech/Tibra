@@ -20,7 +20,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Knee',
       category: 'Weight-Bearing Joint',
-      cutout: '/assets/pain-cutouts/knee-cutout.png',
+      cutout: '/assets/pain-cutouts/knee-cutout.webp',
       tip: 'Take 3 to 4 warm drops and massage gently around the knee cap in slow circles.',
       details: 'Helps loosen up morning knee stiffness, makes bending comfortable, and gives fast relief after climbing stairs, walking, or standing for long hours.',
       highlight: 'Restores natural cushioning feeling and fluid knee bend without cracking or soreness.'
@@ -28,7 +28,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Shoulder',
       category: 'Rotator Cuff & Deltoid',
-      cutout: '/assets/pain-cutouts/shoulder-cutout.png',
+      cutout: '/assets/pain-cutouts/shoulder-cutout.webp',
       tip: 'Rub 4 drops between your palms and smooth over the front, top, and back of the shoulder.',
       details: 'Calms heavy, tired shoulder muscles caused by computer desk work, driving, or sleeping in an awkward position. Helps you lift your arm freely.',
       highlight: 'Eases tight rotator cuff tension and neck-to-shoulder strain within minutes.'
@@ -36,7 +36,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Lower Back',
       category: 'Lumbar & Spine',
-      cutout: '/assets/pain-cutouts/back-cutout.png',
+      cutout: '/assets/pain-cutouts/back-cutout.webp',
       tip: 'Warm 4 to 5 drops and apply along both sides of your lower back and spine with gentle pressure.',
       details: 'Deep botanical warmth sinks directly into stiff lumbar muscles. Ideal after sitting all day, lifting heavy weights, or feeling sharp bending stiffness.',
       highlight: 'Soothes deep muscular knots and brings flexibility back to your lower back.'
@@ -44,7 +44,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Neck',
       category: 'Cervical & Trapezius',
-      cutout: '/assets/pain-cutouts/neck-cutout.png',
+      cutout: '/assets/pain-cutouts/neck-cutout.webp',
       tip: 'Massage 3 drops upwards from the base of the neck towards the skull using your fingertips.',
       details: 'Relieves tech-neck tightness caused by looking down at mobile phones and screens. Relaxes the stiff neck cords so you can turn your head with ease.',
       highlight: 'Clears painful neck stiffness and heavy tension headaches around the base of the head.'
@@ -52,7 +52,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Elbow',
       category: 'Joint & Tendons',
-      cutout: '/assets/pain-cutouts/elbow-cutout.png',
+      cutout: '/assets/pain-cutouts/elbow-cutout.webp',
       tip: 'Gently work 2 to 3 drops into the inner fold and outer bone of the elbow.',
       details: 'Provides soothing comfort for overused forearm tendons, tennis elbow strain, carrying heavy bags, or repetitive gym workouts.',
       highlight: 'Keeps the elbow joint moving smoothly without pulling or sharp tendon discomfort.'
@@ -60,7 +60,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Ankle & Foot',
       category: 'Tendon & Malleolus',
-      cutout: '/assets/pain-cutouts/ankle-cutout.png',
+      cutout: '/assets/pain-cutouts/ankle-cutout.webp',
       tip: 'Massage 3 to 4 drops thoroughly around the ankle bones and back heel tendon.',
       details: 'Revives swollen, exhausted feet and stiff ankles after long walks, sports, running, or standing shifts on hard floors.',
       highlight: 'Calms aching heel cords and restores light, comfortable footsteps every morning.'
@@ -68,7 +68,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Hip',
       category: 'Ball & Socket Joint',
-      cutout: '/assets/pain-cutouts/hip-cutout.png',
+      cutout: '/assets/pain-cutouts/hip-cutout.webp',
       tip: 'Massage 4 drops firmly in circular motions directly into the outer hip and pelvic joint area.',
       details: 'Releases deep hip tightness caused by prolonged car driving, desk sitting, or side-sleeping pressure. Helps you stand up straight without sharp catching.',
       highlight: 'Supports smooth hip socket rotation for confident, pain-free daily walking.'
@@ -76,7 +76,7 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       name: 'Upper Back',
       category: 'Thoracic & Blade',
-      cutout: '/assets/pain-cutouts/upper-back-cutout.png',
+      cutout: '/assets/pain-cutouts/upper-back-cutout.webp',
       tip: 'Smooth 4 drops between and across both shoulder blades and the upper spine.',
       details: 'Releases the burning tightness and stubborn knots between the shoulder blades caused by poor posture, stress, and hunching over work desks.',
       highlight: 'Relaxes tight posture muscles so you can breathe deeply and feel light.'
@@ -87,42 +87,42 @@ export const BenefitsTargetSection: React.FC = () => {
     {
       title: 'Helps Reduce Joint Discomfort',
       desc: 'Herbal actives help comfort stiff, achy joints after physical exercise, heavy chores, or cold mornings.',
-      iconImg: '/assets/benefits-icons/c1_joint_discomfort.png',
+      iconImg: '/assets/benefits-icons/c1_joint_discomfort.webp',
       tag: 'Joint Comfort',
       color: 'from-botanical-500/10 to-botanical-700/5',
     },
     {
       title: 'Relaxes Stiff Muscles',
       desc: 'Warming botanical formulation eases muscular knots, tight fibers, and tension caused by overexertion.',
-      iconImg: '/assets/benefits-icons/c2_muscle_ease.png',
+      iconImg: '/assets/benefits-icons/c2_muscle_ease.webp',
       tag: 'Muscle Ease',
       color: 'from-amber-400/10 to-gold/10',
     },
     {
       title: 'Improves Daily Mobility',
       desc: 'Facilitates smoother, fluid motion in everyday movements like climbing stairs, walking, and bending.',
-      iconImg: '/assets/benefits-icons/c3_daily_mobility.png',
+      iconImg: '/assets/benefits-icons/c3_daily_mobility.webp',
       tag: 'Fluid Movement',
       color: 'from-botanical-600/10 to-botanical-800/5',
     },
     {
       title: 'Supports Joint Function',
       desc: 'Nourishing herbal oils deliver topical nourishment to maintain healthy active joint lubrication.',
-      iconImg: '/assets/benefits-icons/c4_joint_support.png',
+      iconImg: '/assets/benefits-icons/c4_joint_support.webp',
       tag: 'Vitality Support',
       color: 'from-gold/10 to-amber-300/10',
     },
     {
       title: 'Soothes Inflammation Sensation',
       desc: 'Plant extracts provide calming, balancing relief to localized warm, irritated areas.',
-      iconImg: '/assets/benefits-icons/c5_inflammation.png',
+      iconImg: '/assets/benefits-icons/c5_inflammation.webp',
       tag: 'Calming Balance',
       color: 'from-amber-500/10 to-gold/10',
     },
     {
       title: 'Promotes Flexibility & Active Living',
       desc: 'Supports your daily yoga, walking, gym, or gardening routine without stiffness holding you back.',
-      iconImg: '/assets/benefits-icons/c6_flexibility.png',
+      iconImg: '/assets/benefits-icons/c6_flexibility.webp',
       tag: 'Active Lifestyle',
       color: 'from-botanical-500/10 to-botanical-900/5',
     },
@@ -190,7 +190,10 @@ export const BenefitsTargetSection: React.FC = () => {
                     >
                       <img
                         src={z.cutout}
-                        alt={z.name}
+                        alt={`${z.name} joint relief`}
+                        width={48}
+                        height={48}
+                        loading="lazy"
                         className="w-full h-full object-contain filter drop-shadow-xs"
                       />
                     </div>
@@ -224,7 +227,10 @@ export const BenefitsTargetSection: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-tr from-red-500/10 via-transparent to-botanical-500/10 rounded-3xl pointer-events-none" />
                 <img
                   src={currentZone.cutout}
-                  alt={currentZone.name}
+                  alt={`${currentZone.name} targeted pain relief area`}
+                  width={176}
+                  height={176}
+                  loading="lazy"
                   className="w-full h-full object-contain filter drop-shadow-md transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
@@ -318,7 +324,10 @@ export const BenefitsTargetSection: React.FC = () => {
                       >
                         <img
                           src={z.cutout}
-                          alt={z.name}
+                          alt={`${z.name} joint relief`}
+                          width={44}
+                          height={44}
+                          loading="lazy"
                           className="w-full h-full object-contain filter drop-shadow-xs"
                         />
                       </div>
@@ -354,7 +363,10 @@ export const BenefitsTargetSection: React.FC = () => {
                         <div className="w-14 h-14 rounded-xl bg-white border border-cream-300 shadow-2xs flex items-center justify-center p-1.5 shrink-0">
                           <img
                             src={z.cutout}
-                            alt={z.name}
+                            alt={`${z.name} joint relief`}
+                            width={56}
+                            height={56}
+                            loading="lazy"
                             className="w-full h-full object-contain filter drop-shadow-xs"
                           />
                         </div>
@@ -427,6 +439,8 @@ export const BenefitsTargetSection: React.FC = () => {
                     <img
                       src={b.iconImg}
                       alt={b.tag}
+                      width={96}
+                      height={96}
                       className="w-full h-full object-contain filter drop-shadow-sm select-none"
                       loading="lazy"
                       draggable={false}

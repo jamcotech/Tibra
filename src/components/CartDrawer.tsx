@@ -92,20 +92,23 @@ export const CartDrawer: React.FC = () => {
                       <img
                         src={item.product.image}
                         alt={item.product.name}
+                        width={80}
+                        height={80}
+                        loading="lazy"
                         className="w-full h-full object-contain"
                       />
                     )}
                     {item.quantity === 2 && (
                       <div className="flex items-end justify-center gap-1">
-                        <img src={item.product.image} alt="Bottle 1" className="h-14 object-contain" />
-                        <img src={item.product.image} alt="Bottle 2" className="h-14 object-contain" />
+                        <img src={item.product.image} alt="Bottle 1" width={40} height={56} loading="lazy" className="h-14 object-contain" />
+                        <img src={item.product.image} alt="Bottle 2" width={40} height={56} loading="lazy" className="h-14 object-contain" />
                       </div>
                     )}
                     {item.quantity >= 3 && (
                       <div className="flex flex-col items-center justify-center">
                         <div className="flex items-end justify-center gap-1">
-                          <img src={item.product.image} alt="Bottle 1" className="h-11 object-contain" />
-                          <img src={item.product.image} alt="Bottle 2" className="h-11 object-contain" />
+                          <img src={item.product.image} alt="Bottle 1" width={32} height={44} loading="lazy" className="h-11 object-contain" />
+                          <img src={item.product.image} alt="Bottle 2" width={32} height={44} loading="lazy" className="h-11 object-contain" />
                         </div>
                         <span className="text-[10px] font-bold font-mono text-[#748C48] bg-[#748C48]/15 px-2 py-0.5 rounded-full leading-none mt-1 border border-[#748C48]/25">
                           +{item.quantity - 2}
@@ -209,7 +212,7 @@ export const CartDrawer: React.FC = () => {
                         name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                         price: 2600,
                         originalPrice: 3980,
-                        image: '/assets/purefix-bottle-box-showcase.jpg'
+                        image: '/assets/purefix-bottle-box-showcase.webp'
                       };
                       removeFromCart(cart[0].product.id);
                       addToCart(duo as any, 1);

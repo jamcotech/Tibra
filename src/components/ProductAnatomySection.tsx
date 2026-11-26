@@ -131,8 +131,11 @@ export const ProductAnatomySection: React.FC = () => {
               <div className="relative flex flex-col justify-center items-center pt-6 pb-2">
                 <div className="relative flex justify-center items-center">
                   <img
-                    src="/assets/purefix-bottle-004-transparent.png"
-                    alt="TIBRA NATURALS Pain Relief Oil Anatomy"
+                    src="/assets/purefix-bottle-004-transparent.webp"
+                    alt="TIBRA NATURALS Pain Relief Oil Anatomy and Quality Bottle"
+                    width={320}
+                    height={460}
+                    loading="lazy"
                     className="relative z-10 max-h-[280px] sm:max-h-[380px] lg:max-h-[460px] w-auto object-contain drop-shadow-[0_22px_36px_rgba(20,56,35,0.26)] drop-shadow-[0_8px_16px_rgba(0,0,0,0.16)] transition-transform duration-500 hover:scale-102"
                   />
 

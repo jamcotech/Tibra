@@ -60,8 +60,8 @@ export const BRAND_CONFIG = {
     duoOriginalPrice: 3980,
     unitPricePerBottleInDuo: 1300,
     category: 'Herbal Massage Oils',
-    image: '/assets/purefix-bottle-transparent.png',
-    boxImage: '/assets/purefix-bottle-box-showcase.jpg',
+    image: '/assets/purefix-bottle-transparent.webp',
+    boxImage: '/assets/purefix-bottle-box-showcase.webp',
     availability: 'https://schema.org/InStock',
     keyIngredients: [
       'Turmeric (Curcuma Longa)',

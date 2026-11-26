@@ -48,8 +48,8 @@ const routes = [
       '@type': 'Product',
       name: 'TIBRA NATURALS Pain Relief Oil',
       image: [
-        'https://www.tibranaturals.com/assets/purefix-bottle-box-showcase.jpg',
-        'https://www.tibranaturals.com/assets/packaging-showcase-003.png'
+        'https://www.tibranaturals.com/assets/purefix-bottle-box-showcase.webp',
+        'https://www.tibranaturals.com/assets/packaging-showcase-003.webp'
       ],
       description: '100% Natural Herbal Topical Blend formulated with Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia for soothing joint and muscle massage.',
       sku: 'TN-PRO-030',
@@ -97,7 +97,7 @@ const routes = [
   {
     path: '/about-us/',
     title: 'About Us | TIBRA NATURALS – Botanical Wellness Heritage',
-    description: 'Learn about TIBRA NATURALS, Pakistan\'s authentic botanical wellness house dedicated to 100% natural herbal joint comfort, mobility rituals, and uncompromised purity.',
+    description: 'Learn about TIBRA NATURALS, Pakistan’s authentic botanical wellness house dedicated to 100% natural herbal joint comfort, mobility rituals, and uncompromised purity.',
     h1: 'Rooted in Nature: Crafted for Active Living',
     content: 'At TIBRA NATURALS, we believe genuine wellness starts where synthetic shortcuts end. Dedicated to authentic botanical joint comfort in Pakistan.'
   },
@@ -186,36 +186,36 @@ routes.forEach((route) => {
   const canonicalUrl = `https://www.tibranaturals.com${route.path}`;
   let html = baseHtml;
 
-  // Replace Title
-  html = html.replace(/<title>.*?<\/title>/s, `<title>${route.title}</title>`);
+  // Replace Title (using function replacer to prevent special character interpretation)
+  html = html.replace(/<title>.*?<\/title>/s, () => `<title>${route.title}</title>`);
 
   // Replace Meta Description
   html = html.replace(
     /<meta name="description" content=".*?" \/>/s,
-    `<meta name="description" content="${route.description}" />`
+    () => `<meta name="description" content="${route.description}" />`
   );
 
   // Replace Meta Title
   html = html.replace(
     /<meta name="title" content=".*?" \/>/s,
-    `<meta name="title" content="${route.title}" />`
+    () => `<meta name="title" content="${route.title}" />`
   );
 
   // Replace Canonical Tag
   html = html.replace(
     /<link rel="canonical" href=".*?" \/>/s,
-    `<link rel="canonical" href="${canonicalUrl}" />`
+    () => `<link rel="canonical" href="${canonicalUrl}" />`
   );
 
   // Replace Open Graph Tags
-  html = html.replace(/<meta property="og:title" content=".*?" \/>/s, `<meta property="og:title" content="${route.title}" />`);
-  html = html.replace(/<meta property="og:description" content=".*?" \/>/s, `<meta property="og:description" content="${route.description}" />`);
-  html = html.replace(/<meta property="og:url" content=".*?" \/>/s, `<meta property="og:url" content="${canonicalUrl}" />`);
+  html = html.replace(/<meta property="og:title" content=".*?" \/>/s, () => `<meta property="og:title" content="${route.title}" />`);
+  html = html.replace(/<meta property="og:description" content=".*?" \/>/s, () => `<meta property="og:description" content="${route.description}" />`);
+  html = html.replace(/<meta property="og:url" content=".*?" \/>/s, () => `<meta property="og:url" content="${canonicalUrl}" />`);
 
   // Replace Twitter Tags
-  html = html.replace(/<meta name="twitter:title" content=".*?" \/>/s, `<meta name="twitter:title" content="${route.title}" />`);
-  html = html.replace(/<meta name="twitter:description" content=".*?" \/>/s, `<meta name="twitter:description" content="${route.description}" />`);
-  html = html.replace(/<meta name="twitter:url" content=".*?" \/>/s, `<meta name="twitter:url" content="${canonicalUrl}" />`);
+  html = html.replace(/<meta name="twitter:title" content=".*?" \/>/s, () => `<meta name="twitter:title" content="${route.title}" />`);
+  html = html.replace(/<meta name="twitter:description" content=".*?" \/>/s, () => `<meta name="twitter:description" content="${route.description}" />`);
+  html = html.replace(/<meta name="twitter:url" content=".*?" \/>/s, () => `<meta name="twitter:url" content="${canonicalUrl}" />`);
 
   // Inject Pre-rendered Semantic Shell into #root for zero-JS crawlers
   const fallbackShell = `
@@ -231,12 +231,12 @@ routes.forEach((route) => {
     </div>
   `;
 
-  html = html.replace('<div id="root"></div>', `<div id="root">${fallbackShell}</div>`);
+  html = html.replace('<div id="root"></div>', () => `<div id="root">${fallbackShell}</div>`);
 
   // Inject route schema if defined
   if (route.schema) {
     const schemaScript = `\n    <script type="application/ld+json">\n${JSON.stringify(route.schema, null, 2)}\n    </script>`;
-    html = html.replace('</head>', `${schemaScript}\n  </head>`);
+    html = html.replace('</head>', () => `${schemaScript}\n  </head>`);
   }
 
   // Create target directory
@@ -250,5 +250,22 @@ routes.forEach((route) => {
   fs.writeFileSync(targetFile, html, 'utf-8');
   console.log(`  ✓ Prerendered: ${route.path} -> ${targetFile}`);
 });
+
+// Also inject Homepage Pre-rendered Semantic Fallback Shell into root dist/index.html
+const rootHomepageFallbackShell = `
+    <div id="seo-prerender-shell" style="padding: 40px 20px; max-width: 900px; margin: 0 auto; font-family: sans-serif;">
+      <header>
+        <p style="font-size: 13px; color: #748C48; text-transform: uppercase; font-weight: bold;">TIBRA NATURALS Official Herbal Store</p>
+        <h1 style="font-size: 32px; color: #252E15; margin-top: 8px;">TIBRA NATURALS Herbal Wellness Oil – Move Freely. Live Better.</h1>
+      </header>
+      <main style="margin-top: 20px; font-size: 15px; line-height: 1.6; color: #3E4A28;">
+        <p>Discover TIBRA NATURALS Pain Relief Oil — 100% natural herbal blend formulated with 16 time-tested botanical oils and active roots including Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia for soothing joint comfort, muscle relaxation, and everyday mobility in Pakistan.</p>
+        <p><a href="https://www.tibranaturals.com/products/pain-relief-oil/" style="color: #748C48; font-weight: bold;">Shop TIBRA NATURALS Pain Relief Oil (30 ML) &rarr;</a></p>
+      </main>
+    </div>
+`;
+const updatedRootHtml = baseHtml.replace('<div id="root"></div>', () => `<div id="root">${rootHomepageFallbackShell}</div>`);
+fs.writeFileSync(indexHtmlPath, updatedRootHtml, 'utf-8');
+console.log(`  ✓ Injected Semantic Prerender Shell into root: dist/index.html`);
 
 console.log(`Static route prerendering completed successfully! (Total ${routes.length + 1} indexable pages: 1 root + ${routes.length} deep routes)`);

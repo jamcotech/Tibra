@@ -11,7 +11,7 @@ export const TIBRA_PRODUCTS: Product[] = [
     rating: 4.9,
     reviewsCount: 384,
     stock: 48,
-    image: '/assets/purefix-bottle-transparent.png',
+    image: '/assets/purefix-bottle-transparent.webp',
     description: '100% Natural Herbal Blend formulated with 16 time-tested botanical oils and active roots including Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia.',
     badge: 'Best Seller',
     bundleOffer: 'Save 25% (Flat Rs. 490 OFF)'
@@ -26,7 +26,7 @@ export const TIBRA_PRODUCTS: Product[] = [
     rating: 4.9,
     reviewsCount: 196,
     stock: 35,
-    image: '/assets/purefix-bottle-box-showcase.jpg',
+    image: '/assets/purefix-bottle-box-showcase.webp',
     description: 'Double pack for continuous daily morning & evening joint care. Best value for chronic knee, lumbar back and joint wellness.',
     badge: 'Best Value Duo',
     bundleOffer: 'Buy 2 for Rs. 2,600 — Save 35% (Flat Rs. 1,380 OFF)'
@@ -41,7 +41,7 @@ export const TIBRA_PRODUCTS: Product[] = [
     rating: 5.0,
     reviewsCount: 92,
     stock: 22,
-    image: '/assets/purefix-bottle-box-showcase.jpg',
+    image: '/assets/purefix-bottle-box-showcase.webp',
     description: 'Comprehensive family bundle. Keep one at home, one at the office, or gift to parents for pain-free mobility.',
     badge: 'Maximum Savings',
     bundleOffer: 'Buy 3 for Rs. 3,900 — Save 35% (Flat Rs. 2,070 OFF)'
@@ -96,7 +96,7 @@ export const INITIAL_ORDERS: Order[] = [
         productName: 'Tibra Natural Joint Oil (Pack of 2)',
         quantity: 1,
         price: 3390,
-        image: '/assets/purefix-bottle-box-showcase.jpg'
+        image: '/assets/purefix-bottle-box-showcase.webp'
       }
     ],
     subtotal: 3390,
@@ -124,7 +124,7 @@ export const INITIAL_ORDERS: Order[] = [
         productName: 'Tibra Natural Joint Oil (30 ML)',
         quantity: 2,
         price: 1850,
-        image: '/assets/purefix-bottle-transparent.png'
+        image: '/assets/purefix-bottle-transparent.webp'
       }
     ],
     subtotal: 3700,
@@ -152,7 +152,7 @@ export const INITIAL_ORDERS: Order[] = [
         productName: 'Tibra Natural Joint Oil (30 ML)',
         quantity: 1,
         price: 1850,
-        image: '/assets/purefix-bottle-transparent.png'
+        image: '/assets/purefix-bottle-transparent.webp'
       }
     ],
     subtotal: 1850,
@@ -177,7 +177,7 @@ export const INITIAL_ORDERS: Order[] = [
         productName: 'Tibra Natural Complete Family Care (Pack of 3)',
         quantity: 1,
         price: 4790,
-        image: '/assets/purefix-bottle-box-showcase.jpg'
+        image: '/assets/purefix-bottle-box-showcase.webp'
       }
     ],
     subtotal: 4790,

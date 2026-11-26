@@ -11,11 +11,24 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { addToCart, quickBuyNow, products } = useShop();
   const primaryProduct = products[0] || storeService.getProducts()[0];
+  const [isMobile, setIsMobile] = React.useState(false);
 
-  /* Feather-light GPU-accelerated video playback at 70% slow-motion with 0% CPU overhead */
+  /* Feather-light GPU-accelerated video playback at 70% slow-motion with 0% CPU overhead & accessibility check */
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+
     const video = videoRef.current;
     if (!video) return;
+
+    // Accessibility: Respect user's motion preferences
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      video.pause();
+      return;
+    }
 
     const enforcePlaybackRate = () => {
       if (video && video.playbackRate !== 0.7) {
@@ -97,12 +110,13 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             style={{
               objectFit: 'cover',
             }}
-            src="/assets/hero-video-002.mp4?v=2"
+            src="/assets/hero-video-002.mp4"
+            poster="/assets/hero-video-poster.webp"
             autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload={isMobile ? 'none' : 'metadata'}
           />
         </div>
 
@@ -146,9 +160,9 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             {/* Headline */}
             <div className="hero-t1 mb-4 sm:mb-6 space-y-1">
               <h1 className="text-[22px] xs:text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-botanical-950 tracking-tight leading-[1.12] sm:leading-[1.08]">
-                Move Freely.
-                <span className="block italic font-normal text-[#748C48] font-serif">
-                  Live Better.
+                TIBRA NATURALS <span className="block text-[#748C48] font-normal italic">Herbal Wellness Oil</span>
+                <span className="block text-base sm:text-2xl lg:text-3xl font-sans font-normal text-botanical-800/90 mt-1">
+                  Move Freely. Live Better.
                 </span>
               </h1>
               <p className="text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-gold-dark pt-1">

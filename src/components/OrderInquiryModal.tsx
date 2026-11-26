@@ -39,7 +39,7 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
     id: 'tibra-natural-joint-oil-30ml',
     name: 'Tibra Natural Joint Oil',
     price: 1500,
-    image: '/assets/purefix-bottle-transparent.png',
+    image: '/assets/purefix-bottle-transparent.webp',
   };
   const unitPrice = primaryProduct.price;
   const pricingCalc = calculateItemPrice(primaryProduct, quantity);
@@ -179,21 +179,30 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                 <div className="w-14 sm:w-16 h-15 flex items-center justify-center shrink-0">
                   {quantity === 1 && (
                     <img
-                      src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
-                      alt="1 Bottle"
+                      src={primaryProduct.image || '/assets/purefix-bottle-transparent.webp'}
+                      alt="1 Bottle 30ml"
+                      width={48}
+                      height={56}
+                      loading="lazy"
                       className="h-13 sm:h-14 object-contain drop-shadow-sm transition-all"
                     />
                   )}
                   {quantity === 2 && (
                     <div className="flex items-end justify-center gap-1 transition-all">
                       <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.webp'}
                         alt="Bottle 1"
+                        width={36}
+                        height={44}
+                        loading="lazy"
                         className="h-10 sm:h-11 object-contain drop-shadow-xs"
                       />
                       <img
-                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                        src={primaryProduct.image || '/assets/purefix-bottle-transparent.webp'}
                         alt="Bottle 2"
+                        width={36}
+                        height={44}
+                        loading="lazy"
                         className="h-10 sm:h-11 object-contain drop-shadow-xs"
                       />
                     </div>
@@ -202,13 +211,19 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                     <div className="flex flex-col items-center justify-center transition-all">
                       <div className="flex items-end justify-center gap-1">
                         <img
-                          src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                          src={primaryProduct.image || '/assets/purefix-bottle-transparent.webp'}
                           alt="Bottle 1"
+                          width={32}
+                          height={38}
+                          loading="lazy"
                           className="h-9 sm:h-9.5 object-contain drop-shadow-xs"
                         />
                         <img
-                          src={primaryProduct.image || '/assets/purefix-bottle-transparent.png'}
+                          src={primaryProduct.image || '/assets/purefix-bottle-transparent.webp'}
                           alt="Bottle 2"
+                          width={32}
+                          height={38}
+                          loading="lazy"
                           className="h-9 sm:h-9.5 object-contain drop-shadow-xs"
                         />
                       </div>
