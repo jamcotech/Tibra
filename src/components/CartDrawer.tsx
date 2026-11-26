@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, ShoppingBag, Sparkles } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
-import { calculateItemPrice } from '../services/storeService';
+import { calculateItemPrice, calculateCartTotal, storeService } from '../services/storeService';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -14,6 +14,11 @@ export const CartDrawer: React.FC = () => {
     addToCart,
     navigate
   } = useShop();
+
+  const pricing = storeService.getPricingConfig();
+  const cartSummary = calculateCartTotal(cart, pricing);
+  const shippingFee = cartSummary.shippingFee;
+  const estimatedTotal = cartSummary.grandTotal;
 
   if (!isCartDrawerOpen) return null;
 
@@ -58,7 +63,9 @@ export const CartDrawer: React.FC = () => {
               <Sparkles className="w-3.5 h-3.5 text-gold-light" />
               <span>Fast Doorstep Delivery Across Pakistan</span>
             </span>
-            <span className="font-mono text-[10px] text-cream-200 bg-white/10 px-2 py-0.5 rounded">Rs. 200</span>
+            <span className="font-mono text-[10px] text-cream-200 bg-white/10 px-2 py-0.5 rounded">
+              {shippingFee === 0 ? 'FREE DELIVERY' : `Rs. ${shippingFee}`}
+            </span>
           </div>
 
           {/* Items List */}
@@ -237,13 +244,17 @@ export const CartDrawer: React.FC = () => {
                 <div className="flex justify-between text-botanical-700">
                   <span>Shipping Fee</span>
                   <span className="font-bold text-botanical-950 font-mono">
-                    Rs. 200
+                    {shippingFee === 0 ? (
+                      <span className="text-[#748C48] font-bold">FREE (Delivery Included)</span>
+                    ) : (
+                      `Rs. ${shippingFee}`
+                    )}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm font-serif font-bold text-botanical-950 pt-2 border-t border-cream-200">
                   <span>Estimated Total</span>
                   <span className="text-base text-botanical-900 font-mono font-bold">
-                    Rs. {(cartSubtotal + 200).toLocaleString()}
+                    Rs. {estimatedTotal.toLocaleString()}
                   </span>
                 </div>
               </div>

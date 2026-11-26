@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ShieldCheck, CheckCircle2, Lock, Truck, CreditCard, Sparkles, Minus, Plus } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
-import { storeService, calculateItemPrice } from '../services/storeService';
+import { storeService, calculateItemPrice, calculateCartTotal } from '../services/storeService';
 import analyticsService from '../services/analyticsService';
 import metaPixelService from '../services/metaPixelService';
 import { SeoHead } from './SeoHead';
@@ -25,8 +25,9 @@ export const CheckoutPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const shippingFee = cart.length === 0 ? 0 : 200;
-  const total = cartSubtotal + shippingFee;
+  const cartSummary = calculateCartTotal(cart);
+  const shippingFee = cartSummary.shippingFee;
+  const total = cartSummary.grandTotal;
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -620,7 +621,11 @@ export const CheckoutPage: React.FC = () => {
               <div className="flex justify-between text-botanical-700">
                 <span>Shipping Fee (Nationwide)</span>
                 <span className="font-bold text-botanical-950 font-mono">
-                  Rs. 200
+                  {shippingFee === 0 ? (
+                    <span className="text-[#748C48] font-bold">FREE (Delivery Included)</span>
+                  ) : (
+                    `Rs. ${shippingFee}`
+                  )}
                 </span>
               </div>
               {cartDiscount > 0 && (

@@ -759,7 +759,8 @@ adminHtml = adminHtml.replace(/<link rel="preload" as="image" href="\/assets\/he
 adminHtml = adminHtml.replace(/<!-- Schema\.org JSON-LD.*?<\/script>/s, '');
 
 fs.writeFileSync(path.join(adminDir, 'index.html'), adminHtml, 'utf-8');
-console.log(`  ✓ Generated Admin Portal entry: dist/admin/index.html (noindex, nofollow)`);
+fs.writeFileSync(path.join(distDir, 'admin.html'), adminHtml, 'utf-8');
+console.log(`  ✓ Generated Admin Portal entry: dist/admin/index.html & dist/admin.html (noindex, nofollow)`);
 
 // Generate Transactional Pages (cart, checkout, order-success) with noindex, follow
 const transactionalRoutes = [

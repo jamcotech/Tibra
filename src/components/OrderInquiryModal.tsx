@@ -41,9 +41,12 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
     price: 1500,
     image: '/assets/purefix-bottle-transparent.webp',
   };
-  const unitPrice = primaryProduct.price;
-  const pricingCalc = calculateItemPrice(primaryProduct, quantity);
+  const pricing = storeService.getPricingConfig();
+  const pricingCalc = calculateItemPrice(primaryProduct, quantity, pricing);
+  const isFreeDelivery = quantity >= 2 || pricingCalc.total >= pricing.freeDeliveryThreshold;
+  const shippingFee = isFreeDelivery ? 0 : pricing.singleBottle.deliveryCharges;
   const totalPrice = pricingCalc.total;
+  const grandTotal = totalPrice + shippingFee;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,13 +64,13 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
           productId: primaryProduct.id,
           productName: primaryProduct.name,
           quantity: quantity,
-          price: quantity >= 2 ? 1300 : unitPrice,
+          price: Math.round(totalPrice / quantity),
           image: primaryProduct.image,
         },
       ],
       subtotal: totalPrice,
-      shippingFee: 0,
-      total: totalPrice,
+      shippingFee,
+      total: grandTotal,
       status: 'pending',
       notes: notes ? `Customer Note: ${notes}` : 'Placed via Header Quick Order Modal',
     });
@@ -294,11 +297,20 @@ export const OrderInquiryModal: React.FC<OrderInquiryModalProps> = ({ isOpen, on
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 text-right shrink-0">
-                  <span className="text-[11px] text-botanical-600 font-medium">Total:</span>
+                <div className="flex items-center gap-1.5 text-right shrink-0">
+                  <span className="text-[11px] text-botanical-600 font-medium">Payable:</span>
                   <span className="text-xs sm:text-sm font-bold text-botanical-950 font-mono">
-                    Rs. {totalPrice.toLocaleString()}
+                    Rs. {grandTotal.toLocaleString()}
                   </span>
+                  {shippingFee === 0 ? (
+                    <span className="text-[9px] text-emerald-800 bg-emerald-100 font-bold px-1.5 py-0.2 rounded">
+                      Free Delivery
+                    </span>
+                  ) : (
+                    <span className="text-[9px] text-stone-500 font-medium">
+                      (+Rs. {shippingFee} Delivery)
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

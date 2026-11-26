@@ -7,7 +7,11 @@ import type {
   CustomerRecord,
   StoreSettings,
   AdminUser,
-  SalesAnalytics
+  SalesAnalytics,
+  PricingConfig,
+  SenderSettings,
+  OrderStatusHistoryEntry,
+  OrderPricingSnapshot
 } from '../types/ecommerce';
 import { TIBRA_PRODUCTS, INITIAL_ORDERS, INITIAL_INVENTORY } from './mockData';
 
@@ -18,6 +22,56 @@ const STORAGE_KEYS = {
   PRODUCTS: 'tibra_products_v3',
   AUTH: 'tibra_spree_auth_v1',
   SETTINGS: 'tibra_store_settings_v1',
+  PRICING: 'tibra_pricing_config_v1',
+  SENDER: 'tibra_sender_settings_v1',
+};
+
+export const DEFAULT_PRICING_CONFIG: PricingConfig = {
+  singleBottle: {
+    id: 'tibra-natural-joint-oil-30ml',
+    name: 'TIBRA NATURALS Pain Relief Oil',
+    sku: 'TN-PRO-030',
+    unitPrice: 1500,
+    originalPrice: 1990,
+    deliveryCharges: 200,
+    isDeliveryIncluded: false,
+  },
+  twoBottleCombo: {
+    id: 'tibra-natural-joint-oil-bundle-2',
+    name: 'TIBRA NATURALS Two-Bottle Combo',
+    sku: 'TN-PRO-060-DUO',
+    packagePrice: 2500,
+    originalPrice: 3980,
+    deliveryCharges: 0,
+    isDeliveryIncluded: true,
+    enabled: true,
+  },
+  threeBottleFamily: {
+    id: 'tibra-natural-joint-oil-family-pack',
+    name: 'TIBRA NATURALS Complete Family Care (Pack of 3)',
+    sku: 'TN-PRO-090-TRI',
+    packagePrice: 3600,
+    originalPrice: 5970,
+    deliveryCharges: 0,
+    isDeliveryIncluded: true,
+    enabled: true,
+  },
+  standardDeliveryFee: 200,
+  freeDeliveryThreshold: 2500,
+  updatedAt: new Date().toISOString(),
+};
+
+export const DEFAULT_SENDER_SETTINGS: SenderSettings = {
+  businessName: 'TIBRA NATURALS',
+  senderAddress: 'R-60, Pink Residency, Gulistan-e-Johar, Block 8, Karachi, Pakistan.',
+  officialPhone: '+92 300 1234567',
+  whatsappNumber: '+92 300 1234567',
+  website: 'https://www.tibranaturals.com/',
+  facebookUrl: 'https://www.facebook.com/tibranaturals',
+  instagramUrl: 'https://www.instagram.com/tibranaturals/',
+  socialHandle: '@tibranaturals',
+  logoUrl: '/assets/tibra-logo.png',
+  taxRatePercent: 0,
 };
 
 const DEFAULT_SETTINGS: StoreSettings = {
@@ -28,7 +82,7 @@ const DEFAULT_SETTINGS: StoreSettings = {
   currency: 'PKR',
   timezone: 'Asia/Karachi (UTC+5)',
   standardShippingFee: 200,
-  freeDeliveryThreshold: 3000,
+  freeDeliveryThreshold: 2500,
   codEnabled: true,
   bankTransferEnabled: true,
   autoFulfill: false,
@@ -41,85 +95,306 @@ const DEFAULT_ADMIN: AdminUser = {
   role: 'Store Administrator & Owner',
 };
 
-export function calculateItemPrice(product: Product, quantity: number): {
+// Transition matrix for order workflow guards
+export const VALID_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  pending: ['approved', 'cancelled'],
+  approved: ['processing', 'packed', 'ready_for_dispatch', 'cancelled'],
+  processing: ['packed', 'ready_for_dispatch', 'cancelled'],
+  packed: ['ready_for_dispatch', 'processing', 'cancelled'],
+  ready_for_dispatch: ['dispatched', 'packed', 'cancelled'],
+  dispatched: ['delivered', 'returned', 'in_transit', 'out_for_delivery'],
+  delivered: ['returned'],
+  cancelled: ['pending'], // Admin can reopen cancelled with audit
+  returned: [],
+  confirmed: ['processing', 'packed', 'ready_for_dispatch', 'cancelled'],
+  order_placed: ['order_confirmed', 'approved', 'cancelled'],
+  order_confirmed: ['processing', 'packed', 'ready_for_dispatch', 'cancelled'],
+  shipment_booked: ['dispatched', 'in_transit', 'courier_picked_up'],
+  courier_picked_up: ['in_transit', 'out_for_delivery'],
+  in_transit: ['arrived_at_hub', 'out_for_delivery', 'delivered', 'delayed'],
+  arrived_at_hub: ['out_for_delivery', 'held_at_hub'],
+  out_for_delivery: ['delivered', 'delivery_attempted', 'customer_unavailable'],
+  delivery_attempted: ['out_for_delivery', 'returned_to_sender'],
+  delayed: ['in_transit', 'out_for_delivery'],
+  address_issue: ['out_for_delivery', 'returned_to_sender'],
+  customer_unavailable: ['out_for_delivery', 'returned_to_sender'],
+  held_at_hub: ['out_for_delivery', 'returned_to_sender'],
+  returned_to_sender: ['returned'],
+};
+
+export function canTransitionStatus(from: OrderStatus, to: OrderStatus): boolean {
+  if (from === to) return true;
+  const allowed = VALID_STATUS_TRANSITIONS[from];
+  return Array.isArray(allowed) && allowed.includes(to);
+}
+
+/**
+ * Centrally calculated item pricing using dynamic PricingConfig
+ */
+export function calculateItemPrice(product: Product, quantity: number, explicitPricing?: PricingConfig): {
   total: number;
   regularTotal: number;
   originalRegularTotal: number;
   discount: number;
   percentOff: number;
   isDuoApplied: boolean;
+  unitPrice: number;
 } {
-  const regularUnitPrice = product.originalPrice || (product.id.includes('bundle-2') ? 3980 : 1990);
-  const originalRegularTotal = regularUnitPrice * quantity;
+  const pricing = explicitPricing || storeService.getPricingConfig();
+  const isCombo = product.id === 'tibra-natural-joint-oil-bundle-2' || product.id.includes('bundle') || product.id.includes('combo');
+  const isFamily = product.id === 'tibra-natural-joint-oil-family-pack' || product.id.includes('family');
 
-  if (product.id === 'tibra-natural-joint-oil-30ml' || product.price === 1500) {
-    // 1 bottle = Rs. 1,500; 2 or more bottles = Rs. 1,300 each (2 = Rs. 2,600, 3 = Rs. 3,900, 4 = Rs. 5,200, etc.)
-    const total = quantity >= 2 ? quantity * 1300 : 1500 * quantity;
-    const discount = originalRegularTotal - total;
-    const percentOff = Math.round((discount / originalRegularTotal) * 100);
-    return {
-      total,
-      regularTotal: originalRegularTotal,
-      originalRegularTotal,
-      discount,
-      percentOff,
-      isDuoApplied: quantity >= 2,
-    };
+  let total = 0;
+  let regularTotal = 0;
+  let isDuoApplied = false;
+  let unitPrice = pricing.singleBottle.unitPrice;
+
+  if (isCombo) {
+    total = pricing.twoBottleCombo.packagePrice * quantity;
+    regularTotal = pricing.twoBottleCombo.originalPrice * quantity;
+    unitPrice = Math.round(pricing.twoBottleCombo.packagePrice / 2);
+    isDuoApplied = true;
+  } else if (isFamily) {
+    total = pricing.threeBottleFamily.packagePrice * quantity;
+    regularTotal = pricing.threeBottleFamily.originalPrice * quantity;
+    unitPrice = Math.round(pricing.threeBottleFamily.packagePrice / 3);
+    isDuoApplied = true;
+  } else {
+    // Single product line item
+    if (quantity === 1) {
+      total = pricing.singleBottle.unitPrice;
+      regularTotal = pricing.singleBottle.originalPrice;
+      unitPrice = pricing.singleBottle.unitPrice;
+      isDuoApplied = false;
+    } else if (quantity === 2) {
+      total = pricing.twoBottleCombo.packagePrice;
+      regularTotal = pricing.twoBottleCombo.originalPrice;
+      unitPrice = Math.round(pricing.twoBottleCombo.packagePrice / 2);
+      isDuoApplied = true;
+    } else if (quantity === 3) {
+      total = pricing.threeBottleFamily.packagePrice;
+      regularTotal = pricing.threeBottleFamily.originalPrice;
+      unitPrice = Math.round(pricing.threeBottleFamily.packagePrice / 3);
+      isDuoApplied = true;
+    } else {
+      const comboUnitPrice = Math.round(pricing.twoBottleCombo.packagePrice / 2);
+      total = comboUnitPrice * quantity;
+      regularTotal = pricing.singleBottle.originalPrice * quantity;
+      unitPrice = comboUnitPrice;
+      isDuoApplied = true;
+    }
   }
-  const regularTotal = (product.originalPrice || product.price) * quantity;
-  const total = product.price * quantity;
+
   const discount = Math.max(0, regularTotal - total);
   const percentOff = regularTotal > 0 ? Math.round((discount / regularTotal) * 100) : 0;
+
   return {
     total,
     regularTotal,
     originalRegularTotal: regularTotal,
     discount,
     percentOff,
-    isDuoApplied: product.id.includes('bundle') || quantity >= 2,
+    isDuoApplied,
+    unitPrice
   };
 }
 
-export function calculateCartTotal(cart: CartItem[]): {
+/**
+ * Centrally calculated cart totals with delivery charge rules
+ */
+export function calculateCartTotal(cart: CartItem[], explicitPricing?: PricingConfig): {
   subtotal: number;
   regularSubtotal: number;
   totalDiscount: number;
+  shippingFee: number;
+  grandTotal: number;
+  isFreeDelivery: boolean;
 } {
+  const pricing = explicitPricing || storeService.getPricingConfig();
+  if (cart.length === 0) {
+    return {
+      subtotal: 0,
+      regularSubtotal: 0,
+      totalDiscount: 0,
+      shippingFee: 0,
+      grandTotal: 0,
+      isFreeDelivery: true
+    };
+  }
+
   let subtotal = 0;
   let regularSubtotal = 0;
+  let totalBottles = 0;
+  let hasCombo = false;
+
   for (const item of cart) {
-    const calc = calculateItemPrice(item.product, item.quantity);
+    const calc = calculateItemPrice(item.product, item.quantity, pricing);
     subtotal += calc.total;
     regularSubtotal += calc.regularTotal;
+
+    if (item.product.id.includes('bundle') || item.product.id.includes('combo')) {
+      totalBottles += item.quantity * 2;
+      hasCombo = true;
+    } else if (item.product.id.includes('family')) {
+      totalBottles += item.quantity * 3;
+      hasCombo = true;
+    } else {
+      totalBottles += item.quantity;
+      if (item.quantity >= 2) hasCombo = true;
+    }
   }
+
+  // Delivery Charges Rule:
+  // Single bottle (1 bottle) = Rs. 200 delivery charges (Final payable = 1,700)
+  // Two-Bottle Combo (or >= 2 bottles or subtotal >= freeDeliveryThreshold) = Delivery Included (Rs. 0, Final payable = 2,500)
+  const isFreeDelivery = hasCombo || totalBottles >= 2 || subtotal >= pricing.freeDeliveryThreshold;
+  const shippingFee = isFreeDelivery ? 0 : pricing.singleBottle.deliveryCharges;
+  const grandTotal = subtotal + shippingFee;
+
   return {
     subtotal,
     regularSubtotal,
-    totalDiscount: regularSubtotal - subtotal,
+    totalDiscount: Math.max(0, regularSubtotal - subtotal),
+    shippingFee,
+    grandTotal,
+    isFreeDelivery
   };
 }
 
 export const storeService = {
-  // PRODUCTS
-  getProducts(): Product[] {
-    const data = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+  // PRICING MANAGEMENT
+  getPricingConfig(): PricingConfig {
+    if (typeof window === 'undefined') return DEFAULT_PRICING_CONFIG;
+    const data = localStorage.getItem(STORAGE_KEYS.PRICING);
     if (!data) {
-      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(TIBRA_PRODUCTS));
-      return TIBRA_PRODUCTS;
+      localStorage.setItem(STORAGE_KEYS.PRICING, JSON.stringify(DEFAULT_PRICING_CONFIG));
+      return DEFAULT_PRICING_CONFIG;
     }
     try {
-      const parsed: Product[] = JSON.parse(data);
-      const updated = parsed.map(item => {
-        const canonical = TIBRA_PRODUCTS.find(p => p.id === item.id);
-        if (canonical && (item.price !== canonical.price || item.originalPrice !== canonical.originalPrice)) {
-          return { ...item, price: canonical.price, originalPrice: canonical.originalPrice, bundleOffer: canonical.bundleOffer };
-        }
-        return item;
-      });
-      return updated;
+      const parsed = JSON.parse(data);
+      return {
+        ...DEFAULT_PRICING_CONFIG,
+        ...parsed,
+        singleBottle: { ...DEFAULT_PRICING_CONFIG.singleBottle, ...parsed.singleBottle },
+        twoBottleCombo: { ...DEFAULT_PRICING_CONFIG.twoBottleCombo, ...parsed.twoBottleCombo },
+        threeBottleFamily: { ...DEFAULT_PRICING_CONFIG.threeBottleFamily, ...parsed.threeBottleFamily },
+      };
     } catch {
-      return TIBRA_PRODUCTS;
+      return DEFAULT_PRICING_CONFIG;
     }
+  },
+
+  updatePricingConfig(updates: Partial<PricingConfig>): PricingConfig {
+    const current = this.getPricingConfig();
+    const updated: PricingConfig = {
+      ...current,
+      ...updates,
+      singleBottle: updates.singleBottle ? { ...current.singleBottle, ...updates.singleBottle } : current.singleBottle,
+      twoBottleCombo: updates.twoBottleCombo ? { ...current.twoBottleCombo, ...updates.twoBottleCombo } : current.twoBottleCombo,
+      threeBottleFamily: updates.threeBottleFamily ? { ...current.threeBottleFamily, ...updates.threeBottleFamily } : current.threeBottleFamily,
+      updatedAt: new Date().toISOString(),
+    };
+    localStorage.setItem(STORAGE_KEYS.PRICING, JSON.stringify(updated));
+
+    // Synchronize products catalog with updated pricing
+    const products = this.getProducts().map(p => {
+      if (p.id === 'tibra-natural-joint-oil-30ml' || p.id === 'tibra-joint-oil-30ml') {
+        return {
+          ...p,
+          price: updated.singleBottle.unitPrice,
+          originalPrice: updated.singleBottle.originalPrice,
+          sku: updated.singleBottle.sku,
+        };
+      }
+      if (p.id === 'tibra-natural-joint-oil-bundle-2' || p.id === 'tibra-joint-oil-bundle-2') {
+        return {
+          ...p,
+          price: updated.twoBottleCombo.packagePrice,
+          originalPrice: updated.twoBottleCombo.originalPrice,
+          sku: updated.twoBottleCombo.sku,
+        };
+      }
+      if (p.id === 'tibra-natural-joint-oil-family-pack') {
+        return {
+          ...p,
+          price: updated.threeBottleFamily.packagePrice,
+          originalPrice: updated.threeBottleFamily.originalPrice,
+          sku: updated.threeBottleFamily.sku,
+        };
+      }
+      return p;
+    });
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+
+    window.dispatchEvent(new Event('tibra_pricing_updated'));
+    window.dispatchEvent(new Event('tibra_products_updated'));
+    return updated;
+  },
+
+  // SENDER / BUSINESS SETTINGS (for branded PDF slips)
+  getSenderSettings(): SenderSettings {
+    if (typeof window === 'undefined') return DEFAULT_SENDER_SETTINGS;
+    const data = localStorage.getItem(STORAGE_KEYS.SENDER);
+    if (!data) {
+      localStorage.setItem(STORAGE_KEYS.SENDER, JSON.stringify(DEFAULT_SENDER_SETTINGS));
+      return DEFAULT_SENDER_SETTINGS;
+    }
+    try {
+      return { ...DEFAULT_SENDER_SETTINGS, ...JSON.parse(data) };
+    } catch {
+      return DEFAULT_SENDER_SETTINGS;
+    }
+  },
+
+  updateSenderSettings(updates: Partial<SenderSettings>): SenderSettings {
+    const current = this.getSenderSettings();
+    const updated: SenderSettings = { ...current, ...updates };
+    localStorage.setItem(STORAGE_KEYS.SENDER, JSON.stringify(updated));
+    window.dispatchEvent(new Event('tibra_sender_updated'));
+    return updated;
+  },
+
+  // PRODUCTS
+  getProducts(): Product[] {
+    const pricing = this.getPricingConfig();
+    const data = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.PRODUCTS) : null;
+    let products = TIBRA_PRODUCTS;
+    if (data) {
+      try {
+        products = JSON.parse(data);
+      } catch {
+        products = TIBRA_PRODUCTS;
+      }
+    }
+
+    // Always dynamically sync with active pricing configuration
+    return products.map(item => {
+      if (item.id === 'tibra-natural-joint-oil-30ml' || item.id === 'tibra-joint-oil-30ml') {
+        return {
+          ...item,
+          price: pricing.singleBottle.unitPrice,
+          originalPrice: pricing.singleBottle.originalPrice,
+          sku: pricing.singleBottle.sku,
+        };
+      }
+      if (item.id === 'tibra-natural-joint-oil-bundle-2' || item.id === 'tibra-joint-oil-bundle-2') {
+        return {
+          ...item,
+          price: pricing.twoBottleCombo.packagePrice,
+          originalPrice: pricing.twoBottleCombo.originalPrice,
+          sku: pricing.twoBottleCombo.sku,
+        };
+      }
+      if (item.id === 'tibra-natural-joint-oil-family-pack') {
+        return {
+          ...item,
+          price: pricing.threeBottleFamily.packagePrice,
+          originalPrice: pricing.threeBottleFamily.originalPrice,
+          sku: pricing.threeBottleFamily.sku,
+        };
+      }
+      return item;
+    });
   },
 
   getProductById(id: string): Product | undefined {
@@ -230,20 +505,78 @@ export const storeService = {
     }
   },
 
-  createOrder(orderData: Omit<Order, 'id' | 'orderNumber' | 'date'> & { trackingAccessToken?: string }): Order {
+  createOrder(orderData: Omit<Order, 'id' | 'orderNumber' | 'date'> & { trackingAccessToken?: string; status?: OrderStatus }): Order {
     const orders = this.getOrders();
     const orderNumber = `TN-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
     const now = new Date();
     const dateFormatted = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     const trackingAccessToken = orderData.trackingAccessToken || `tn_trk_${Math.random().toString(36).substring(2, 10)}${Date.now().toString(36)}`;
 
+    const pricing = this.getPricingConfig();
+    const status: OrderStatus = orderData.status || 'pending';
+
+    // Build frozen pricing snapshot
+    let packageType: 'single' | 'combo' | 'family' | 'custom' = 'single';
+    const totalBottles = orderData.items.reduce((sum, item) => {
+      if (item.productId.includes('family')) return sum + item.quantity * 3;
+      if (item.productId.includes('bundle') || item.productId.includes('combo')) return sum + item.quantity * 2;
+      return sum + item.quantity;
+    }, 0);
+
+    if (totalBottles === 2 || orderData.items.some(i => i.productId.includes('bundle') || i.productId.includes('combo'))) {
+      packageType = 'combo';
+    } else if (totalBottles >= 3 || orderData.items.some(i => i.productId.includes('family'))) {
+      packageType = 'family';
+    }
+
+    const isDeliveryIncluded = packageType !== 'single' || totalBottles >= 2 || orderData.shippingFee === 0;
+
+    const pricingSnapshot: OrderPricingSnapshot = orderData.pricingSnapshot || {
+      unitPrice: pricing.singleBottle.unitPrice,
+      deliveryCharges: isDeliveryIncluded ? 0 : pricing.singleBottle.deliveryCharges,
+      isDeliveryIncluded,
+      packageType,
+      calculatedAt: now.toISOString(),
+    };
+
+    // Ensure item attributes have SKU and subtotal
+    const items = orderData.items.map(item => {
+      const canonical = this.getProductById(item.productId);
+      const sku = item.sku || canonical?.sku || (item.productId.includes('bundle') ? 'TN-PRO-060-DUO' : 'TN-PRO-030');
+      const originalUnitPrice = item.originalUnitPrice || canonical?.originalPrice || (item.price > 1500 ? 1990 : 1990);
+      return {
+        ...item,
+        sku,
+        originalUnitPrice,
+        subtotal: item.subtotal !== undefined ? item.subtotal : item.price * item.quantity,
+      };
+    });
+
+    const initialHistory: OrderStatusHistoryEntry[] = orderData.statusHistory && orderData.statusHistory.length > 0
+      ? orderData.statusHistory
+      : [
+          {
+            id: `hist-${Date.now()}-1`,
+            status,
+            timestamp: now.toISOString(),
+            note: 'Order placed by customer via website checkout',
+            updatedBy: 'Customer / System',
+          },
+        ];
+
     const newOrder: Order = {
       ...orderData,
       id: `ord-${Date.now()}`,
       orderNumber,
       date: dateFormatted,
-      trackingAccessToken
-    } as any;
+      status,
+      items,
+      statusHistory: initialHistory,
+      pricingSnapshot,
+      trackingAccessToken,
+      discount: orderData.discount !== undefined ? orderData.discount : 0,
+      tax: orderData.tax !== undefined ? orderData.tax : 0,
+    };
 
     orders.unshift(newOrder);
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
@@ -298,22 +631,194 @@ export const storeService = {
     return this.getOrders();
   },
 
-  updateOrderStatus(orderId: string, status: OrderStatus, courier?: string, tracking?: string): void {
-    const orders = this.getOrders().map(o => {
-      if (o.id === orderId) {
-        return {
-          ...o,
-          status,
-          deliveryCourier: courier !== undefined ? courier : o.deliveryCourier,
-          trackingNumber: tracking !== undefined ? tracking : o.trackingNumber,
-          paymentStatus: status === 'delivered' ? 'paid' : o.paymentStatus
-        };
-      }
-      return o;
-    });
+  approveOrder(orderId: string, adminUser = 'Administrator', note = 'Order approved for processing'): Order {
+    return this.updateOrderStatusWithAudit(orderId, 'approved', undefined, undefined, note, adminUser);
+  },
+
+  rejectOrder(orderId: string, reason: string, adminUser = 'Administrator'): Order {
+    return this.updateOrderStatusWithAudit(orderId, 'cancelled', undefined, undefined, `Order rejected / cancelled: ${reason}`, adminUser);
+  },
+
+  updateOrderStatusWithAudit(
+    orderId: string,
+    newStatus: OrderStatus,
+    courier?: string,
+    tracking?: string,
+    note?: string,
+    adminUser = 'Administrator'
+  ): Order {
+    const orders = this.getOrders();
+    const orderIndex = orders.findIndex(o => o.id === orderId);
+    if (orderIndex === -1) {
+      throw new Error(`Order ${orderId} not found`);
+    }
+
+    const order = orders[orderIndex];
+    const previousStatus = order.status;
+
+    // Validate status transition guard
+    if (!canTransitionStatus(previousStatus, newStatus)) {
+      console.warn(`[storeService] Warning: Transitioning from ${previousStatus} to ${newStatus} is guarded.`);
+    }
+
+    const now = new Date();
+    const historyEntry: OrderStatusHistoryEntry = {
+      id: `hist-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      status: newStatus,
+      previousStatus,
+      timestamp: now.toISOString(),
+      note: note || `Status updated from ${previousStatus} to ${newStatus}`,
+      updatedBy: adminUser,
+    };
+
+    const currentHistory = Array.isArray(order.statusHistory) ? order.statusHistory : [];
+
+    const updatedOrder: Order = {
+      ...order,
+      status: newStatus,
+      deliveryCourier: courier !== undefined ? courier : order.deliveryCourier,
+      trackingNumber: tracking !== undefined ? tracking : order.trackingNumber,
+      paymentStatus: newStatus === 'delivered' ? 'paid' : order.paymentStatus,
+      dispatchedAt: newStatus === 'dispatched' ? (order.dispatchedAt || now.toISOString()) : order.dispatchedAt,
+      statusHistory: [...currentHistory, historyEntry],
+    };
+
+    orders[orderIndex] = updatedOrder;
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+
+    // Sync to API backend if available
+    if (typeof window !== 'undefined' && typeof fetch === 'function') {
+      fetch('/api/orders', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: updatedOrder.id,
+          orderNumber: updatedOrder.orderNumber,
+          status: newStatus,
+          deliveryCourier: updatedOrder.deliveryCourier,
+          trackingNumber: updatedOrder.trackingNumber,
+          notes: updatedOrder.notes,
+          adminNotes: updatedOrder.adminNotes,
+          statusHistory: updatedOrder.statusHistory,
+        })
+      }).catch(err => {
+        console.warn('[storeService] Failed syncing updated order to /api/orders:', err);
+      });
+    }
+
     window.dispatchEvent(new Event('tibra_orders_updated'));
     window.dispatchEvent(new Event('purefix_orders_updated'));
+    return updatedOrder;
+  },
+
+  updateCustomerShippingInfo(
+    orderId: string,
+    shippingData: {
+      customerName?: string;
+      customerPhone?: string;
+      alternatePhone?: string;
+      shippingAddress?: string;
+      city?: string;
+      postalCode?: string;
+      adminNotes?: string;
+    },
+    adminUser = 'Administrator'
+  ): Order {
+    const orders = this.getOrders();
+    const orderIndex = orders.findIndex(o => o.id === orderId);
+    if (orderIndex === -1) throw new Error(`Order ${orderId} not found`);
+
+    const order = orders[orderIndex];
+    if (order.status === 'dispatched' || order.status === 'delivered') {
+      throw new Error('Cannot edit customer shipping details after the order has been dispatched or delivered.');
+    }
+
+    const now = new Date();
+    const historyEntry: OrderStatusHistoryEntry = {
+      id: `hist-${Date.now()}`,
+      status: order.status,
+      timestamp: now.toISOString(),
+      note: `Customer shipping details updated: ${Object.keys(shippingData).join(', ')}`,
+      updatedBy: adminUser,
+    };
+
+    const currentHistory = Array.isArray(order.statusHistory) ? order.statusHistory : [];
+
+    const updatedOrder: Order = {
+      ...order,
+      ...shippingData,
+      statusHistory: [...currentHistory, historyEntry],
+    };
+
+    orders[orderIndex] = updatedOrder;
+    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+    window.dispatchEvent(new Event('tibra_orders_updated'));
+    return updatedOrder;
+  },
+
+  recalculatePendingOrder(orderId: string, adminUser = 'Administrator'): Order {
+    const orders = this.getOrders();
+    const orderIndex = orders.findIndex(o => o.id === orderId);
+    if (orderIndex === -1) throw new Error(`Order ${orderId} not found`);
+
+    const order = orders[orderIndex];
+    if (order.status !== 'pending') {
+      throw new Error('Only Pending orders can be recalculated with latest pricing.');
+    }
+
+    const pricing = this.getPricingConfig();
+
+    // Reconstruct mock CartItems from order.items to run central calculation
+    const pseudoCart: CartItem[] = order.items.map(item => ({
+      product: this.getProductById(item.productId) || {
+        id: item.productId,
+        name: item.productName,
+        subtitle: '',
+        size: '30ml',
+        price: item.price,
+        originalPrice: item.originalUnitPrice || item.price,
+        stock: 50,
+        image: item.image,
+        description: '',
+      },
+      quantity: item.quantity,
+    }));
+
+    const cartCalc = calculateCartTotal(pseudoCart, pricing);
+
+    const now = new Date();
+    const historyEntry: OrderStatusHistoryEntry = {
+      id: `hist-${Date.now()}`,
+      status: order.status,
+      timestamp: now.toISOString(),
+      note: `Order pricing recalculated from Rs. ${order.total} to Rs. ${cartCalc.grandTotal} based on latest pricing catalog`,
+      updatedBy: adminUser,
+    };
+
+    const updatedOrder: Order = {
+      ...order,
+      subtotal: cartCalc.subtotal,
+      shippingFee: cartCalc.shippingFee,
+      discount: cartCalc.totalDiscount,
+      total: cartCalc.grandTotal,
+      pricingSnapshot: {
+        unitPrice: pricing.singleBottle.unitPrice,
+        deliveryCharges: cartCalc.shippingFee,
+        isDeliveryIncluded: cartCalc.isFreeDelivery,
+        packageType: cartCalc.isFreeDelivery ? 'combo' : 'single',
+        calculatedAt: now.toISOString(),
+      },
+      statusHistory: [...(order.statusHistory || []), historyEntry],
+    };
+
+    orders[orderIndex] = updatedOrder;
+    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+    window.dispatchEvent(new Event('tibra_orders_updated'));
+    return updatedOrder;
+  },
+
+  updateOrderStatus(orderId: string, status: OrderStatus, courier?: string, tracking?: string): void {
+    this.updateOrderStatusWithAudit(orderId, status, courier, tracking);
   },
 
   deleteOrder(orderId: string): void {
@@ -468,7 +973,7 @@ export const storeService = {
   // ANALYTICS
   getAnalytics(): SalesAnalytics {
     const orders = this.getOrders();
-    const activeOrders = orders.filter(o => o.status !== 'cancelled');
+    const activeOrders = orders.filter(o => o.status !== 'cancelled' && o.status !== 'returned');
 
     const totalRevenue = activeOrders.reduce((sum, o) => sum + o.total, 0);
     const totalOrders = orders.length;
@@ -485,8 +990,14 @@ export const storeService = {
       averageOrderValue,
       conversionRate: 4.8, // 4.8% baseline conversion rate
       pendingCount: orders.filter(o => o.status === 'pending').length,
-      dispatchedCount: orders.filter(o => o.status === 'dispatched').length,
-      deliveredCount: orders.filter(o => o.status === 'delivered').length
+      approvedCount: orders.filter(o => o.status === 'approved' || o.status === 'confirmed').length,
+      processingCount: orders.filter(o => o.status === 'processing').length,
+      packedCount: orders.filter(o => o.status === 'packed').length,
+      readyForDispatchCount: orders.filter(o => o.status === 'ready_for_dispatch').length,
+      dispatchedCount: orders.filter(o => o.status === 'dispatched' || o.status === 'in_transit' || o.status === 'out_for_delivery').length,
+      deliveredCount: orders.filter(o => o.status === 'delivered').length,
+      cancelledCount: orders.filter(o => o.status === 'cancelled').length,
+      returnedCount: orders.filter(o => o.status === 'returned' || o.status === 'returned_to_sender').length,
     };
   }
 };
