@@ -14,11 +14,12 @@ import {
   X,
   Bell,
   CheckCircle2,
-  Store
+  Store,
+  Truck
 } from 'lucide-react';
 import type { AdminUser } from '../../types/ecommerce';
 
-export type AdminTab = 'overview' | 'orders' | 'products' | 'inventory' | 'customers' | 'reports' | 'settings';
+export type AdminTab = 'overview' | 'orders' | 'tracking' | 'products' | 'inventory' | 'customers' | 'reports' | 'settings';
 
 interface AdminLayoutProps {
   currentTab: AdminTab;
@@ -47,6 +48,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   const navItems: { id: AdminTab; label: string; icon: React.FC<{ className?: string }>; badge?: number; badgeVariant?: 'blue' | 'amber' }[] = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'orders', label: 'Orders', icon: ShoppingCart, badge: pendingOrdersCount, badgeVariant: 'blue' },
+    { id: 'tracking', label: 'Live Tracking & Courier', icon: Truck },
     { id: 'products', label: 'Products & Pricing', icon: Package },
     { id: 'inventory', label: 'Inventory & Stock', icon: Boxes, badge: lowStockCount > 0 ? lowStockCount : undefined, badgeVariant: 'amber' },
     { id: 'customers', label: 'Customers', icon: Users },

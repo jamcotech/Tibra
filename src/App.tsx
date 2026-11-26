@@ -26,6 +26,7 @@ const SpreeAdminApp = lazy(() => import('./admin/SpreeAdminApp').then(m => ({ de
 const CartPage = lazy(() => import('./components/CartPage').then(m => ({ default: m.CartPage })));
 const CheckoutPage = lazy(() => import('./components/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
 const OrderSuccessPage = lazy(() => import('./components/OrderSuccessPage').then(m => ({ default: m.OrderSuccessPage })));
+const TrackOrderPage = lazy(() => import('./components/pages/TrackOrderPage').then(m => ({ default: m.TrackOrderPage })));
 
 // Dedicated SEO Pages (Code-split)
 const ProductsPage = lazy(() => import('./components/pages/ProductsPage').then(m => ({ default: m.ProductsPage })));
@@ -176,6 +177,7 @@ function ShopAppContent() {
           {currentView === 'cart' && <CartPage />}
           {currentView === 'checkout' && <CheckoutPage />}
           {currentView === 'order-success' && <OrderSuccessPage />}
+          {currentView === 'track-order' && <TrackOrderPage />}
         </Suspense>
       </main>
 

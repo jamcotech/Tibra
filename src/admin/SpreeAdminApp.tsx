@@ -3,6 +3,7 @@ import { LoginPage } from './pages/LoginPage';
 import { AdminLayout, type AdminTab } from './components/AdminLayout';
 import { OverviewPage } from './pages/OverviewPage';
 import { OrdersPage } from './pages/OrdersPage';
+import { ShipmentTrackingPage } from './pages/ShipmentTrackingPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { CustomersPage } from './pages/CustomersPage';
@@ -116,6 +117,13 @@ export const SpreeAdminApp: React.FC<SpreeAdminAppProps> = ({ onBackToStore }) =
           onRefresh={refreshAll}
           selectedOrderForModal={selectedOrderForModal}
           onClearSelectedOrder={() => setSelectedOrderForModal(null)}
+        />
+      )}
+
+      {currentTab === 'tracking' && (
+        <ShipmentTrackingPage
+          orders={orders}
+          onRefresh={refreshAll}
         />
       )}
 

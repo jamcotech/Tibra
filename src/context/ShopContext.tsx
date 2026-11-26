@@ -10,6 +10,7 @@ export type AppView =
   | 'cart'
   | 'checkout'
   | 'order-success'
+  | 'track-order'
   | 'product-detail'
   | 'ingredients'
   | 'how-to-use'
@@ -30,6 +31,7 @@ export function parsePathnameToView(pathname: string): { view: AppView; blogSlug
   if (clean === '/cart') return { view: 'cart' };
   if (clean === '/checkout') return { view: 'checkout' };
   if (clean === '/order-success') return { view: 'order-success' };
+  if (clean === '/track-order' || clean === '/track' || clean === '/order-tracking') return { view: 'track-order' };
   if (clean === '/products') return { view: 'products' };
   if (clean.startsWith('/products/')) return { view: 'product-detail' };
   if (clean === '/ingredients') return { view: 'ingredients' };
@@ -57,6 +59,7 @@ export function getViewCanonicalPath(view: AppView, blogSlug?: string): string {
     case 'cart': return '/cart/';
     case 'checkout': return '/checkout/';
     case 'order-success': return '/order-success/';
+    case 'track-order': return '/track-order/';
     case 'product-detail': return '/products/pain-relief-oil/';
     case 'ingredients': return '/ingredients/';
     case 'how-to-use': return '/how-to-use/';

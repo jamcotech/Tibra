@@ -230,18 +230,20 @@ export const storeService = {
     }
   },
 
-  createOrder(orderData: Omit<Order, 'id' | 'orderNumber' | 'date'>): Order {
+  createOrder(orderData: Omit<Order, 'id' | 'orderNumber' | 'date'> & { trackingAccessToken?: string }): Order {
     const orders = this.getOrders();
-    const orderNumber = `PF-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const orderNumber = `TN-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
     const now = new Date();
     const dateFormatted = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const trackingAccessToken = orderData.trackingAccessToken || `tn_trk_${Math.random().toString(36).substring(2, 10)}${Date.now().toString(36)}`;
 
     const newOrder: Order = {
       ...orderData,
       id: `ord-${Date.now()}`,
       orderNumber,
-      date: dateFormatted
-    };
+      date: dateFormatted,
+      trackingAccessToken
+    } as any;
 
     orders.unshift(newOrder);
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
@@ -251,9 +253,49 @@ export const storeService = {
       this.deductStock(item.productId, item.quantity);
     });
 
+    // Synchronize asynchronously with persistent server backend
+    if (typeof window !== 'undefined' && typeof fetch === 'function') {
+      fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newOrder)
+      }).catch(err => {
+        console.warn('[storeService] Failed syncing order to /api/orders:', err);
+      });
+    }
+
     window.dispatchEvent(new Event('tibra_orders_updated'));
     window.dispatchEvent(new Event('purefix_orders_updated'));
     return newOrder;
+  },
+
+  async syncOrdersFromApi(): Promise<Order[]> {
+    if (typeof window === 'undefined' || typeof fetch !== 'function') {
+      return this.getOrders();
+    }
+    try {
+      const res = await fetch('/api/orders');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.orders)) {
+          const current = this.getOrders();
+          const mergedMap = new Map<string, Order>();
+          data.orders.forEach((o: Order) => mergedMap.set(o.id || o.orderNumber, o));
+          current.forEach(o => {
+            if (!mergedMap.has(o.id) && !mergedMap.has(o.orderNumber)) {
+              mergedMap.set(o.id, o);
+            }
+          });
+          const merged = Array.from(mergedMap.values());
+          localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(merged));
+          window.dispatchEvent(new Event('tibra_orders_updated'));
+          return merged;
+        }
+      }
+    } catch (err) {
+      console.warn('[storeService] Error syncing orders from API:', err);
+    }
+    return this.getOrders();
   },
 
   updateOrderStatus(orderId: string, status: OrderStatus, courier?: string, tracking?: string): void {

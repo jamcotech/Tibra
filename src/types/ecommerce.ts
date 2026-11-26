@@ -23,7 +23,29 @@ export interface CartItem {
   selectedBundle?: string;
 }
 
-export type OrderStatus = 'pending' | 'confirmed' | 'dispatched' | 'delivered' | 'cancelled';
+export type OrderStatus =
+  | 'pending'
+  | 'confirmed'
+  | 'dispatched'
+  | 'delivered'
+  | 'cancelled'
+  | 'order_placed'
+  | 'order_confirmed'
+  | 'processing'
+  | 'packed'
+  | 'ready_for_dispatch'
+  | 'shipment_booked'
+  | 'courier_picked_up'
+  | 'in_transit'
+  | 'arrived_at_hub'
+  | 'out_for_delivery'
+  | 'delivery_attempted'
+  | 'delayed'
+  | 'address_issue'
+  | 'customer_unavailable'
+  | 'held_at_hub'
+  | 'returned_to_sender'
+  | 'returned';
 
 export interface OrderItem {
   productId: string;
@@ -36,6 +58,7 @@ export interface OrderItem {
 export interface Order {
   id: string;
   orderNumber: string;
+  trackingAccessToken?: string;
   date: string;
   customerName: string;
   customerPhone: string;
@@ -52,6 +75,8 @@ export interface Order {
   deliveryCourier?: string;
   trackingNumber?: string;
   notes?: string;
+  estimatedDeliveryDate?: string;
+  shipmentId?: string;
 }
 
 export interface StoreInventory {

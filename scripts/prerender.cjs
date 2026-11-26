@@ -13,6 +13,31 @@ const baseHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
 
 const routes = [
   {
+    path: '/track-order/',
+    title: 'Live Order & Shipment Tracking | TIBRA NATURALS Pakistan',
+    description: 'Track your TIBRA NATURALS order and live parcel delivery across Pakistan. Enter your Order Number and mobile number for real-time courier checkpoints.',
+    h1: 'Live Order & Shipment Tracking – TIBRA NATURALS Pakistan',
+    content: 'Track your TIBRA NATURALS botanical order online. Enter your order number and mobile phone to view real-time delivery status, courier milestones across TCS, PostEx, Leopards, and estimated arrival in Pakistan.',
+    schema: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebPage',
+          name: 'Live Order & Shipment Tracking | TIBRA NATURALS Pakistan',
+          url: 'https://www.tibranaturals.com/track-order/',
+          description: 'Track your TIBRA NATURALS order and live parcel delivery across Pakistan. Enter your Order Number and mobile number for real-time courier checkpoints.'
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.tibranaturals.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Track Order', item: 'https://www.tibranaturals.com/track-order/' }
+          ]
+        }
+      ]
+    }
+  },
+  {
     path: '/products/',
     title: 'Our Herbal Products | TIBRA NATURALS Pakistan',
     description: 'Explore authentic botanical wellness formulations from TIBRA NATURALS Pakistan. 100% natural herbal joint comfort and massage oils.',

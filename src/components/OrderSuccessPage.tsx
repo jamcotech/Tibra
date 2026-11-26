@@ -1,10 +1,20 @@
 import React from 'react';
-import { CheckCircle, Home, PhoneCall } from 'lucide-react';
+import { CheckCircle, Home, PhoneCall, Truck } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 import { SeoHead } from './SeoHead';
 
 export const OrderSuccessPage: React.FC = () => {
-  const { lastCreatedOrder, setCurrentView } = useShop();
+  const { lastCreatedOrder, setCurrentView, navigate } = useShop();
+
+  const handleTrackOrder = () => {
+    if (lastCreatedOrder) {
+      const q = new URLSearchParams();
+      q.set('order', lastCreatedOrder.orderNumber);
+      if (lastCreatedOrder.customerPhone) q.set('phone', lastCreatedOrder.customerPhone);
+      window.history.pushState({}, '', `/track-order/?${q.toString()}`);
+    }
+    navigate('track-order');
+  };
 
   const handleWhatsApp = () => {
     if (!lastCreatedOrder) return;
@@ -87,8 +97,16 @@ export const OrderSuccessPage: React.FC = () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 pt-2">
           <button
+            onClick={handleTrackOrder}
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#506326] text-white hover:bg-[#3D4C1D] transition-all shadow-md group cursor-pointer"
+          >
+            <Truck className="w-4 h-4 text-emerald-200" />
+            <span>Track Your Order Live</span>
+          </button>
+
+          <button
             onClick={handleWhatsApp}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-botanical-800 text-cream-50 hover:bg-botanical-900 transition-all shadow-md group"
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-botanical-800 text-cream-50 hover:bg-botanical-900 transition-all shadow-md group cursor-pointer"
           >
             <PhoneCall className="w-4 h-4 text-gold-light" />
             <span>Confirm on WhatsApp</span>
@@ -96,10 +114,10 @@ export const OrderSuccessPage: React.FC = () => {
 
           <button
             onClick={() => setCurrentView('home')}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-botanical-900 border border-cream-300 hover:bg-cream-100 transition-all shadow-xs"
+            className="sm:w-auto px-5 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-botanical-900 border border-cream-300 hover:bg-cream-100 transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
           >
             <Home className="w-4 h-4 text-botanical-600" />
-            <span>Return to Home</span>
+            <span>Home</span>
           </button>
         </div>
 

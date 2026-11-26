@@ -31,6 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
   const navLinks = [
     { label: 'Home', href: '/', id: 'home' },
     { label: 'Products', href: '/products/', id: 'products' },
+    { label: 'Track Order', href: '/track-order/', id: 'track-order' },
     { label: 'Formula', href: '#ingredients', id: 'ingredients' },
     { label: 'Targets', href: '#targets', id: 'targets' },
     { label: 'How to Use', href: '#ritual', id: 'ritual' },
@@ -83,6 +84,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
       }
       return;
     }
+    if (id === 'track-order' || href === '/track-order/') {
+      if (currentView !== 'track-order') {
+        navigate('track-order');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
     if (currentView !== 'home') {
       navigate('home');
       setTimeout(() => {
@@ -98,6 +107,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenOrderModal }) => {
   const isLinkActive = (id: string) => {
     if (currentView === 'products') {
       return id === 'products';
+    }
+    if (currentView === 'track-order') {
+      return id === 'track-order';
     }
     if (currentView === 'home') {
       if (id === 'home') {

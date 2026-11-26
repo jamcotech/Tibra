@@ -52,10 +52,11 @@ export const Footer: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <ul className="space-y-1.5">
                 <li><a href="/" className="text-white/90 hover:text-white transition-colors">Home</a></li>
+                <li><a href="/products/" className="text-white/90 hover:text-white transition-colors">All Products</a></li>
                 <li><a href="/products/pain-relief-oil/" className="text-white/90 hover:text-white transition-colors">Pain Relief Oil</a></li>
+                <li><a href="/track-order/" className="text-[#F5E6A3] hover:text-white font-bold transition-colors">Track Your Order (Live)</a></li>
                 <li><a href="/ingredients/" className="text-white/90 hover:text-white transition-colors">Botanical Ingredients</a></li>
                 <li><a href="/how-to-use/" className="text-white/90 hover:text-white transition-colors">How to Use</a></li>
-                <li><a href="/our-quality/" className="text-white/90 hover:text-white transition-colors">Our Quality Standard</a></li>
               </ul>
               <ul className="space-y-1.5">
                 <li><a href="/about-us/" className="text-white/90 hover:text-white transition-colors">About Us</a></li>
