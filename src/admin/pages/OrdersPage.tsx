@@ -828,34 +828,18 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
                       </td>
 
                       <td className="py-4 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => handleDownloadSlipA5(order)}
-                            title="Download A5 Slip PDF"
-                            className="p-1.5 rounded-lg bg-zinc-100 hover:bg-[#748C48] text-zinc-700 hover:text-white transition cursor-pointer shadow-2xs"
-                          >
-                            <FileText className="w-3.5 h-3.5" />
-                          </button>
-
-                          <button
-                            onClick={() => handleDownloadSlipA4TwoUp(order)}
-                            title="Download A4 Two-Up PDF Slip"
-                            className="p-1.5 rounded-lg bg-zinc-100 hover:bg-[#252E15] text-zinc-700 hover:text-white transition cursor-pointer shadow-2xs"
-                          >
-                            <Download className="w-3.5 h-3.5" />
-                          </button>
-
+                        <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handlePrintSlipA5(order)}
-                            title="Print A5 Slip"
-                            className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition cursor-pointer shadow-2xs"
+                            title="Print Order Slip"
+                            className="p-2 rounded-xl bg-zinc-100 hover:bg-[#748C48] text-zinc-700 hover:text-white transition cursor-pointer shadow-2xs"
                           >
-                            <Printer className="w-3.5 h-3.5" />
+                            <Printer className="w-4 h-4" />
                           </button>
 
                           <button
                             onClick={() => openModal(order)}
-                            className="px-3 py-1.5 rounded-lg bg-[#748C48] hover:bg-[#5F7339] text-white text-xs font-semibold transition cursor-pointer shadow-2xs"
+                            className="px-3 py-1.5 rounded-xl bg-[#748C48] hover:bg-[#5F7339] text-white text-xs font-semibold transition cursor-pointer shadow-2xs"
                           >
                             Manage
                           </button>
