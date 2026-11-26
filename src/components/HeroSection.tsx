@@ -11,23 +11,24 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { addToCart, quickBuyNow, products } = useShop();
   const primaryProduct = products[0] || storeService.getProducts()[0];
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(() => (typeof window !== 'undefined' ? window.innerWidth < 768 : false));
 
-  /* Feather-light GPU-accelerated video playback at 70% slow-motion with 0% CPU overhead & accessibility check */
+  /* Feather-light GPU-accelerated video playback on desktop with 0% CPU overhead & accessibility check */
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
+    window.addEventListener('resize', checkMobile);
 
     const video = videoRef.current;
-    if (!video) return;
+    if (!video) return () => window.removeEventListener('resize', checkMobile);
 
     // Accessibility: Respect user's motion preferences
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       video.pause();
-      return;
+      return () => window.removeEventListener('resize', checkMobile);
     }
 
     const enforcePlaybackRate = () => {
@@ -41,6 +42,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
     video.addEventListener('ratechange', enforcePlaybackRate);
 
     return () => {
+      window.removeEventListener('resize', checkMobile);
       video.removeEventListener('play', enforcePlaybackRate);
       video.removeEventListener('ratechange', enforcePlaybackRate);
     };
@@ -102,22 +104,31 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         id="hero"
         className="relative min-h-screen flex items-center overflow-hidden"
       >
-        {/* ── FULL-BLEED HARDWARE-ACCELERATED VIDEO (FEATHER-LIGHT) ── */}
+        {/* ── FULL-BLEED HARDWARE-ACCELERATED VISUAL HERO (LCP OPTIMIZED) ── */}
         <div className="absolute inset-0 overflow-hidden">
-          <video
-            ref={videoRef}
-            className="hero-video-media absolute h-full w-auto max-w-none will-change-transform"
-            style={{
-              objectFit: 'cover',
-            }}
-            src="/assets/hero-video-002.mp4"
-            poster="/assets/hero-video-poster.webp"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload={isMobile ? 'none' : 'metadata'}
+          {/* High-Priority LCP Image Poster for Mobile & Instant Render */}
+          <img
+            src="/assets/hero-video-poster.webp"
+            alt="TIBRA NATURALS Pain Relief Oil Botanical Formulation Bottle"
+            width={720}
+            height={1280}
+            fetchPriority="high"
+            className="hero-video-media absolute h-full w-auto max-w-none will-change-transform object-cover select-none pointer-events-none"
           />
+
+          {/* Desktop High-Definition Ambient Video */}
+          {!isMobile && (
+            <video
+              ref={videoRef}
+              className="hero-video-media absolute h-full w-auto max-w-none will-change-transform object-cover"
+              src="/assets/hero-video-002.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            />
+          )}
         </div>
 
         {/* ── OVERLAYS — Clean contrast with zero haze, video fully reaches top under navbar ── */}

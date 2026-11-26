@@ -11,13 +11,36 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
   const { addToCart, quickBuyNow, products } = useShop();
   const primaryProduct = products[0] || storeService.getProducts()[0];
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Defer video loading until section is scrolled into proximity (saves 3.5MB on initial load)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoadVideo(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: '300px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (shouldLoadVideo && videoRef.current) {
       videoRef.current.playbackRate = 0.85;
       videoRef.current.play().catch(() => {});
     }
-  }, []);
+  }, [shouldLoadVideo]);
 
   const commitments = [
     { text: '100% Natural Herbal Blend', icon: Leaf },
@@ -27,7 +50,7 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
   ];
 
   return (
-    <section className="relative py-20 lg:py-28 bg-[#F5F0E6] overflow-hidden border-t border-cream-300/80">
+    <section ref={containerRef} className="relative py-20 lg:py-28 bg-[#F5F0E6] overflow-hidden border-t border-cream-300/80">
       {/* Background ambient accents */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-botanical-200/30 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute inset-0 bg-subtle-grain pointer-events-none opacity-20" />
@@ -43,23 +66,34 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = () => {
                 {/* Ambient backing glow */}
                 <div className="absolute -inset-4 bg-gradient-to-tr from-botanical-500/20 via-gold/15 to-transparent rounded-full blur-2xl pointer-events-none" />
 
-                {/* Hardware-Accelerated Native Video (Lightweight & Muted) */}
-                <video
-                  ref={videoRef}
-                  src="/assets/video-for-knee.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  className="w-full h-full object-cover select-none pointer-events-none will-change-transform"
-                  style={{
-                    WebkitMaskImage:
-                      'radial-gradient(ellipse 84% 84% at 50% 50%, black 50%, rgba(0,0,0,0.85) 70%, transparent 100%)',
-                    maskImage:
-                      'radial-gradient(ellipse 84% 84% at 50% 50%, black 50%, rgba(0,0,0,0.85) 70%, transparent 100%)',
-                  }}
-                />
+                {/* Hardware-Accelerated Native Video (Lazy loaded on scroll) */}
+                {shouldLoadVideo ? (
+                  <video
+                    ref={videoRef}
+                    src="/assets/video-for-knee.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-cover select-none pointer-events-none will-change-transform"
+                    style={{
+                      WebkitMaskImage:
+                        'radial-gradient(ellipse 84% 84% at 50% 50%, black 50%, rgba(0,0,0,0.85) 70%, transparent 100%)',
+                      maskImage:
+                        'radial-gradient(ellipse 84% 84% at 50% 50%, black 50%, rgba(0,0,0,0.85) 70%, transparent 100%)',
+                    }}
+                  />
+                ) : (
+                  <img
+                    src="/assets/purefix-bottle-box-showcase.webp"
+                    alt="TIBRA NATURALS Pain Relief Oil Botanical Formulation"
+                    width={400}
+                    height={400}
+                    loading="lazy"
+                    className="w-full h-full object-cover select-none pointer-events-none opacity-85"
+                  />
+                )}
 
                 {/* Soft Edge Blur Vignette Overlays — completely melts edges into white card */}
                 <div

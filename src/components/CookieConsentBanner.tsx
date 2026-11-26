@@ -26,8 +26,8 @@ export const CookieConsentBanner: React.FC = () => {
         setAnalyticsConsent(parsed.analytics);
         setMarketingConsent(parsed.marketing);
       } else {
-        // Show banner after brief delay for smooth entrance
-        const timer = setTimeout(() => setIsVisible(true), 800);
+        // Show banner cleanly without artificial delay
+        const timer = setTimeout(() => setIsVisible(true), 100);
         return () => clearTimeout(timer);
       }
     } catch {

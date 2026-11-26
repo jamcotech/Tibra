@@ -2,22 +2,24 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { ShopProvider, useShop, parsePathnameToView } from './context/ShopContext';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
-import { ProductAnatomySection } from './components/ProductAnatomySection';
-import { IngredientsSection } from './components/IngredientsSection';
-import { BenefitsTargetSection } from './components/BenefitsTargetSection';
-import { PackagingShowcaseSection } from './components/PackagingShowcaseSection';
-import { RitualUsageSection } from './components/RitualUsageSection';
-import { BrandStorySection } from './components/BrandStorySection';
-import { LatestBlogSection } from './components/LatestBlogSection';
-import { FAQSection } from './components/FAQSection';
-import { FinalCtaSection } from './components/FinalCtaSection';
 import { Footer } from './components/Footer';
 import { FloatingBottomBar } from './components/FloatingBottomBar';
-import { OrderInquiryModal } from './components/OrderInquiryModal';
 import { CookieConsentBanner } from './components/CookieConsentBanner';
 import { CartDrawer } from './components/CartDrawer';
 import { SeoHead } from './components/SeoHead';
 import { BLOG_POSTS } from './data/blogArticles';
+
+// Code-split below-the-fold homepage sections to drastically minimize initial JavaScript execution & TBT
+const ProductAnatomySection = lazy(() => import('./components/ProductAnatomySection').then(m => ({ default: m.ProductAnatomySection })));
+const IngredientsSection = lazy(() => import('./components/IngredientsSection').then(m => ({ default: m.IngredientsSection })));
+const BenefitsTargetSection = lazy(() => import('./components/BenefitsTargetSection').then(m => ({ default: m.BenefitsTargetSection })));
+const PackagingShowcaseSection = lazy(() => import('./components/PackagingShowcaseSection').then(m => ({ default: m.PackagingShowcaseSection })));
+const RitualUsageSection = lazy(() => import('./components/RitualUsageSection').then(m => ({ default: m.RitualUsageSection })));
+const BrandStorySection = lazy(() => import('./components/BrandStorySection').then(m => ({ default: m.BrandStorySection })));
+const LatestBlogSection = lazy(() => import('./components/LatestBlogSection').then(m => ({ default: m.LatestBlogSection })));
+const FAQSection = lazy(() => import('./components/FAQSection').then(m => ({ default: m.FAQSection })));
+const FinalCtaSection = lazy(() => import('./components/FinalCtaSection').then(m => ({ default: m.FinalCtaSection })));
+const OrderInquiryModal = lazy(() => import('./components/OrderInquiryModal').then(m => ({ default: m.OrderInquiryModal })));
 
 // Lazy-loaded routes to minimize initial JavaScript bundle execution and optimize LCP/FID/TBT
 const SpreeAdminApp = lazy(() => import('./admin/SpreeAdminApp').then(m => ({ default: m.SpreeAdminApp })));
@@ -106,35 +108,38 @@ function ShopAppContent() {
               canonicalPath="/"
             />
 
-            {/* Section 1: Cinematic Hero Reveal with Animated Video & Bottle */}
+            {/* Section 1: Cinematic Hero Reveal with High-Priority LCP Image */}
             <HeroSection onOpenOrderModal={() => setIsOrderModalOpen(true)} />
 
-            {/* Section 2: 3D Product Anatomy & Motion */}
-            <ProductAnatomySection />
+            {/* Below-the-fold sections wrapped in Suspense for zero main-thread blocking on initial paint */}
+            <Suspense fallback={null}>
+              {/* Section 2: 3D Product Anatomy & Motion */}
+              <ProductAnatomySection />
 
-            {/* Section 3: Verified Botanical Ingredients */}
-            <IngredientsSection />
+              {/* Section 3: Verified Botanical Ingredients */}
+              <IngredientsSection />
 
-            {/* Section 4: Target Relief Areas & Verified Benefits */}
-            <BenefitsTargetSection />
+              {/* Section 4: Target Relief Areas & Verified Benefits */}
+              <BenefitsTargetSection />
 
-            {/* Section 5: Your Everyday Botanical Ritual Showcase & Order CTA */}
-            <FinalCtaSection onOpenOrderModal={() => setIsOrderModalOpen(true)} />
+              {/* Section 5: Your Everyday Botanical Ritual Showcase & Order CTA */}
+              <FinalCtaSection onOpenOrderModal={() => setIsOrderModalOpen(true)} />
 
-            {/* Section 6: Official Box & Bottle Packaging Showcase */}
-            <PackagingShowcaseSection />
+              {/* Section 6: Official Box & Bottle Packaging Showcase */}
+              <PackagingShowcaseSection />
 
-            {/* Section 7: The Daily Application Ritual */}
-            <RitualUsageSection />
+              {/* Section 7: The Daily Application Ritual */}
+              <RitualUsageSection />
 
-            {/* Section 8: TIBRA NATURALS Brand Heritage */}
-            <BrandStorySection />
+              {/* Section 8: TIBRA NATURALS Brand Heritage */}
+              <BrandStorySection />
 
-            {/* Section 9: Latest from Our Blog Preview */}
-            <LatestBlogSection />
+              {/* Section 9: Latest from Our Blog Preview */}
+              <LatestBlogSection />
 
-            {/* Section 10: Frequently Asked Questions */}
-            <FAQSection />
+              {/* Section 10: Frequently Asked Questions */}
+              <FAQSection />
+            </Suspense>
           </>
         )}
 
@@ -183,11 +188,15 @@ function ShopAppContent() {
       {/* Cart Sliding Drawer */}
       <CartDrawer />
 
-      {/* Order / Inquiry Modal */}
-      <OrderInquiryModal
-        isOpen={isOrderModalOpen}
-        onClose={() => setIsOrderModalOpen(false)}
-      />
+      {/* Order / Inquiry Modal (Code-split on demand) */}
+      <Suspense fallback={null}>
+        {isOrderModalOpen && (
+          <OrderInquiryModal
+            isOpen={isOrderModalOpen}
+            onClose={() => setIsOrderModalOpen(false)}
+          />
+        )}
+      </Suspense>
 
       {/* Privacy-Compliant Cookie Consent Mode v2 Banner */}
       <CookieConsentBanner />

@@ -48,6 +48,9 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     
+    <!-- High-Priority LCP Image Preload for Mobile & Desktop Homepage -->
+    <link rel="preload" as="image" href="/assets/hero-video-poster.webp" fetchpriority="high" type="image/webp" />
+    
     <!-- Primary Meta Tags -->
     <title>TIBRA NATURALS | Herbal Oils &amp; Natural Personal Care in Pakistan</title>
     <meta name="title" content="TIBRA NATURALS | Herbal Oils &amp; Natural Personal Care in Pakistan" />
@@ -75,7 +78,7 @@
     <meta name="twitter:description" content="100% Natural Herbal Blend for joints, muscles, and everyday mobility. Natural botanical care by TIBRA NATURALS." />
     <meta name="twitter:image" content="https://www.tibranaturals.com/assets/tibra-logo.png" />
 
-    <!-- Schema.org JSON-LD for Rich SEO & Knowledge Graph -->
+    <!-- Schema.org JSON-LD for Rich SEO & Knowledge Graph (Homepage: Organization & WebSite) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -109,38 +112,11 @@
           "@id": "https://www.tibranaturals.com/#website",
           "url": "https://www.tibranaturals.com/",
           "name": "TIBRA NATURALS",
-          "description": "Herbal Oils & Natural Personal Care in Pakistan",
+          "description": "Discover TIBRA NATURALS, Pakistan's authentic herbal wellness brand offering 100% natural botanical pain relief massage oils for joints, mobility, and everyday comfort.",
           "publisher": {
             "@id": "https://www.tibranaturals.com/#organization"
           },
           "inLanguage": "en-PK"
-        },
-        {
-          "@type": "Product",
-          "@id": "https://www.tibranaturals.com/products/pain-relief-oil/#product",
-          "name": "TIBRA NATURALS Pain Relief Oil",
-          "image": [
-            "https://www.tibranaturals.com/assets/purefix-bottle-box-showcase.webp",
-            "https://www.tibranaturals.com/assets/packaging-showcase-003.webp"
-          ],
-          "description": "100% Natural Herbal Topical Blend formulated with Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia for soothing joint and muscle massage.",
-          "sku": "TN-PRO-030",
-          "brand": {
-            "@type": "Brand",
-            "name": "TIBRA NATURALS"
-          },
-          "offers": {
-            "@type": "Offer",
-            "url": "https://www.tibranaturals.com/products/pain-relief-oil/",
-            "priceCurrency": "PKR",
-            "price": "1500",
-            "priceValidUntil": "2027-12-31",
-            "itemCondition": "https://schema.org/NewCondition",
-            "availability": "https://schema.org/InStock",
-            "seller": {
-              "@id": "https://www.tibranaturals.com/#organization"
-            }
-          }
         }
       ]
     }
