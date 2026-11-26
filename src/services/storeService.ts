@@ -285,6 +285,22 @@ export function calculateCartTotal(cart: CartItem[], explicitPricing?: PricingCo
   };
 }
 
+export function cleanStatusHistory(entries?: OrderStatusHistoryEntry[]): OrderStatusHistoryEntry[] {
+  if (!entries || !Array.isArray(entries)) return [];
+  const cleaned: OrderStatusHistoryEntry[] = [];
+  for (const entry of entries) {
+    const prev = cleaned[cleaned.length - 1];
+    if (prev) {
+      const isSelfTransition = entry.note && entry.note.toLowerCase().includes(`from ${entry.status.toLowerCase()} to ${entry.status.toLowerCase()}`);
+      if (prev.status === entry.status && (isSelfTransition || prev.note === entry.note)) {
+        continue;
+      }
+    }
+    cleaned.push(entry);
+  }
+  return cleaned;
+}
+
 export const storeService = {
   // PRICING MANAGEMENT
   getPricingConfig(): PricingConfig {
@@ -561,7 +577,22 @@ export const storeService = {
       return INITIAL_ORDERS;
     }
     try {
-      return JSON.parse(data);
+      const parsed: Order[] = JSON.parse(data);
+      let needsSave = false;
+      const cleaned = parsed.map(order => {
+        if (order.statusHistory && Array.isArray(order.statusHistory)) {
+          const deduplicated = cleanStatusHistory(order.statusHistory);
+          if (deduplicated.length !== order.statusHistory.length) {
+            needsSave = true;
+            return { ...order, statusHistory: deduplicated };
+          }
+        }
+        return order;
+      });
+      if (needsSave && typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(cleaned));
+      }
+      return cleaned;
     } catch {
       return INITIAL_ORDERS;
     }
@@ -750,23 +781,51 @@ export const storeService = {
 
     const order = orders[orderIndex];
     const previousStatus = order.status;
+    const isStatusChanged = previousStatus !== newStatus;
+    const isCourierChanged = courier !== undefined && courier !== order.deliveryCourier;
+    const isTrackingChanged = tracking !== undefined && tracking !== order.trackingNumber;
 
-    // Validate status transition guard
-    if (!canTransitionStatus(previousStatus, newStatus)) {
+    // Validate status transition guard only if status actually changed
+    if (isStatusChanged && !canTransitionStatus(previousStatus, newStatus)) {
       console.warn(`[storeService] Warning: Transitioning from ${previousStatus} to ${newStatus} is guarded.`);
     }
 
-    const now = new Date();
-    const historyEntry: OrderStatusHistoryEntry = {
-      id: `hist-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-      status: newStatus,
-      previousStatus,
-      timestamp: now.toISOString(),
-      note: note || `Status updated from ${previousStatus} to ${newStatus}`,
-      updatedBy: adminUser,
-    };
+    const currentHistory = Array.isArray(order.statusHistory) ? cleanStatusHistory(order.statusHistory) : [];
+    let updatedHistory = [...currentHistory];
 
-    const currentHistory = Array.isArray(order.statusHistory) ? order.statusHistory : [];
+    // Only add a new history entry if status changed, courier/tracking changed, or an explicit note was provided
+    if (isStatusChanged || isCourierChanged || isTrackingChanged || note) {
+      let auditNote = note;
+      if (!auditNote) {
+        if (isStatusChanged) {
+          auditNote = `Status updated from ${previousStatus} to ${newStatus}`;
+        } else if (isCourierChanged || isTrackingChanged) {
+          const cName = courier !== undefined ? courier : (order.deliveryCourier || 'N/A');
+          const tNum = tracking !== undefined ? tracking : (order.trackingNumber || 'N/A');
+          auditNote = `Courier details updated: ${cName} (Tracking #${tNum})`;
+        }
+      }
+
+      // Check if last entry is duplicate or redundant self-transition
+      const lastEntry = updatedHistory[updatedHistory.length - 1];
+      const isDuplicate = lastEntry && lastEntry.status === newStatus && (
+        lastEntry.note === auditNote ||
+        (!isStatusChanged && !note && !isCourierChanged && !isTrackingChanged)
+      );
+
+      if (!isDuplicate && auditNote) {
+        const now = new Date();
+        const historyEntry: OrderStatusHistoryEntry = {
+          id: `hist-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          status: newStatus,
+          previousStatus,
+          timestamp: now.toISOString(),
+          note: auditNote,
+          updatedBy: adminUser,
+        };
+        updatedHistory.push(historyEntry);
+      }
+    }
 
     const updatedOrder: Order = {
       ...order,
@@ -774,8 +833,8 @@ export const storeService = {
       deliveryCourier: courier !== undefined ? courier : order.deliveryCourier,
       trackingNumber: tracking !== undefined ? tracking : order.trackingNumber,
       paymentStatus: newStatus === 'delivered' ? 'paid' : order.paymentStatus,
-      dispatchedAt: newStatus === 'dispatched' ? (order.dispatchedAt || now.toISOString()) : order.dispatchedAt,
-      statusHistory: [...currentHistory, historyEntry],
+      dispatchedAt: newStatus === 'dispatched' ? (order.dispatchedAt || new Date().toISOString()) : order.dispatchedAt,
+      statusHistory: cleanStatusHistory(updatedHistory),
     };
 
     orders[orderIndex] = updatedOrder;
@@ -815,6 +874,7 @@ export const storeService = {
       shippingAddress?: string;
       city?: string;
       postalCode?: string;
+      notes?: string;
       adminNotes?: string;
     },
     adminUser = 'Administrator'
@@ -833,16 +893,16 @@ export const storeService = {
       id: `hist-${Date.now()}`,
       status: order.status,
       timestamp: now.toISOString(),
-      note: `Customer shipping details updated: ${Object.keys(shippingData).join(', ')}`,
+      note: `Customer shipping details updated: ${Object.keys(shippingData).filter(k => (shippingData as any)[k] !== undefined).join(', ')}`,
       updatedBy: adminUser,
     };
 
-    const currentHistory = Array.isArray(order.statusHistory) ? order.statusHistory : [];
+    const currentHistory = Array.isArray(order.statusHistory) ? cleanStatusHistory(order.statusHistory) : [];
 
     const updatedOrder: Order = {
       ...order,
       ...shippingData,
-      statusHistory: [...currentHistory, historyEntry],
+      statusHistory: cleanStatusHistory([...currentHistory, historyEntry]),
     };
 
     orders[orderIndex] = updatedOrder;

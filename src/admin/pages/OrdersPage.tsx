@@ -11,7 +11,6 @@ import {
   Printer,
   CheckCircle2,
   XCircle,
-  FileText,
   Clock,
   RefreshCw,
   PackageCheck,
@@ -19,16 +18,14 @@ import {
   Filter,
   ArrowUpDown,
   History,
-  AlertCircle
+  AlertCircle,
+  MessageSquare
 } from 'lucide-react';
 import type { Order, OrderStatus } from '../../types/ecommerce';
-import { storeService, canTransitionStatus } from '../../services/storeService';
+import { storeService, canTransitionStatus, cleanStatusHistory } from '../../services/storeService';
 import {
-  downloadOrderSlipPDF,
-  downloadA4TwoUpSlipsPDF,
   downloadBulkOrderSlipsPDF,
   printOrderSlip,
-  printA4TwoUpSlip,
   printBulkOrderSlips
 } from '../../services/pdfSlipService';
 
@@ -97,6 +94,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
   const [editAlternatePhone, setEditAlternatePhone] = useState('');
   const [editShippingAddress, setEditShippingAddress] = useState('');
   const [editCity, setEditCity] = useState('');
+  const [editNotes, setEditNotes] = useState('');
 
   const senderSettings = storeService.getSenderSettings();
 
@@ -120,6 +118,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
     setEditAlternatePhone(order.alternatePhone || '');
     setEditShippingAddress(order.shippingAddress);
     setEditCity(order.city);
+    setEditNotes(order.notes || '');
     setActionMessage(null);
   };
 
@@ -221,13 +220,14 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
           alternatePhone: editAlternatePhone,
           shippingAddress: editShippingAddress,
           city: editCity,
+          notes: editNotes,
         },
         'Administrator'
       );
       setDetailOrder(updated);
       setIsEditingCustomer(false);
       onRefresh();
-      showFeedback('Customer shipping info updated.');
+      showFeedback('Customer shipping info & notes updated.');
     } catch (err: any) {
       showFeedback(err.message || 'Failed to update info', 'error');
     }
@@ -241,21 +241,9 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
     }
   };
 
-  // PDF Slip Actions (Single A5 Portrait & A4 Landscape Two-Up)
-  const handleDownloadSlipA5 = (order: Order) => {
-    downloadOrderSlipPDF(order, senderSettings);
-  };
-
-  const handleDownloadSlipA4TwoUp = (order: Order) => {
-    downloadA4TwoUpSlipsPDF(order, null, senderSettings);
-  };
-
-  const handlePrintSlipA5 = (order: Order) => {
+  // PDF Slip Actions (Print Slip)
+  const handlePrintSlip = (order: Order) => {
     printOrderSlip(order, senderSettings);
-  };
-
-  const handlePrintSlipA4TwoUp = (order: Order) => {
-    printA4TwoUpSlip(order, null, senderSettings);
   };
 
   const handleBulkDownloadSlips = (mode: 'a5-single' | 'a4-two-up' = 'a5-single') => {
@@ -830,7 +818,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
                       <td className="py-4 px-4 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={() => handlePrintSlipA5(order)}
+                            onClick={() => handlePrintSlip(order)}
                             title="Print Order Slip"
                             className="p-2 rounded-xl bg-zinc-100 hover:bg-[#748C48] text-zinc-700 hover:text-white transition cursor-pointer shadow-2xs"
                           >
@@ -878,38 +866,12 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => handleDownloadSlipA5(detailOrder)}
-                  className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#748C48] hover:bg-[#5F7339] text-white flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
-                >
-                  <FileText className="w-3.5 h-3.5" />
-                  <span>A5 Slip</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleDownloadSlipA4TwoUp(detailOrder)}
-                  className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#252E15] hover:bg-[#323D1D] text-white flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>A4 Two-Up</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handlePrintSlipA5(detailOrder)}
-                  className="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-300 flex items-center gap-1.5 transition cursor-pointer"
+                  onClick={() => handlePrintSlip(detailOrder)}
+                  className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#748C48] hover:bg-[#5F7339] text-white flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
+                  title="Print Slip"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Print A5</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handlePrintSlipA4TwoUp(detailOrder)}
-                  className="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-300 flex items-center gap-1.5 transition cursor-pointer"
-                >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>Print 2-Up</span>
+                  <span>Print Slip</span>
                 </button>
 
                 <button
@@ -1000,32 +962,51 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
               </div>
 
               {!isEditingCustomer ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <p className="font-bold text-zinc-900 text-sm">{detailOrder.customerName}</p>
-                    <p className="text-zinc-700 mt-1 flex items-center gap-1.5">
-                      <Phone className="w-3.5 h-3.5 text-[#748C48]" />
-                      <span>{detailOrder.customerPhone}</span>
-                      {detailOrder.alternatePhone && (
-                        <span className="text-zinc-500">/ Alt: {detailOrder.alternatePhone}</span>
-                      )}
-                    </p>
-                    {detailOrder.customerEmail && (
-                      <p className="text-zinc-600 mt-0.5 flex items-center gap-1.5">
-                        <Mail className="w-3.5 h-3.5 text-zinc-400" />
-                        <span>{detailOrder.customerEmail}</span>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <p className="font-bold text-zinc-900 text-sm">{detailOrder.customerName}</p>
+                      <p className="text-zinc-700 mt-1 flex items-center gap-1.5">
+                        <Phone className="w-3.5 h-3.5 text-[#748C48]" />
+                        <span>{detailOrder.customerPhone}</span>
+                        {detailOrder.alternatePhone && (
+                          <span className="text-zinc-500">/ Alt: {detailOrder.alternatePhone}</span>
+                        )}
                       </p>
-                    )}
+                      {detailOrder.customerEmail && (
+                        <p className="text-zinc-600 mt-0.5 flex items-center gap-1.5">
+                          <Mail className="w-3.5 h-3.5 text-zinc-400" />
+                          <span>{detailOrder.customerEmail}</span>
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <p className="text-zinc-700 flex items-start gap-1.5">
+                        <MapPin className="w-3.5 h-3.5 text-[#748C48] shrink-0 mt-0.5" />
+                        <span>{detailOrder.shippingAddress}, {detailOrder.city}</span>
+                      </p>
+                      <p className="text-[11px] text-zinc-600 mt-2">
+                        Payment Mode: <strong className="text-zinc-900">{detailOrder.paymentMethod}</strong> (Status: <span className={detailOrder.paymentStatus === 'paid' ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>{detailOrder.paymentStatus.toUpperCase()}</span>)
+                      </p>
+                    </div>
                   </div>
 
-                  <div>
-                    <p className="text-zinc-700 flex items-start gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#748C48] shrink-0 mt-0.5" />
-                      <span>{detailOrder.shippingAddress}, {detailOrder.city}</span>
-                    </p>
-                    <p className="text-[11px] text-zinc-600 mt-2">
-                      Payment Mode: <strong className="text-zinc-900">{detailOrder.paymentMethod}</strong> (Status: <span className={detailOrder.paymentStatus === 'paid' ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>{detailOrder.paymentStatus.toUpperCase()}</span>)
-                    </p>
+                  {/* Customer Special Instructions / Note */}
+                  <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-xl">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-amber-900 uppercase tracking-wider mb-1">
+                      <MessageSquare className="w-3.5 h-3.5 text-amber-700" />
+                      <span>Customer Special Instructions / Delivery Note</span>
+                    </div>
+                    {detailOrder.notes ? (
+                      <p className="text-xs text-zinc-900 font-medium bg-white p-2.5 rounded-lg border border-amber-200 leading-relaxed">
+                        "{detailOrder.notes}"
+                      </p>
+                    ) : (
+                      <p className="text-xs text-zinc-500 italic">
+                        No special delivery instructions provided by customer.
+                      </p>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -1075,6 +1056,18 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
                       rows={2}
                       value={editShippingAddress}
                       onChange={(e) => setEditShippingAddress(e.target.value)}
+                      className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-1.5 text-xs text-zinc-900 outline-none focus:border-[#748C48]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-zinc-600 mb-1">
+                      Customer Special Instructions / Delivery Note
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={editNotes}
+                      onChange={(e) => setEditNotes(e.target.value)}
+                      placeholder="e.g. Call before delivery, deliver after 5 PM, etc."
                       className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-1.5 text-xs text-zinc-900 outline-none focus:border-[#748C48]"
                     />
                   </div>
@@ -1250,11 +1243,11 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({
                 <span>Status Audit Trail & History</span>
               </h3>
 
-              {(!detailOrder.statusHistory || detailOrder.statusHistory.length === 0) ? (
+              {(!detailOrder.statusHistory || cleanStatusHistory(detailOrder.statusHistory).length === 0) ? (
                 <p className="text-xs text-zinc-500 italic">No transition history recorded for this order yet.</p>
               ) : (
                 <div className="space-y-2">
-                  {detailOrder.statusHistory.map((entry, idx) => (
+                  {cleanStatusHistory(detailOrder.statusHistory).map((entry, idx) => (
                     <div key={idx} className="flex items-start gap-3 text-xs p-2.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
                       <div className="w-2 h-2 rounded-full bg-[#748C48] mt-1.5 shrink-0" />
                       <div className="flex-1">
