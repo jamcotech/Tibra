@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "trailingSlash": true,
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/assets/purefix-bottle-box-showcase.jpg",
@@ -41,6 +41,10 @@
     },
     {
       "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/",
       "destination": "/index.html"
     },
     {

@@ -9,7 +9,7 @@ import type {
 } from './types';
 import { TRACKING_STAGE_DEFINITIONS } from './types';
 import { generateTrackingToken, phonesMatch, formatPKTDateTime } from './security';
-import { getCourierAdapter } from './couriers';
+import { getCourierAdapter } from './couriers/index';
 
 interface DatabaseSchema {
   orders: OrderRecord[];
