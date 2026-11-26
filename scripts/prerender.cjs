@@ -739,4 +739,26 @@ const updatedRootHtml = baseHtml.replace('<div id="root"></div>', () => `<div id
 fs.writeFileSync(indexHtmlPath, updatedRootHtml, 'utf-8');
 console.log(`  ✓ Injected Semantic Prerender Shell into root: dist/index.html`);
 
-console.log(`Static route prerendering completed successfully! (Total ${routes.length + 1} indexable pages: 1 root + ${routes.length} deep routes)`);
+// Generate Admin Portal Static Entry (dist/admin/index.html)
+// This ensures https://www.tibranaturals.com/admin/ and /admin returns HTTP 200 OK directly on Vercel
+const adminDir = path.join(distDir, 'admin');
+if (!fs.existsSync(adminDir)) {
+  fs.mkdirSync(adminDir, { recursive: true });
+}
+let adminHtml = baseHtml;
+adminHtml = adminHtml.replace(/<title>.*?<\/title>/s, () => `<title>Admin Portal | TIBRA NATURALS</title>`);
+adminHtml = adminHtml.replace(/<meta name="description" content=".*?" \/>/s, () => `<meta name="description" content="TIBRA NATURALS Store Administration and Order Management Portal" />`);
+adminHtml = adminHtml.replace(/<link rel="canonical" href=".*?" \/>/s, () => `<link rel="canonical" href="https://www.tibranaturals.com/admin/" />`);
+adminHtml = adminHtml.replace(/<meta name="robots" content=".*?" \/>/s, () => `<meta name="robots" content="noindex, nofollow" />`);
+if (!adminHtml.includes('noindex')) {
+  adminHtml = adminHtml.replace('</head>', () => `    <meta name="robots" content="noindex, nofollow" />\n  </head>`);
+}
+// Strip Homepage-specific hero poster preload from admin page
+adminHtml = adminHtml.replace(/<link rel="preload" as="image" href="\/assets\/hero-video-poster\.webp".*?\/>\s*/s, '');
+// Remove any homepage Schema.org script from admin page
+adminHtml = adminHtml.replace(/<!-- Schema\.org JSON-LD.*?<\/script>/s, '');
+
+fs.writeFileSync(path.join(adminDir, 'index.html'), adminHtml, 'utf-8');
+console.log(`  ✓ Generated Admin Portal entry: dist/admin/index.html (noindex, nofollow)`);
+
+console.log(`Static route prerendering completed successfully! (Total ${routes.length + 1} indexable pages + 1 private admin portal: 1 root + ${routes.length} deep routes + admin)`);

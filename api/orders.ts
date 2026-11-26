@@ -1,6 +1,6 @@
-import type { ApiRequest, ApiResponse } from './lib/types';
-import { db } from './lib/db';
-import { formatPKTDateTime } from './lib/security';
+import type { ApiRequest, ApiResponse } from './_lib/types';
+import { db } from './_lib/db';
+import { formatPKTDateTime } from './_lib/security';
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');

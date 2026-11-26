@@ -1,8 +1,8 @@
-import type { ApiRequest, ApiResponse } from './lib/types';
-import { db } from './lib/db';
-import { getCourierAdapter } from './lib/couriers';
-import { formatPKTDateTime } from './lib/security';
-import type { ShipmentRecord, TrackingStatus } from './lib/types';
+import type { ApiRequest, ApiResponse } from './_lib/types';
+import { db } from './_lib/db';
+import { getCourierAdapter } from './_lib/couriers';
+import { formatPKTDateTime } from './_lib/security';
+import type { ShipmentRecord, TrackingStatus } from './_lib/types';
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');

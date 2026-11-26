@@ -1,9 +1,9 @@
-import type { ApiRequest, ApiResponse } from './lib/types';
-import { db } from './lib/db';
-import { checkRateLimit } from './lib/rateLimit';
-import { maskPhoneNumber, maskStreetAddress, formatPKTDateTime } from './lib/security';
-import { TRACKING_STAGE_DEFINITIONS, type PublicTrackingResponse } from './lib/types';
-import { getCourierAdapter } from './lib/couriers';
+import type { ApiRequest, ApiResponse } from './_lib/types';
+import { db } from './_lib/db';
+import { checkRateLimit } from './_lib/rateLimit';
+import { maskPhoneNumber, maskStreetAddress, formatPKTDateTime } from './_lib/security';
+import { TRACKING_STAGE_DEFINITIONS, type PublicTrackingResponse } from './_lib/types';
+import { getCourierAdapter } from './_lib/couriers';
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
   // CORS headers

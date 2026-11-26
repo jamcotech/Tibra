@@ -56,6 +56,13 @@ function ShopAppContent() {
       if (!target) return;
 
       const href = target.getAttribute('href');
+      if (href && (href === '/admin' || href === '/admin/' || href.startsWith('/admin'))) {
+        e.preventDefault();
+        setIsAdminOpen(true);
+        window.history.pushState({}, '', '/admin/');
+        return;
+      }
+
       if (
         href &&
         href.startsWith('/') &&

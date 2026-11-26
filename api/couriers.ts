@@ -1,5 +1,5 @@
-import type { ApiRequest, ApiResponse } from './lib/types';
-import { listCourierAdapters } from './lib/couriers';
+import type { ApiRequest, ApiResponse } from './_lib/types';
+import { listCourierAdapters } from './_lib/couriers';
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
