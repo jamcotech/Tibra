@@ -180,7 +180,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                       name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                       price: 2600,
                       originalPrice: 3980,
-                      image: '/assets/purefix-bottle-box-showcase.webp'
+                      image: '/assets/tibra-naturals-pain-relief-oil-duo-pack.webp'
                     };
                     quickBuyNow(duo as any, 1);
                   }}
@@ -197,7 +197,7 @@ export const PackagingShowcaseSection: React.FC = () => {
                       name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
                       price: 2600,
                       originalPrice: 3980,
-                      image: '/assets/purefix-bottle-box-showcase.webp'
+                      image: '/assets/tibra-naturals-pain-relief-oil-duo-pack.webp'
                     };
                     addToCart(duo as any, 1);
                   }}

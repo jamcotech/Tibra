@@ -2,6 +2,38 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/assets/purefix-bottle-box-showcase.jpg",
+      "destination": "/assets/tibra-naturals-pain-relief-oil-box-packaging.webp",
+      "permanent": true
+    },
+    {
+      "source": "/assets/purefix-bottle-box-showcase.webp",
+      "destination": "/assets/tibra-naturals-pain-relief-oil-box-packaging.webp",
+      "permanent": true
+    },
+    {
+      "source": "/assets/purefix-bottle-transparent.webp",
+      "destination": "/assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp",
+      "permanent": true
+    },
+    {
+      "source": "/assets/purefix-bottle-004-transparent.webp",
+      "destination": "/assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp",
+      "permanent": true
+    },
+    {
+      "source": "/assets/purefix-bottle-transparent.png",
+      "destination": "/assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp",
+      "permanent": true
+    },
+    {
+      "source": "/assets/purefix-logo.png",
+      "destination": "/assets/tibra-naturals-brand-logo.png",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",

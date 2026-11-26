@@ -69,9 +69,22 @@ export interface OrderStatusHistoryEntry {
 }
 
 export interface OrderPricingSnapshot {
+  packageId?: string;
+  packageName?: string;
+  bottleQuantity?: number;
   unitPrice: number;
+  packagePrice?: number;
+  subtotal?: number;
   deliveryCharges: number;
   isDeliveryIncluded: boolean;
+  freeDelivery?: boolean;
+  deliveryFee?: number;
+  discount?: number;
+  tax?: number;
+  grandTotal?: number;
+  amountPaid?: number;
+  outstandingBalance?: number;
+  codCollection?: number;
   packageType: 'single' | 'combo' | 'family' | 'custom';
   calculatedAt: string;
 }
@@ -96,6 +109,9 @@ export interface Order {
   discount?: number;
   tax?: number;
   total: number;
+  amountPaid?: number;
+  outstandingBalance?: number;
+  codCollection?: number;
   status: OrderStatus;
   deliveryCourier?: string;
   trackingNumber?: string;
@@ -108,36 +124,25 @@ export interface Order {
   pricingSnapshot?: OrderPricingSnapshot;
 }
 
+export interface PackagePricingItem {
+  id: string;
+  name: string;
+  sku: string;
+  bottleQuantity: number;
+  unitPrice?: number;
+  packagePrice: number;
+  originalPrice: number;
+  deliveryCharges: number;
+  isDeliveryIncluded: boolean;
+  freeDelivery: boolean;
+  deliveryFee: number;
+  enabled: boolean;
+}
+
 export interface PricingConfig {
-  singleBottle: {
-    id: string;
-    name: string;
-    sku: string;
-    unitPrice: number;
-    originalPrice: number;
-    deliveryCharges: number;
-    isDeliveryIncluded: boolean;
-  };
-  twoBottleCombo: {
-    id: string;
-    name: string;
-    sku: string;
-    packagePrice: number;
-    originalPrice: number;
-    deliveryCharges: number;
-    isDeliveryIncluded: boolean;
-    enabled: boolean;
-  };
-  threeBottleFamily: {
-    id: string;
-    name: string;
-    sku: string;
-    packagePrice: number;
-    originalPrice: number;
-    deliveryCharges: number;
-    isDeliveryIncluded: boolean;
-    enabled: boolean;
-  };
+  singleBottle: PackagePricingItem & { unitPrice: number };
+  twoBottleCombo: PackagePricingItem;
+  threeBottleFamily: PackagePricingItem;
   standardDeliveryFee: number;
   freeDeliveryThreshold: number;
   updatedAt?: string;

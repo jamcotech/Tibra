@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Edit2,
-  DollarSign,
   CheckCircle,
   ExternalLink,
   Check,
@@ -9,7 +8,8 @@ import {
   Package,
   Calculator,
   Save,
-  Tag
+  Tag,
+  Truck
 } from 'lucide-react';
 import type { Product, PricingConfig } from '../../types/ecommerce';
 import { storeService } from '../../services/storeService';
@@ -42,12 +42,16 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   const [isSaving, setIsSaving] = useState(false);
   const [successToast, setSuccessToast] = useState('');
 
-  // Keep local pricing state in sync
+  // Keep local pricing state in sync with central store & server
   useEffect(() => {
     const handlePricingUpdated = () => {
       setPricingConfig(storeService.getPricingConfig());
     };
     window.addEventListener('tibra_pricing_updated', handlePricingUpdated);
+    // Fetch latest from server
+    storeService.fetchPricingFromServer().then(cfg => {
+      if (cfg) setPricingConfig(cfg);
+    });
     return () => window.removeEventListener('tibra_pricing_updated', handlePricingUpdated);
   }, []);
 
@@ -58,7 +62,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
     setTimeout(() => {
       setIsSavingPricing(false);
       onRefresh();
-      setSuccessToast('Central pricing and combo packages updated live across catalog, cart, and checkout!');
+      setSuccessToast('Central pricing and combo packages updated live across catalog, cart, checkout, and PDF slips!');
       setTimeout(() => setSuccessToast(''), 4500);
     }, 200);
   };
@@ -95,12 +99,14 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
       status,
     });
 
-    // Also sync with pricingConfig if it's the main single bottle or combo
-    if (editingProduct.id.includes('30ml') && !editingProduct.id.includes('bundle')) {
+    // Also sync with central pricingConfig if it's the main single bottle or combo
+    if (editingProduct.id.includes('30ml') && !editingProduct.id.includes('bundle') && !editingProduct.id.includes('family')) {
       storeService.updatePricingConfig({
         singleBottle: {
           ...pricingConfig.singleBottle,
+          name,
           unitPrice: Number(price),
+          packagePrice: Number(price),
           originalPrice: Number(originalPrice),
         }
       });
@@ -108,6 +114,16 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
       storeService.updatePricingConfig({
         twoBottleCombo: {
           ...pricingConfig.twoBottleCombo,
+          name,
+          packagePrice: Number(price),
+          originalPrice: Number(originalPrice),
+        }
+      });
+    } else if (editingProduct.id.includes('family')) {
+      storeService.updatePricingConfig({
+        threeBottleFamily: {
+          ...pricingConfig.threeBottleFamily,
+          name,
           packagePrice: Number(price),
           originalPrice: Number(originalPrice),
         }
@@ -118,27 +134,41 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
       setIsSaving(false);
       closeEditModal();
       onRefresh();
-      setSuccessToast(`Product "${name}" updated live! Changes are reflecting immediately.`);
+      setSuccessToast(`Product "${name}" updated live! Changes reflect immediately.`);
       setTimeout(() => setSuccessToast(''), 4500);
     }, 250);
   };
 
-  // Preview calculations
-  const singlePayable = pricingConfig.singleBottle.unitPrice + (pricingConfig.singleBottle.isDeliveryIncluded ? 0 : pricingConfig.singleBottle.deliveryCharges);
-  const comboPayable = pricingConfig.twoBottleCombo.packagePrice + (pricingConfig.twoBottleCombo.isDeliveryIncluded ? 0 : pricingConfig.twoBottleCombo.deliveryCharges);
-  const familyPayable = pricingConfig.threeBottleFamily.packagePrice + (pricingConfig.threeBottleFamily.isDeliveryIncluded ? 0 : pricingConfig.threeBottleFamily.deliveryCharges);
+  // Preview calculations with exact package-wise delivery logic
+  const isSingleFree = Boolean(pricingConfig.singleBottle.freeDelivery ?? pricingConfig.singleBottle.isDeliveryIncluded);
+  const singleDeliveryFee = isSingleFree ? 0 : (pricingConfig.singleBottle.deliveryFee ?? pricingConfig.singleBottle.deliveryCharges ?? 200);
+  const singlePrice = pricingConfig.singleBottle.packagePrice || pricingConfig.singleBottle.unitPrice;
+  const singlePayable = singlePrice + singleDeliveryFee;
+  const singleDiscount = Math.max(0, pricingConfig.singleBottle.originalPrice - singlePrice);
+
+  const isComboFree = Boolean(pricingConfig.twoBottleCombo.freeDelivery ?? pricingConfig.twoBottleCombo.isDeliveryIncluded);
+  const comboDeliveryFee = isComboFree ? 0 : (pricingConfig.twoBottleCombo.deliveryFee ?? pricingConfig.twoBottleCombo.deliveryCharges ?? 200);
+  const comboPrice = pricingConfig.twoBottleCombo.packagePrice;
+  const comboPayable = comboPrice + comboDeliveryFee;
+  const comboDiscount = Math.max(0, pricingConfig.twoBottleCombo.originalPrice - comboPrice);
+
+  const isFamilyFree = Boolean(pricingConfig.threeBottleFamily.freeDelivery ?? pricingConfig.threeBottleFamily.isDeliveryIncluded);
+  const familyDeliveryFee = isFamilyFree ? 0 : (pricingConfig.threeBottleFamily.deliveryFee ?? pricingConfig.threeBottleFamily.deliveryCharges ?? 200);
+  const familyPrice = pricingConfig.threeBottleFamily.packagePrice;
+  const familyPayable = familyPrice + familyDeliveryFee;
+  const familyDiscount = Math.max(0, pricingConfig.threeBottleFamily.originalPrice - familyPrice);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto text-zinc-900">
       {/* Toast Notification */}
       {successToast && (
-        <div className="fixed top-6 right-6 z-50 bg-emerald-950 border border-emerald-500/80 text-emerald-200 px-5 py-3.5 rounded-2xl shadow-2xl shadow-black/80 flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
-          <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" />
+        <div className="fixed top-6 right-6 z-50 bg-[#252E15] border border-[#748C48] text-white px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+          <CheckCircle className="w-5 h-5 text-[#C5E18A] shrink-0" />
           <div className="text-xs">
             <span className="font-bold block text-white">Storefront Synchronized</span>
             <span>{successToast}</span>
           </div>
-          <button onClick={() => setSuccessToast('')} className="ml-3 text-emerald-400 hover:text-white">
+          <button onClick={() => setSuccessToast('')} className="ml-3 text-zinc-300 hover:text-white cursor-pointer">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -147,17 +177,17 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white font-serif">
+          <h1 className="text-2xl font-bold tracking-tight text-[#252E15] font-serif">
             Product & Pricing Management
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">
-            Single bottle rates, promotional combo packages, delivery rules, and live catalog prices.
+          <p className="text-xs text-zinc-500 mt-1">
+            Central pricing engine, package-wise standard delivery controls, and live storefront sync.
           </p>
         </div>
 
         <button
           onClick={onBackToStore}
-          className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#252E15] text-[#F5E6A3] border border-[#748C48]/40 hover:bg-[#3E4A28] transition flex items-center gap-2 cursor-pointer shadow-sm"
+          className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#252E15] text-[#F5E6A3] border border-[#748C48]/40 hover:bg-[#34401F] transition flex items-center gap-2 cursor-pointer shadow-xs"
         >
           <ExternalLink className="w-3.5 h-3.5" />
           <span>Verify Live on Storefront</span>
@@ -165,16 +195,16 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
       </div>
 
       {/* Centralized Pricing Control Board */}
-      <div className="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-6 shadow-xl space-y-6">
-        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4">
+      <div className="bg-white border border-zinc-200/90 rounded-3xl p-6 shadow-sm space-y-6">
+        <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#748C48]/20 border border-[#748C48]/40 flex items-center justify-center text-[#F5E6A3]">
-              <Calculator className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-[#748C48]/15 border border-[#748C48]/30 flex items-center justify-center text-[#252E15]">
+              <Calculator className="w-5 h-5 text-[#748C48]" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">Central Pricing & Package Engine</h2>
-              <p className="text-xs text-zinc-400">
-                Primary source of truth: edits here automatically govern PDP, Cart, Checkout, Order Calculations, and PDF Dispatch Slips.
+              <h2 className="text-base font-bold text-[#252E15] font-serif">Central Product & Package Pricing Engine</h2>
+              <p className="text-xs text-zinc-500">
+                Primary source of truth: edits here automatically govern Home, PDP, PLP, Cart, Checkout, Order Records, and A5 PDF Dispatch Slips.
               </p>
             </div>
           </div>
@@ -182,35 +212,65 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
 
         <form onSubmit={handleSaveCentralPricing} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Single Bottle Config */}
-            <div className="p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-sm text-[#F5E6A3] flex items-center gap-1.5">
+
+            {/* PACKAGE 1 — Single Bottle */}
+            <div className="p-5 rounded-2xl bg-zinc-50/70 border border-zinc-200 space-y-4 shadow-2xs hover:border-[#748C48]/50 transition">
+              <div className="flex items-center justify-between border-b border-zinc-200/80 pb-2.5">
+                <span className="font-bold text-sm text-[#252E15] flex items-center gap-1.5 font-serif">
                   <Package className="w-4 h-4 text-[#748C48]" />
-                  <span>Single Bottle (30ml)</span>
+                  <span>Package 1 — Single Bottle</span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-200 text-zinc-700 font-semibold">
                   {pricingConfig.singleBottle.sku}
                 </span>
               </div>
 
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Unit Price (PKR)</label>
+                  <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Package Name</label>
                   <input
-                    type="number"
-                    value={pricingConfig.singleBottle.unitPrice}
+                    type="text"
+                    value={pricingConfig.singleBottle.name}
                     onChange={(e) => setPricingConfig({
                       ...pricingConfig,
-                      singleBottle: { ...pricingConfig.singleBottle, unitPrice: Number(e.target.value) }
+                      singleBottle: { ...pricingConfig.singleBottle, name: e.target.value }
                     })}
-                    min={1}
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-bold outline-none focus:border-[#748C48]"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-900 font-medium outline-none focus:border-[#748C48]"
                   />
                 </div>
 
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Bottle Qty</label>
+                    <input
+                      type="number"
+                      value={pricingConfig.singleBottle.bottleQuantity || 1}
+                      disabled
+                      className="w-full bg-zinc-100 border border-zinc-200 rounded-xl px-3 py-2 text-zinc-600 font-bold outline-none cursor-not-allowed"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Package Price (PKR)</label>
+                    <input
+                      type="number"
+                      value={pricingConfig.singleBottle.unitPrice}
+                      onChange={(e) => setPricingConfig({
+                        ...pricingConfig,
+                        singleBottle: {
+                          ...pricingConfig.singleBottle,
+                          unitPrice: Number(e.target.value),
+                          packagePrice: Number(e.target.value)
+                        }
+                      })}
+                      min={1}
+                      className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-900 font-bold outline-none focus:border-[#748C48]"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Compare-At Price (PKR)</label>
+                  <label className="block text-[11px] font-medium text-zinc-500 mb-1">Compare-At Price (PKR)</label>
                   <input
                     type="number"
                     value={pricingConfig.singleBottle.originalPrice}
@@ -219,60 +279,137 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                       singleBottle: { ...pricingConfig.singleBottle, originalPrice: Number(e.target.value) }
                     })}
                     min={0}
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-zinc-300 outline-none focus:border-[#748C48]"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-700 outline-none focus:border-[#748C48]"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Standard Delivery Fee (PKR)</label>
-                  <input
-                    type="number"
-                    value={pricingConfig.singleBottle.deliveryCharges}
-                    onChange={(e) => setPricingConfig({
-                      ...pricingConfig,
-                      singleBottle: { ...pricingConfig.singleBottle, deliveryCharges: Number(e.target.value) }
-                    })}
-                    min={0}
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white outline-none focus:border-[#748C48]"
-                  />
+                {/* Standard Delivery Configuration */}
+                <div className="p-3 bg-white border border-zinc-200 rounded-xl space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-zinc-800 flex items-center gap-1">
+                      <Truck className="w-3.5 h-3.5 text-[#748C48]" />
+                      <span>Standard Delivery</span>
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isSingleFree ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}`}>
+                      {isSingleFree ? 'FREE DELIVERY' : `Rs. ${singleDeliveryFee}`}
+                    </span>
+                  </div>
+
+                  <label className="flex items-center gap-2 cursor-pointer pt-1">
+                    <input
+                      type="checkbox"
+                      checked={isSingleFree}
+                      onChange={(e) => setPricingConfig({
+                        ...pricingConfig,
+                        singleBottle: {
+                          ...pricingConfig.singleBottle,
+                          isDeliveryIncluded: e.target.checked,
+                          freeDelivery: e.target.checked,
+                          deliveryCharges: e.target.checked ? 0 : (pricingConfig.singleBottle.deliveryFee || 200),
+                          deliveryFee: e.target.checked ? 0 : (pricingConfig.singleBottle.deliveryFee || 200)
+                        }
+                      })}
+                      className="accent-[#748C48] rounded w-4 h-4 cursor-pointer"
+                    />
+                    <span className="text-zinc-700 text-xs font-semibold">Free Standard Delivery</span>
+                  </label>
+
+                  <div>
+                    <label className="block text-[10px] font-medium text-zinc-500 mb-0.5">Delivery Fee (PKR)</label>
+                    <input
+                      type="number"
+                      disabled={isSingleFree}
+                      value={isSingleFree ? 0 : singleDeliveryFee}
+                      onChange={(e) => setPricingConfig({
+                        ...pricingConfig,
+                        singleBottle: {
+                          ...pricingConfig.singleBottle,
+                          deliveryCharges: Number(e.target.value),
+                          deliveryFee: Number(e.target.value)
+                        }
+                      })}
+                      min={0}
+                      className={`w-full rounded-lg px-2.5 py-1.5 text-xs font-semibold border ${isSingleFree ? 'bg-zinc-100 border-zinc-200 text-zinc-400 cursor-not-allowed' : 'bg-white border-zinc-300 text-zinc-900 focus:border-[#748C48]'}`}
+                    />
+                  </div>
                 </div>
 
-                <div className="pt-2 border-t border-zinc-800 text-[11px] flex justify-between font-semibold">
-                  <span className="text-zinc-400">Customer Final Payable:</span>
-                  <span className="text-[#F5E6A3]">Rs. {singlePayable.toLocaleString()}</span>
+                {/* Price Preview */}
+                <div className="pt-2 border-t border-zinc-200 text-[11px] space-y-1 font-medium">
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Package Price:</span>
+                    <span>Rs. {singlePrice.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Standard Delivery:</span>
+                    <span>{isSingleFree ? 'FREE (Rs. 0)' : `Rs. ${singleDeliveryFee}`}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Discount:</span>
+                    <span className="text-emerald-700">- Rs. {singleDiscount.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-zinc-900 pt-1 border-t border-zinc-200 text-xs">
+                    <span>Customer Payable:</span>
+                    <span className="text-[#252E15]">Rs. {singlePayable.toLocaleString()}</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Two-Bottle Combo Package */}
-            <div className="p-5 rounded-2xl bg-zinc-950/70 border border-[#748C48]/40 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-sm text-[#F5E6A3] flex items-center gap-1.5">
+            {/* PACKAGE 2 — Two-Bottle Combo */}
+            <div className="p-5 rounded-2xl bg-zinc-50/70 border border-[#748C48]/40 space-y-4 shadow-2xs hover:border-[#748C48] transition">
+              <div className="flex items-center justify-between border-b border-zinc-200/80 pb-2.5">
+                <span className="font-bold text-sm text-[#252E15] flex items-center gap-1.5 font-serif">
                   <Tag className="w-4 h-4 text-[#748C48]" />
-                  <span>Two-Bottle Combo</span>
+                  <span>Package 2 — Two-Bottle Combo</span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#748C48]/15 text-[#252E15] font-bold">
                   {pricingConfig.twoBottleCombo.sku}
                 </span>
               </div>
 
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Package Price (PKR)</label>
+                  <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Package Name</label>
                   <input
-                    type="number"
-                    value={pricingConfig.twoBottleCombo.packagePrice}
+                    type="text"
+                    value={pricingConfig.twoBottleCombo.name}
                     onChange={(e) => setPricingConfig({
                       ...pricingConfig,
-                      twoBottleCombo: { ...pricingConfig.twoBottleCombo, packagePrice: Number(e.target.value) }
+                      twoBottleCombo: { ...pricingConfig.twoBottleCombo, name: e.target.value }
                     })}
-                    min={1}
-                    className="w-full bg-zinc-900 border border-[#748C48] rounded-xl px-3 py-2 text-white font-bold outline-none focus:border-emerald-400"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-900 font-medium outline-none focus:border-[#748C48]"
                   />
                 </div>
 
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Bottle Qty</label>
+                    <input
+                      type="number"
+                      value={pricingConfig.twoBottleCombo.bottleQuantity || 2}
+                      disabled
+                      className="w-full bg-zinc-100 border border-zinc-200 rounded-xl px-3 py-2 text-zinc-600 font-bold outline-none cursor-not-allowed"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Package Price (PKR) *</label>
+                    <input
+                      type="number"
+                      value={pricingConfig.twoBottleCombo.packagePrice}
+                      onChange={(e) => setPricingConfig({
+                        ...pricingConfig,
+                        twoBottleCombo: { ...pricingConfig.twoBottleCombo, packagePrice: Number(e.target.value) }
+                      })}
+                      min={1}
+                      className="w-full bg-white border border-[#748C48] rounded-xl px-3 py-2 text-zinc-900 font-bold outline-none focus:ring-1 focus:ring-[#748C48]"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Compare-At Price (2x Regular)</label>
+                  <label className="block text-[11px] font-medium text-zinc-500 mb-1">Compare-At Price (2x Regular)</label>
                   <input
                     type="number"
                     value={pricingConfig.twoBottleCombo.originalPrice}
@@ -281,65 +418,137 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                       twoBottleCombo: { ...pricingConfig.twoBottleCombo, originalPrice: Number(e.target.value) }
                     })}
                     min={0}
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-zinc-300 outline-none focus:border-[#748C48]"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-700 outline-none focus:border-[#748C48]"
                   />
                 </div>
 
-                <div className="pt-1">
-                  <label className="flex items-center gap-2 cursor-pointer p-2 rounded-xl bg-zinc-900 border border-zinc-800">
+                {/* Standard Delivery Configuration */}
+                <div className="p-3 bg-white border border-zinc-200 rounded-xl space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-zinc-800 flex items-center gap-1">
+                      <Truck className="w-3.5 h-3.5 text-[#748C48]" />
+                      <span>Standard Delivery</span>
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isComboFree ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}`}>
+                      {isComboFree ? 'FREE DELIVERY' : `Rs. ${comboDeliveryFee}`}
+                    </span>
+                  </div>
+
+                  <label className="flex items-center gap-2 cursor-pointer pt-1">
                     <input
                       type="checkbox"
-                      checked={pricingConfig.twoBottleCombo.isDeliveryIncluded}
+                      checked={isComboFree}
                       onChange={(e) => setPricingConfig({
                         ...pricingConfig,
                         twoBottleCombo: {
                           ...pricingConfig.twoBottleCombo,
                           isDeliveryIncluded: e.target.checked,
-                          deliveryCharges: e.target.checked ? 0 : 200,
+                          freeDelivery: e.target.checked,
+                          deliveryCharges: e.target.checked ? 0 : (pricingConfig.twoBottleCombo.deliveryFee || 200),
+                          deliveryFee: e.target.checked ? 0 : (pricingConfig.twoBottleCombo.deliveryFee || 200)
                         }
                       })}
-                      className="accent-[#748C48] rounded"
+                      className="accent-[#748C48] rounded w-4 h-4 cursor-pointer"
                     />
-                    <span className="text-zinc-200 text-xs font-semibold">Delivery Included (FREE)</span>
+                    <span className="text-zinc-700 text-xs font-semibold">Free Standard Delivery</span>
                   </label>
+
+                  <div>
+                    <label className="block text-[10px] font-medium text-zinc-500 mb-0.5">Delivery Fee (PKR)</label>
+                    <input
+                      type="number"
+                      disabled={isComboFree}
+                      value={isComboFree ? 0 : comboDeliveryFee}
+                      onChange={(e) => setPricingConfig({
+                        ...pricingConfig,
+                        twoBottleCombo: {
+                          ...pricingConfig.twoBottleCombo,
+                          deliveryCharges: Number(e.target.value),
+                          deliveryFee: Number(e.target.value)
+                        }
+                      })}
+                      min={0}
+                      className={`w-full rounded-lg px-2.5 py-1.5 text-xs font-semibold border ${isComboFree ? 'bg-zinc-100 border-zinc-200 text-zinc-400 cursor-not-allowed' : 'bg-white border-zinc-300 text-zinc-900 focus:border-[#748C48]'}`}
+                    />
+                  </div>
                 </div>
 
-                <div className="pt-2 border-t border-zinc-800 text-[11px] flex justify-between font-semibold">
-                  <span className="text-zinc-400">Customer Final Payable:</span>
-                  <span className="text-[#F5E6A3]">Rs. {comboPayable.toLocaleString()}</span>
+                {/* Price Preview */}
+                <div className="pt-2 border-t border-zinc-200 text-[11px] space-y-1 font-medium">
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Package Price:</span>
+                    <span>Rs. {comboPrice.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Standard Delivery:</span>
+                    <span>{isComboFree ? 'FREE (Rs. 0)' : `Rs. ${comboDeliveryFee}`}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Discount:</span>
+                    <span className="text-emerald-700">- Rs. {comboDiscount.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-zinc-900 pt-1 border-t border-zinc-200 text-xs">
+                    <span>Customer Payable:</span>
+                    <span className="text-[#252E15]">Rs. {comboPayable.toLocaleString()}</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Three-Bottle Family Pack */}
-            <div className="p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-sm text-[#F5E6A3] flex items-center gap-1.5">
+            {/* PACKAGE 3 — Three-Bottle / Family Pack */}
+            <div className="p-5 rounded-2xl bg-zinc-50/70 border border-zinc-200 space-y-4 shadow-2xs hover:border-[#748C48]/50 transition">
+              <div className="flex items-center justify-between border-b border-zinc-200/80 pb-2.5">
+                <span className="font-bold text-sm text-[#252E15] flex items-center gap-1.5 font-serif">
                   <Package className="w-4 h-4 text-[#748C48]" />
-                  <span>3-Bottle Family Pack</span>
+                  <span>Package 3 — 3-Bottle Family Pack</span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-200 text-zinc-700 font-semibold">
                   {pricingConfig.threeBottleFamily.sku}
                 </span>
               </div>
 
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Package Price (PKR)</label>
+                  <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Package Name</label>
                   <input
-                    type="number"
-                    value={pricingConfig.threeBottleFamily.packagePrice}
+                    type="text"
+                    value={pricingConfig.threeBottleFamily.name}
                     onChange={(e) => setPricingConfig({
                       ...pricingConfig,
-                      threeBottleFamily: { ...pricingConfig.threeBottleFamily, packagePrice: Number(e.target.value) }
+                      threeBottleFamily: { ...pricingConfig.threeBottleFamily, name: e.target.value }
                     })}
-                    min={1}
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-bold outline-none focus:border-[#748C48]"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-900 font-medium outline-none focus:border-[#748C48]"
                   />
                 </div>
 
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Bottle Qty</label>
+                    <input
+                      type="number"
+                      value={pricingConfig.threeBottleFamily.bottleQuantity || 3}
+                      disabled
+                      className="w-full bg-zinc-100 border border-zinc-200 rounded-xl px-3 py-2 text-zinc-600 font-bold outline-none cursor-not-allowed"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Package Price (PKR)</label>
+                    <input
+                      type="number"
+                      value={pricingConfig.threeBottleFamily.packagePrice}
+                      onChange={(e) => setPricingConfig({
+                        ...pricingConfig,
+                        threeBottleFamily: { ...pricingConfig.threeBottleFamily, packagePrice: Number(e.target.value) }
+                      })}
+                      min={1}
+                      className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-900 font-bold outline-none focus:border-[#748C48]"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Compare-At Price (3x Regular)</label>
+                  <label className="block text-[11px] font-medium text-zinc-500 mb-1">Compare-At Price (3x Regular)</label>
                   <input
                     type="number"
                     value={pricingConfig.threeBottleFamily.originalPrice}
@@ -348,46 +557,94 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                       threeBottleFamily: { ...pricingConfig.threeBottleFamily, originalPrice: Number(e.target.value) }
                     })}
                     min={0}
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-zinc-300 outline-none focus:border-[#748C48]"
+                    className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-zinc-700 outline-none focus:border-[#748C48]"
                   />
                 </div>
 
-                <div className="pt-1">
-                  <label className="flex items-center gap-2 cursor-pointer p-2 rounded-xl bg-zinc-900 border border-zinc-800">
+                {/* Standard Delivery Configuration */}
+                <div className="p-3 bg-white border border-zinc-200 rounded-xl space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-zinc-800 flex items-center gap-1">
+                      <Truck className="w-3.5 h-3.5 text-[#748C48]" />
+                      <span>Standard Delivery</span>
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isFamilyFree ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}`}>
+                      {isFamilyFree ? 'FREE DELIVERY' : `Rs. ${familyDeliveryFee}`}
+                    </span>
+                  </div>
+
+                  <label className="flex items-center gap-2 cursor-pointer pt-1">
                     <input
                       type="checkbox"
-                      checked={pricingConfig.threeBottleFamily.isDeliveryIncluded}
+                      checked={isFamilyFree}
                       onChange={(e) => setPricingConfig({
                         ...pricingConfig,
                         threeBottleFamily: {
                           ...pricingConfig.threeBottleFamily,
                           isDeliveryIncluded: e.target.checked,
-                          deliveryCharges: e.target.checked ? 0 : 200,
+                          freeDelivery: e.target.checked,
+                          deliveryCharges: e.target.checked ? 0 : (pricingConfig.threeBottleFamily.deliveryFee || 200),
+                          deliveryFee: e.target.checked ? 0 : (pricingConfig.threeBottleFamily.deliveryFee || 200)
                         }
                       })}
-                      className="accent-[#748C48] rounded"
+                      className="accent-[#748C48] rounded w-4 h-4 cursor-pointer"
                     />
-                    <span className="text-zinc-200 text-xs font-semibold">Delivery Included (FREE)</span>
+                    <span className="text-zinc-700 text-xs font-semibold">Free Standard Delivery</span>
                   </label>
+
+                  <div>
+                    <label className="block text-[10px] font-medium text-zinc-500 mb-0.5">Delivery Fee (PKR)</label>
+                    <input
+                      type="number"
+                      disabled={isFamilyFree}
+                      value={isFamilyFree ? 0 : familyDeliveryFee}
+                      onChange={(e) => setPricingConfig({
+                        ...pricingConfig,
+                        threeBottleFamily: {
+                          ...pricingConfig.threeBottleFamily,
+                          deliveryCharges: Number(e.target.value),
+                          deliveryFee: Number(e.target.value)
+                        }
+                      })}
+                      min={0}
+                      className={`w-full rounded-lg px-2.5 py-1.5 text-xs font-semibold border ${isFamilyFree ? 'bg-zinc-100 border-zinc-200 text-zinc-400 cursor-not-allowed' : 'bg-white border-zinc-300 text-zinc-900 focus:border-[#748C48]'}`}
+                    />
+                  </div>
                 </div>
 
-                <div className="pt-2 border-t border-zinc-800 text-[11px] flex justify-between font-semibold">
-                  <span className="text-zinc-400">Customer Final Payable:</span>
-                  <span className="text-[#F5E6A3]">Rs. {familyPayable.toLocaleString()}</span>
+                {/* Price Preview */}
+                <div className="pt-2 border-t border-zinc-200 text-[11px] space-y-1 font-medium">
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Package Price:</span>
+                    <span>Rs. {familyPrice.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Standard Delivery:</span>
+                    <span>{isFamilyFree ? 'FREE (Rs. 0)' : `Rs. ${familyDeliveryFee}`}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Discount:</span>
+                    <span className="text-emerald-700">- Rs. {familyDiscount.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-zinc-900 pt-1 border-t border-zinc-200 text-xs">
+                    <span>Customer Payable:</span>
+                    <span className="text-[#252E15]">Rs. {familyPayable.toLocaleString()}</span>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
 
-          <div className="flex items-center justify-between pt-2">
-            <p className="text-xs text-zinc-400">
-              * Historical orders retain their frozen pricing snapshot. Pending orders can be explicitly recalculated from Order Management.
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-zinc-100">
+            <p className="text-xs text-zinc-500">
+              * Order price snapshot policy: Historical and dispatched orders retain their original saved snapshot.
             </p>
 
             <button
               type="submit"
               disabled={isSavingPricing}
-              className="px-6 py-2.5 rounded-xl text-xs font-bold bg-[#748C48] hover:bg-[#5E7238] text-white transition flex items-center gap-2 shadow-lg shadow-emerald-950 cursor-pointer"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-[#748C48] hover:bg-[#5F7339] text-white transition flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               <span>{isSavingPricing ? 'Publishing Updates...' : 'Save & Propagate Central Pricing'}</span>
@@ -397,16 +654,16 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
       </div>
 
       {/* Catalog Table */}
-      <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
-        <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white font-serif">Product Catalog & Variant Stock</h2>
-          <span className="text-xs text-zinc-400">{products.length} Products Configured</span>
+      <div className="bg-white border border-zinc-200/90 rounded-2xl overflow-hidden shadow-sm">
+        <div className="p-4 border-b border-zinc-200 flex items-center justify-between">
+          <h2 className="text-sm font-bold text-[#252E15] font-serif">Product Catalog & Variant Stock</h2>
+          <span className="text-xs text-zinc-500 font-medium">{products.length} Products Configured</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-zinc-800 text-[11px] font-semibold uppercase tracking-wider text-zinc-400 bg-zinc-950/50">
+              <tr className="border-b border-zinc-200 text-[11px] font-semibold uppercase tracking-wider text-zinc-500 bg-zinc-50/70">
                 <th className="py-3.5 px-6">Product</th>
                 <th className="py-3.5 px-6">SKU / Size</th>
                 <th className="py-3.5 px-6">Stock Status</th>
@@ -416,17 +673,17 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 <th className="py-3.5 px-6 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/60 text-xs">
+            <tbody className="divide-y divide-zinc-100 text-xs">
               {products.map((p) => {
                 const discount = p.originalPrice > p.price
                   ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
                   : 0;
 
                 return (
-                  <tr key={p.id} className="hover:bg-zinc-800/30 transition">
+                  <tr key={p.id} className="hover:bg-zinc-50/80 transition">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center shrink-0">
+                        <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-200 overflow-hidden flex items-center justify-center shrink-0">
                           <img
                             src={p.image}
                             alt={p.name}
@@ -437,27 +694,27 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                           />
                         </div>
                         <div>
-                          <div className="font-semibold text-white">{p.name}</div>
-                          <div className="text-[11px] text-zinc-400 line-clamp-1">{p.subtitle}</div>
+                          <div className="font-semibold text-zinc-900">{p.name}</div>
+                          <div className="text-[11px] text-zinc-500 line-clamp-1">{p.subtitle}</div>
                         </div>
                       </div>
                     </td>
 
                     <td className="py-4 px-6">
-                      <div className="font-mono text-zinc-300 font-medium">{p.sku || p.id}</div>
+                      <div className="font-mono text-zinc-800 font-semibold">{p.sku || p.id}</div>
                       <div className="text-[11px] text-zinc-500">{p.size}</div>
                     </td>
 
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-1.5">
-                        <span className={`w-2 h-2 rounded-full ${p.stock > 10 ? 'bg-emerald-400' : 'bg-amber-400'}`} />
-                        <span className="font-semibold text-white">{p.stock} units</span>
+                        <span className={`w-2 h-2 rounded-full ${p.stock > 10 ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                        <span className="font-semibold text-zinc-900">{p.stock} units</span>
                       </div>
-                      <span className="text-[10px] text-zinc-500">In Warehouse</span>
+                      <span className="text-[10px] text-zinc-400">In Warehouse</span>
                     </td>
 
                     <td className="py-4 px-6">
-                      <div className="text-base font-bold text-[#F5E6A3]">
+                      <div className="text-sm font-bold text-[#252E15]">
                         Rs. {p.price.toLocaleString()}
                       </div>
                     </td>
@@ -465,37 +722,38 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                     <td className="py-4 px-6">
                       {p.originalPrice > 0 ? (
                         <div>
-                          <span className="line-through text-zinc-500">
+                          <span className="line-through text-zinc-400 font-mono">
                             Rs. {p.originalPrice.toLocaleString()}
                           </span>
                           {discount > 0 && (
-                            <span className="ml-1.5 text-[10px] font-bold text-amber-400">
+                            <span className="ml-1.5 text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">
                               -{discount}%
                             </span>
                           )}
                         </div>
                       ) : (
-                        <span className="text-zinc-600">—</span>
+                        <span className="text-zinc-400">—</span>
                       )}
                     </td>
 
                     <td className="py-4 px-6">
                       {p.badge ? (
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-zinc-800 text-zinc-200 border border-zinc-700">
-                          {p.badge}
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#748C48]/15 text-[#252E15] border border-[#748C48]/30">
+                          <Tag className="w-3 h-3 text-[#748C48]" />
+                          <span>{p.badge}</span>
                         </span>
                       ) : (
-                        <span className="text-zinc-600">—</span>
+                        <span className="text-zinc-400 text-[11px]">—</span>
                       )}
                     </td>
 
                     <td className="py-4 px-6 text-right">
                       <button
                         onClick={() => openEditModal(p)}
-                        className="px-3.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-[#748C48] hover:text-white text-zinc-200 text-xs font-medium transition cursor-pointer flex items-center gap-1.5 ml-auto"
+                        className="px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold flex items-center gap-1.5 ml-auto transition cursor-pointer border border-zinc-200"
                       >
-                        <Edit2 className="w-3.5 h-3.5" />
-                        <span>Edit</span>
+                        <Edit2 className="w-3 h-3 text-[#748C48]" />
+                        <span>Edit Product</span>
                       </button>
                     </td>
                   </tr>
@@ -506,94 +764,88 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
         </div>
       </div>
 
-      {/* Edit Modal */}
+      {/* Product Edit Modal */}
       {editingProduct && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                  <DollarSign className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white text-base">Edit Product Details</h3>
-                  <p className="text-xs text-zinc-400">{editingProduct.name}</p>
-                </div>
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-zinc-200 rounded-3xl p-6 shadow-2xl max-w-lg w-full text-zinc-900 animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between pb-4 border-b border-zinc-200">
+              <div>
+                <h3 className="font-bold text-base text-[#252E15] font-serif">Edit Product & Pricing</h3>
+                <p className="text-xs text-zinc-500">Live storefront SKU details</p>
               </div>
-
               <button
                 onClick={closeEditModal}
-                className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
+                className="text-zinc-400 hover:text-zinc-700 p-1 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveProduct} className="space-y-4 text-xs">
+            <form onSubmit={handleSaveProduct} className="space-y-4 pt-4 text-xs">
               <div>
-                <label className="block text-[11px] font-medium text-zinc-400 mb-1">Product Name</label>
+                <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Product Title</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="w-full bg-zinc-950 border border-zinc-800 focus:border-[#748C48] rounded-xl px-3 py-2 text-white outline-none"
+                  className="w-full bg-zinc-50 border border-zinc-300 focus:border-[#748C48] focus:bg-white rounded-xl px-3 py-2 text-zinc-900 outline-none font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-medium text-zinc-400 mb-1">Subtitle</label>
+                <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Subtitle / Marketing Tagline</label>
                 <input
                   type="text"
                   value={subtitle}
                   onChange={(e) => setSubtitle(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-800 focus:border-[#748C48] rounded-xl px-3 py-2 text-white outline-none"
+                  className="w-full bg-zinc-50 border border-zinc-300 focus:border-[#748C48] focus:bg-white rounded-xl px-3 py-2 text-zinc-900 outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#F5E6A3] mb-1">Catalog Price (PKR) *</label>
+                  <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Catalog Price (PKR) *</label>
                   <input
                     type="number"
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
                     required
                     min={1}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white font-bold outline-none focus:border-[#748C48]"
+                    className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3 py-2 text-zinc-900 font-bold outline-none focus:border-[#748C48] focus:bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Compare-At Price (PKR)</label>
+                  <label className="block text-[11px] font-medium text-zinc-500 mb-1">Compare-At Price (PKR)</label>
                   <input
                     type="number"
                     value={originalPrice}
                     onChange={(e) => setOriginalPrice(Number(e.target.value))}
                     min={0}
-                    className="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white outline-none focus:border-[#748C48]"
+                    className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3 py-2 text-zinc-800 outline-none focus:border-[#748C48] focus:bg-white"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Inventory Stock</label>
+                  <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Inventory Stock</label>
                   <input
                     type="number"
                     value={stock}
                     onChange={(e) => setStock(Number(e.target.value))}
                     min={0}
-                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-[#748C48] rounded-xl px-3 py-2 text-white outline-none"
+                    className="w-full bg-zinc-50 border border-zinc-300 focus:border-[#748C48] focus:bg-white rounded-xl px-3 py-2 text-zinc-900 outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-medium text-zinc-400 mb-1">Status</label>
+                  <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Status</label>
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value as 'active' | 'draft' | 'archived')}
-                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-[#748C48] rounded-xl px-3 py-2 text-white outline-none"
+                    className="w-full bg-zinc-50 border border-zinc-300 focus:border-[#748C48] focus:bg-white rounded-xl px-3 py-2 text-zinc-900 outline-none"
                   >
                     <option value="active">Active (Published)</option>
                     <option value="draft">Draft (Hidden)</option>
@@ -603,32 +855,32 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-[11px] font-medium text-zinc-400 mb-1">Offer / Promo Badge</label>
+                <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Offer / Promo Badge</label>
                 <input
                   type="text"
                   value={badge}
                   onChange={(e) => setBadge(e.target.value)}
                   placeholder="e.g. Best Seller, Save 25% Today"
-                  className="w-full bg-zinc-950 border border-zinc-800 focus:border-[#748C48] rounded-xl px-3 py-2 text-white outline-none"
+                  className="w-full bg-zinc-50 border border-zinc-300 focus:border-[#748C48] focus:bg-white rounded-xl px-3 py-2 text-zinc-900 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-medium text-zinc-400 mb-1">Bundle Offer Tagline</label>
+                <label className="block text-[11px] font-semibold text-zinc-700 mb-1">Bundle Offer Tagline</label>
                 <input
                   type="text"
                   value={bundleOffer}
                   onChange={(e) => setBundleOffer(e.target.value)}
-                  placeholder="e.g. Save 30% + Free Delivery"
-                  className="w-full bg-zinc-950 border border-zinc-800 focus:border-[#748C48] rounded-xl px-3 py-2 text-white outline-none"
+                  placeholder="e.g. Save 35% + Free Delivery"
+                  className="w-full bg-zinc-50 border border-zinc-300 focus:border-[#748C48] focus:bg-white rounded-xl px-3 py-2 text-zinc-900 outline-none"
                 />
               </div>
 
-              <div className="pt-4 flex items-center justify-end gap-3 border-t border-zinc-800">
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-zinc-200">
                 <button
                   type="button"
                   onClick={closeEditModal}
-                  className="px-4 py-2 rounded-xl text-xs text-zinc-400 hover:text-white cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs text-zinc-600 hover:text-zinc-900 cursor-pointer font-medium"
                 >
                   Cancel
                 </button>
@@ -636,7 +888,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold bg-[#748C48] hover:bg-[#5E7238] text-white transition flex items-center gap-2 shadow-lg shadow-emerald-950 cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold bg-[#748C48] hover:bg-[#5F7339] text-white transition flex items-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
                 >
                   <Check className="w-4 h-4" />
                   <span>{isSaving ? 'Syncing Store...' : 'Save & Publish Live'}</span>

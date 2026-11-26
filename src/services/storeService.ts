@@ -29,48 +29,59 @@ const STORAGE_KEYS = {
 export const DEFAULT_PRICING_CONFIG: PricingConfig = {
   singleBottle: {
     id: 'tibra-natural-joint-oil-30ml',
-    name: 'TIBRA NATURALS Pain Relief Oil',
+    name: 'TIBRA NATURALS Pain Relief Oil (30 ML)',
     sku: 'TN-PRO-030',
+    bottleQuantity: 1,
     unitPrice: 1500,
+    packagePrice: 1500,
     originalPrice: 1990,
     deliveryCharges: 200,
+    deliveryFee: 200,
     isDeliveryIncluded: false,
+    freeDelivery: false,
+    enabled: true,
   },
   twoBottleCombo: {
     id: 'tibra-natural-joint-oil-bundle-2',
     name: 'TIBRA NATURALS Two-Bottle Combo',
     sku: 'TN-PRO-060-DUO',
-    packagePrice: 2500,
+    bottleQuantity: 2,
+    packagePrice: 2600,
     originalPrice: 3980,
     deliveryCharges: 0,
+    deliveryFee: 0,
     isDeliveryIncluded: true,
+    freeDelivery: true,
     enabled: true,
   },
   threeBottleFamily: {
     id: 'tibra-natural-joint-oil-family-pack',
     name: 'TIBRA NATURALS Complete Family Care (Pack of 3)',
     sku: 'TN-PRO-090-TRI',
+    bottleQuantity: 3,
     packagePrice: 3600,
     originalPrice: 5970,
     deliveryCharges: 0,
+    deliveryFee: 0,
     isDeliveryIncluded: true,
+    freeDelivery: true,
     enabled: true,
   },
   standardDeliveryFee: 200,
-  freeDeliveryThreshold: 2500,
+  freeDeliveryThreshold: 2600,
   updatedAt: new Date().toISOString(),
 };
 
 export const DEFAULT_SENDER_SETTINGS: SenderSettings = {
   businessName: 'TIBRA NATURALS',
   senderAddress: 'R-60, Pink Residency, Gulistan-e-Johar, Block 8, Karachi, Pakistan.',
-  officialPhone: '+92 300 1234567',
-  whatsappNumber: '+92 300 1234567',
+  officialPhone: '+92 321 8294711',
+  whatsappNumber: '+92 321 8294711',
   website: 'https://www.tibranaturals.com/',
   facebookUrl: 'https://www.facebook.com/tibranaturals',
   instagramUrl: 'https://www.instagram.com/tibranaturals/',
   socialHandle: '@tibranaturals',
-  logoUrl: '/assets/tibra-logo.png',
+  logoUrl: '/assets/tibra-naturals-brand-logo.png',
   taxRatePercent: 0,
 };
 
@@ -78,11 +89,11 @@ const DEFAULT_SETTINGS: StoreSettings = {
   storeName: 'TIBRA NATURALS Official Store',
   legalBusinessName: 'Tibra Naturals Botanical Wellness Ltd.',
   supportEmail: 'orders@tibranaturals.com',
-  supportPhone: '+92 300 1234567',
+  supportPhone: '+92 321 8294711',
   currency: 'PKR',
   timezone: 'Asia/Karachi (UTC+5)',
   standardShippingFee: 200,
-  freeDeliveryThreshold: 2500,
+  freeDeliveryThreshold: 2600,
   codEnabled: true,
   bankTransferEnabled: true,
   autoFulfill: false,
@@ -224,31 +235,44 @@ export function calculateCartTotal(cart: CartItem[], explicitPricing?: PricingCo
 
   let subtotal = 0;
   let regularSubtotal = 0;
-  let totalBottles = 0;
-  let hasCombo = false;
+  let anyFreeDelivery = false;
+  let maxDeliveryFee = 0;
 
   for (const item of cart) {
     const calc = calculateItemPrice(item.product, item.quantity, pricing);
     subtotal += calc.total;
     regularSubtotal += calc.regularTotal;
 
-    if (item.product.id.includes('bundle') || item.product.id.includes('combo')) {
-      totalBottles += item.quantity * 2;
-      hasCombo = true;
-    } else if (item.product.id.includes('family')) {
-      totalBottles += item.quantity * 3;
-      hasCombo = true;
+    const isCombo = item.product.id.includes('bundle') || item.product.id.includes('combo') || item.quantity === 2;
+    const isFamily = item.product.id.includes('family') || item.quantity === 3;
+
+    let itemFree = false;
+    let itemFee = 0;
+
+    if (isFamily) {
+      itemFree = Boolean(pricing.threeBottleFamily.freeDelivery ?? pricing.threeBottleFamily.isDeliveryIncluded);
+      itemFee = itemFree ? 0 : (pricing.threeBottleFamily.deliveryFee ?? pricing.threeBottleFamily.deliveryCharges ?? 200);
+    } else if (isCombo) {
+      itemFree = Boolean(pricing.twoBottleCombo.freeDelivery ?? pricing.twoBottleCombo.isDeliveryIncluded);
+      itemFee = itemFree ? 0 : (pricing.twoBottleCombo.deliveryFee ?? pricing.twoBottleCombo.deliveryCharges ?? 200);
     } else {
-      totalBottles += item.quantity;
-      if (item.quantity >= 2) hasCombo = true;
+      itemFree = Boolean(pricing.singleBottle.freeDelivery ?? pricing.singleBottle.isDeliveryIncluded);
+      itemFee = itemFree ? 0 : (pricing.singleBottle.deliveryFee ?? pricing.singleBottle.deliveryCharges ?? 200);
+    }
+
+    if (itemFree) {
+      anyFreeDelivery = true;
+    } else {
+      maxDeliveryFee = Math.max(maxDeliveryFee, itemFee);
     }
   }
 
-  // Delivery Charges Rule:
-  // Single bottle (1 bottle) = Rs. 200 delivery charges (Final payable = 1,700)
-  // Two-Bottle Combo (or >= 2 bottles or subtotal >= freeDeliveryThreshold) = Delivery Included (Rs. 0, Final payable = 2,500)
-  const isFreeDelivery = hasCombo || totalBottles >= 2 || subtotal >= pricing.freeDeliveryThreshold;
-  const shippingFee = isFreeDelivery ? 0 : pricing.singleBottle.deliveryCharges;
+  // Precedence rule:
+  // 1. If any eligible package has Free Delivery ON, or if subtotal reaches threshold, delivery is FREE (Rs. 0)
+  // 2. Otherwise apply the configured package standard delivery fee. Delivery is never added twice.
+  const isFreeDelivery = anyFreeDelivery || (pricing.freeDeliveryThreshold > 0 && subtotal >= pricing.freeDeliveryThreshold);
+  const shippingFee = isFreeDelivery ? 0 : maxDeliveryFee;
+  // Critical formula: Grand Total = Package Price - Discount + Applicable Delivery Charges + Applicable Taxes
   const grandTotal = subtotal + shippingFee;
 
   return {
@@ -328,7 +352,45 @@ export const storeService = {
 
     window.dispatchEvent(new Event('tibra_pricing_updated'));
     window.dispatchEvent(new Event('tibra_products_updated'));
+
+    // Persist to server API in background
+    if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
+      fetch('/api/pricing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      }).catch(err => console.warn('[Pricing] Server sync failed (offline or local):', err));
+    }
+
     return updated;
+  },
+
+  async fetchPricingFromServer(): Promise<PricingConfig> {
+    if (typeof window === 'undefined' || typeof window.fetch !== 'function') {
+      return this.getPricingConfig();
+    }
+    try {
+      const res = await fetch('/api/pricing');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.pricing) {
+          const current = this.getPricingConfig();
+          const merged: PricingConfig = {
+            ...current,
+            ...data.pricing,
+            singleBottle: { ...current.singleBottle, ...data.pricing.singleBottle },
+            twoBottleCombo: { ...current.twoBottleCombo, ...data.pricing.twoBottleCombo },
+            threeBottleFamily: { ...current.threeBottleFamily, ...data.pricing.threeBottleFamily },
+          };
+          localStorage.setItem(STORAGE_KEYS.PRICING, JSON.stringify(merged));
+          window.dispatchEvent(new Event('tibra_pricing_updated'));
+          return merged;
+        }
+      }
+    } catch {
+      // offline fallback
+    }
+    return this.getPricingConfig();
   },
 
   // SENDER / BUSINESS SETTINGS (for branded PDF slips)
@@ -515,30 +577,6 @@ export const storeService = {
     const pricing = this.getPricingConfig();
     const status: OrderStatus = orderData.status || 'pending';
 
-    // Build frozen pricing snapshot
-    let packageType: 'single' | 'combo' | 'family' | 'custom' = 'single';
-    const totalBottles = orderData.items.reduce((sum, item) => {
-      if (item.productId.includes('family')) return sum + item.quantity * 3;
-      if (item.productId.includes('bundle') || item.productId.includes('combo')) return sum + item.quantity * 2;
-      return sum + item.quantity;
-    }, 0);
-
-    if (totalBottles === 2 || orderData.items.some(i => i.productId.includes('bundle') || i.productId.includes('combo'))) {
-      packageType = 'combo';
-    } else if (totalBottles >= 3 || orderData.items.some(i => i.productId.includes('family'))) {
-      packageType = 'family';
-    }
-
-    const isDeliveryIncluded = packageType !== 'single' || totalBottles >= 2 || orderData.shippingFee === 0;
-
-    const pricingSnapshot: OrderPricingSnapshot = orderData.pricingSnapshot || {
-      unitPrice: pricing.singleBottle.unitPrice,
-      deliveryCharges: isDeliveryIncluded ? 0 : pricing.singleBottle.deliveryCharges,
-      isDeliveryIncluded,
-      packageType,
-      calculatedAt: now.toISOString(),
-    };
-
     // Ensure item attributes have SKU and subtotal
     const items = orderData.items.map(item => {
       const canonical = this.getProductById(item.productId);
@@ -551,6 +589,57 @@ export const storeService = {
         subtotal: item.subtotal !== undefined ? item.subtotal : item.price * item.quantity,
       };
     });
+
+    const totalBottles = orderData.items.reduce((sum, item) => {
+      if (item.productId.includes('family')) return sum + item.quantity * 3;
+      if (item.productId.includes('bundle') || item.productId.includes('combo')) return sum + item.quantity * 2;
+      return sum + item.quantity;
+    }, 0);
+
+    const subtotal = orderData.subtotal !== undefined
+      ? orderData.subtotal
+      : items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const shippingFee = orderData.shippingFee !== undefined ? orderData.shippingFee : 0;
+    const discount = orderData.discount !== undefined ? orderData.discount : 0;
+    const tax = orderData.tax !== undefined ? orderData.tax : 0;
+    // Formula: Grand Total = Package Price - Discount + Applicable Delivery Charges + Applicable Taxes
+    const total = orderData.total !== undefined ? orderData.total : Math.max(0, subtotal - discount + shippingFee + tax);
+    const paymentStatus = orderData.paymentStatus || 'pending';
+    const amountPaid = paymentStatus === 'paid' ? total : (orderData.amountPaid ?? 0);
+    const outstandingBalance = Math.max(0, total - amountPaid);
+    // For unpaid COD order: COD Collection = Grand Total - Amount Already Paid. For fully prepaid order: COD Collection = Rs. 0
+    const codCollection = (orderData.paymentMethod === 'COD' || !orderData.paymentMethod)
+      ? (paymentStatus === 'paid' ? 0 : outstandingBalance)
+      : 0;
+
+    const primaryItem = items[0];
+    const isCombo = items.some(i => i.productId.includes('bundle') || i.productId.includes('combo')) || totalBottles === 2;
+    const isFamily = items.some(i => i.productId.includes('family')) || totalBottles >= 3;
+    const activePkg = isFamily ? pricing.threeBottleFamily : (isCombo ? pricing.twoBottleCombo : pricing.singleBottle);
+    const packageType: 'single' | 'combo' | 'family' | 'custom' = isFamily ? 'family' : (isCombo ? 'combo' : 'single');
+
+    const isDeliveryIncluded = shippingFee === 0;
+
+    const pricingSnapshot: OrderPricingSnapshot = orderData.pricingSnapshot || {
+      packageId: activePkg.id,
+      packageName: activePkg.name,
+      bottleQuantity: totalBottles,
+      unitPrice: primaryItem ? primaryItem.price : subtotal,
+      packagePrice: activePkg.packagePrice || activePkg.unitPrice,
+      subtotal,
+      deliveryCharges: shippingFee,
+      isDeliveryIncluded,
+      freeDelivery: isDeliveryIncluded,
+      deliveryFee: shippingFee,
+      discount,
+      tax,
+      grandTotal: total,
+      amountPaid,
+      outstandingBalance,
+      codCollection,
+      packageType,
+      calculatedAt: now.toISOString(),
+    };
 
     const initialHistory: OrderStatusHistoryEntry[] = orderData.statusHistory && orderData.statusHistory.length > 0
       ? orderData.statusHistory
@@ -571,11 +660,17 @@ export const storeService = {
       date: dateFormatted,
       status,
       items,
+      subtotal,
+      shippingFee,
+      discount,
+      tax,
+      total,
+      amountPaid,
+      outstandingBalance,
+      codCollection,
       statusHistory: initialHistory,
       pricingSnapshot,
       trackingAccessToken,
-      discount: orderData.discount !== undefined ? orderData.discount : 0,
-      tax: orderData.tax !== undefined ? orderData.tax : 0,
     };
 
     orders.unshift(newOrder);

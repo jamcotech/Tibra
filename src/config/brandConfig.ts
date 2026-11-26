@@ -60,8 +60,8 @@ export const BRAND_CONFIG = {
     duoOriginalPrice: 3980,
     unitPricePerBottleInDuo: 1300,
     category: 'Herbal Massage Oils',
-    image: '/assets/purefix-bottle-transparent.webp',
-    boxImage: '/assets/purefix-bottle-box-showcase.webp',
+    image: '/assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp',
+    boxImage: '/assets/tibra-naturals-pain-relief-oil-box-packaging.webp',
     availability: 'https://schema.org/InStock',
     keyIngredients: [
       'Turmeric (Curcuma Longa)',
@@ -80,7 +80,7 @@ export const BRAND_CONFIG = {
     defaultTitle: 'TIBRA NATURALS | Herbal Oils & Natural Personal Care in Pakistan',
     defaultDescription: 'Discover TIBRA NATURALS, Pakistan’s authentic herbal wellness brand offering natural botanical pain relief massage oils for joints, mobility, and active living.',
     defaultKeywords: 'TIBRA NATURALS, pain relief oil Pakistan, herbal massage oil, joint massage oil, joron ke dard ka oil, natural wellness oils Pakistan',
-    defaultOgImage: 'https://www.tibranaturals.com/assets/tibra-logo.png',
+    defaultOgImage: 'https://www.tibranaturals.com/assets/tibra-naturals-brand-logo.png',
   }
 } as const;
 

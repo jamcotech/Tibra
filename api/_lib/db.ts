@@ -16,8 +16,55 @@ interface DatabaseSchema {
   shipments: ShipmentRecord[];
   trackingEvents: TrackingEventRecord[];
   auditLogs: AdminAuditLogRecord[];
+  pricingConfig?: any;
   version: number;
 }
+
+export const DEFAULT_SERVER_PRICING = {
+  singleBottle: {
+    id: 'tibra-natural-joint-oil-30ml',
+    name: 'TIBRA NATURALS Pain Relief Oil',
+    sku: 'TN-PRO-030',
+    bottleQuantity: 1,
+    unitPrice: 1500,
+    packagePrice: 1500,
+    originalPrice: 1990,
+    deliveryCharges: 200,
+    isDeliveryIncluded: false,
+    freeDelivery: false,
+    deliveryFee: 200,
+    enabled: true
+  },
+  twoBottleCombo: {
+    id: 'tibra-natural-joint-oil-bundle-2',
+    name: 'TIBRA NATURALS Two-Bottle Combo',
+    sku: 'TN-PRO-060-DUO',
+    bottleQuantity: 2,
+    packagePrice: 2600,
+    originalPrice: 3980,
+    deliveryCharges: 0,
+    isDeliveryIncluded: true,
+    freeDelivery: true,
+    deliveryFee: 0,
+    enabled: true
+  },
+  threeBottleFamily: {
+    id: 'tibra-natural-joint-oil-family-pack',
+    name: 'TIBRA NATURALS Complete Family Care (Pack of 3)',
+    sku: 'TN-PRO-090-TRI',
+    bottleQuantity: 3,
+    packagePrice: 3600,
+    originalPrice: 5970,
+    deliveryCharges: 0,
+    isDeliveryIncluded: true,
+    freeDelivery: true,
+    deliveryFee: 0,
+    enabled: true
+  },
+  standardDeliveryFee: 200,
+  freeDeliveryThreshold: 2600,
+  updatedAt: new Date().toISOString()
+};
 
 // Select persistence location based on writable directory
 function getStorageFilePath(): string {
@@ -477,6 +524,7 @@ function generateSeedData(): DatabaseSchema {
     shipments,
     trackingEvents,
     auditLogs,
+    pricingConfig: { ...DEFAULT_SERVER_PRICING },
     version: 1
   };
 }
@@ -489,6 +537,9 @@ function loadDatabase(): DatabaseSchema {
       const data = fs.readFileSync(STORAGE_PATH, 'utf-8');
       memoryDb = JSON.parse(data);
       if (memoryDb && Array.isArray(memoryDb.orders)) {
+        if (!memoryDb.pricingConfig) {
+          memoryDb.pricingConfig = { ...DEFAULT_SERVER_PRICING };
+        }
         return memoryDb;
       }
     }
@@ -558,6 +609,21 @@ export const db = {
     const id = data.id || `ord-${Date.now()}`;
     const trackingAccessToken = data.trackingAccessToken || generateTrackingToken();
 
+    // Exact financial calculations according to requirements
+    const subtotal = data.subtotal ?? (data.items || []).reduce((acc, it) => acc + (it.price * it.quantity), 0);
+    const shippingFee = data.shippingFee ?? 0;
+    const discount = data.discount ?? 0;
+    const tax = data.tax ?? 0;
+    // Formula: Grand Total = Package Price - Discount + Applicable Delivery Charges + Applicable Taxes
+    const total = data.total ?? Math.max(0, subtotal - discount + shippingFee + tax);
+    const paymentStatus = data.paymentStatus || 'pending';
+    const amountPaid = paymentStatus === 'paid' ? total : (data.amountPaid ?? 0);
+    const outstandingBalance = Math.max(0, total - amountPaid);
+    // For unpaid COD order: COD Collection = Grand Total - Amount Already Paid. For fully prepaid order: COD Collection = Rs. 0
+    const codCollection = (data.paymentMethod === 'COD' || !data.paymentMethod)
+      ? (paymentStatus === 'paid' ? 0 : outstandingBalance)
+      : 0;
+
     const newOrder: OrderRecord = {
       id,
       orderNumber,
@@ -569,17 +635,34 @@ export const db = {
       shippingAddress: data.shippingAddress || '',
       city: data.city || 'Lahore',
       paymentMethod: data.paymentMethod || 'COD',
-      paymentStatus: data.paymentStatus || 'pending',
+      paymentStatus,
       items: data.items || [],
-      subtotal: data.subtotal || 0,
-      shippingFee: data.shippingFee || 0,
-      total: data.total || 0,
+      subtotal,
+      shippingFee,
+      discount,
+      tax,
+      total,
+      amountPaid,
+      outstandingBalance,
+      codCollection,
       status: data.status || 'order_placed',
       deliveryCourier: data.deliveryCourier,
       trackingNumber: data.trackingNumber,
       notes: data.notes || '',
       estimatedDeliveryDate: data.estimatedDeliveryDate,
       shipmentId: data.shipmentId,
+      pricingSnapshot: data.pricingSnapshot || {
+        subtotal,
+        shippingFee,
+        freeDelivery: shippingFee === 0,
+        discount,
+        tax,
+        grandTotal: total,
+        amountPaid,
+        outstandingBalance,
+        codCollection,
+        calculatedAt: nowPkt
+      },
       createdAt: now.toISOString(),
       updatedAt: now.toISOString()
     };
@@ -705,5 +788,30 @@ export const db = {
     const d = loadDatabase();
     if (!orderId) return d.auditLogs;
     return d.auditLogs.filter(a => a.orderId === orderId);
+  },
+
+  async getPricingConfig(): Promise<any> {
+    const d = loadDatabase();
+    if (!d.pricingConfig) {
+      d.pricingConfig = { ...DEFAULT_SERVER_PRICING };
+      saveDatabase(d);
+    }
+    return d.pricingConfig;
+  },
+
+  async updatePricingConfig(updates: any): Promise<any> {
+    const d = loadDatabase();
+    const current = d.pricingConfig || { ...DEFAULT_SERVER_PRICING };
+    const updated = {
+      ...current,
+      ...updates,
+      singleBottle: updates.singleBottle ? { ...current.singleBottle, ...updates.singleBottle } : current.singleBottle,
+      twoBottleCombo: updates.twoBottleCombo ? { ...current.twoBottleCombo, ...updates.twoBottleCombo } : current.twoBottleCombo,
+      threeBottleFamily: updates.threeBottleFamily ? { ...current.threeBottleFamily, ...updates.threeBottleFamily } : current.threeBottleFamily,
+      updatedAt: new Date().toISOString()
+    };
+    d.pricingConfig = updated;
+    saveDatabase(d);
+    return updated;
   }
 };

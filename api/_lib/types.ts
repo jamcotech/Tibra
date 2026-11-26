@@ -265,6 +265,9 @@ export interface OrderRecord {
   discount?: number;
   tax?: number;
   total: number;
+  amountPaid?: number;
+  outstandingBalance?: number;
+  codCollection?: number;
   status: TrackingStatus;
   deliveryCourier?: 'TCS' | 'PostEx' | 'Leopards' | 'Manual' | string;
   trackingNumber?: string;

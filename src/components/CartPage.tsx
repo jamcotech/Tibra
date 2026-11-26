@@ -220,24 +220,24 @@ export const CartPage: React.FC = () => {
                         <span className="text-[10px] font-bold uppercase tracking-wider bg-[#748C48] text-white px-2 py-0.5 rounded-full">Duo Offer</span>
                         <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">Save 35%</span>
                       </div>
-                      <h4 className="font-serif font-bold text-sm text-botanical-950 mt-1">Buy Two-Bottle Combo for Rs. 2,500 Only!</h4>
-                      <p className="text-xs text-botanical-700 mt-0.5">Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> (Delivery Included: FREE)</p>
+                      <h4 className="font-serif font-bold text-sm text-botanical-950 mt-1">Buy Two-Bottle Combo for Rs. {pricing.twoBottleCombo.packagePrice.toLocaleString()} Only!</h4>
+                      <p className="text-xs text-botanical-700 mt-0.5">Regular: <span className="line-through text-stone-400 font-mono">Rs. {pricing.twoBottleCombo.originalPrice.toLocaleString()}</span> (Delivery Included: FREE)</p>
                       <button
                         type="button"
                         onClick={() => {
                           const duo = {
                             id: 'tibra-natural-joint-oil-bundle-2',
                             name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
-                            price: 2500,
-                            originalPrice: 3980,
-                            image: '/assets/purefix-bottle-box-showcase.webp'
+                            price: pricing.twoBottleCombo.packagePrice,
+                            originalPrice: pricing.twoBottleCombo.originalPrice,
+                            image: '/assets/tibra-naturals-pain-relief-oil-duo-pack.webp'
                           };
                           clearCart();
                           addToCart(duo as any, 1);
                         }}
                         className="mt-2.5 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-xs cursor-pointer"
                       >
-                        <span>Upgrade to 2-Bottle Pack (Rs. 2,500)</span>
+                        <span>Upgrade to 2-Bottle Pack (Rs. {pricing.twoBottleCombo.packagePrice.toLocaleString()})</span>
                       </button>
                     </div>
                   </div>

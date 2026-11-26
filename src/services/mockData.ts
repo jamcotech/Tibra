@@ -9,7 +9,7 @@ export const TIBRA_PRODUCTS: Product[] = [
     price: 1500,
     originalPrice: 1990,
     stock: 48,
-    image: '/assets/purefix-bottle-transparent.webp',
+    image: '/assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp',
     description: '100% Natural Herbal Blend formulated with 16 time-tested botanical oils and active roots including Turmeric, Ginger, Wintergreen, Eucalyptus and Boswellia.',
     badge: 'Best Seller',
     bundleOffer: 'Save 25% (Flat Rs. 490 OFF)'
@@ -22,7 +22,7 @@ export const TIBRA_PRODUCTS: Product[] = [
     price: 2600,
     originalPrice: 3980,
     stock: 35,
-    image: '/assets/purefix-bottle-box-showcase.webp',
+    image: '/assets/tibra-naturals-pain-relief-oil-duo-pack.webp',
     description: 'Double pack for continuous daily morning & evening joint care. Best value for chronic knee, lumbar back and joint wellness.',
     badge: 'Best Value Duo',
     bundleOffer: 'Buy 2 for Rs. 2,600 — Save 35% (Flat Rs. 1,380 OFF)'
@@ -32,13 +32,13 @@ export const TIBRA_PRODUCTS: Product[] = [
     name: 'TIBRA NATURALS Complete Family Care (Pack of 3)',
     subtitle: 'Triple Protection Bundle',
     size: '3 x 30 ML',
-    price: 3900,
+    price: 3600,
     originalPrice: 5970,
     stock: 22,
-    image: '/assets/purefix-bottle-box-showcase.webp',
+    image: '/assets/tibra-naturals-pain-relief-oil-box-packaging.webp',
     description: 'Comprehensive family bundle. Keep one at home, one at the office, or gift to parents for pain-free mobility.',
     badge: 'Maximum Savings',
-    bundleOffer: 'Buy 3 for Rs. 3,900 — Save 35% (Flat Rs. 2,070 OFF)'
+    bundleOffer: 'Buy 3 for Rs. 3,600 — Save 40% (Flat Rs. 2,370 OFF)'
   }
 ];
 
@@ -81,24 +81,27 @@ export const INITIAL_ORDERS: Order[] = [
     customerPhone: '+92 300 4821950',
     customerEmail: 'tariq.m@gmail.com',
     shippingAddress: 'House 42-B, Street 7, Phase 5, DHA',
-    city: 'Lahore',
+    city: 'Karachi',
     paymentMethod: 'COD',
-    paymentStatus: 'pending',
+    paymentStatus: 'paid',
     items: [
       {
         productId: 'tibra-natural-joint-oil-bundle-2',
-        productName: 'Tibra Natural Joint Oil (Pack of 2)',
+        productName: 'TIBRA NATURALS Joint Oil (Pack of 2)',
         quantity: 1,
-        price: 3390,
-        image: '/assets/purefix-bottle-box-showcase.webp'
+        price: 2600,
+        image: '/assets/tibra-naturals-pain-relief-oil-duo-pack.webp'
       }
     ],
-    subtotal: 3390,
+    subtotal: 2600,
     shippingFee: 0,
-    total: 3390,
-    status: 'dispatched',
-    deliveryCourier: 'Trax Logistics',
-    trackingNumber: 'TRX-9481028',
+    total: 2600,
+    amountPaid: 2600,
+    outstandingBalance: 0,
+    codCollection: 0,
+    status: 'delivered',
+    deliveryCourier: 'TCS',
+    trackingNumber: 'TCS784910284',
     notes: 'Please call before delivery in evening.'
   },
   {
@@ -115,15 +118,18 @@ export const INITIAL_ORDERS: Order[] = [
     items: [
       {
         productId: 'tibra-natural-joint-oil-30ml',
-        productName: 'Tibra Natural Joint Oil (30 ML)',
+        productName: 'TIBRA NATURALS Pain Relief Oil (30 ML)',
         quantity: 2,
-        price: 1850,
-        image: '/assets/purefix-bottle-transparent.webp'
+        price: 1300,
+        image: '/assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp'
       }
     ],
-    subtotal: 3700,
+    subtotal: 2600,
     shippingFee: 0,
-    total: 3700,
+    total: 2600,
+    amountPaid: 2600,
+    outstandingBalance: 0,
+    codCollection: 0,
     status: 'confirmed',
     deliveryCourier: 'TCS Express',
     trackingNumber: 'TCS-8391023',
@@ -143,15 +149,18 @@ export const INITIAL_ORDERS: Order[] = [
     items: [
       {
         productId: 'tibra-natural-joint-oil-30ml',
-        productName: 'Tibra Natural Joint Oil (30 ML)',
+        productName: 'TIBRA NATURALS Pain Relief Oil (30 ML)',
         quantity: 1,
-        price: 1850,
-        image: '/assets/purefix-bottle-transparent.webp'
+        price: 1500,
+        image: '/assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp'
       }
     ],
-    subtotal: 1850,
-    shippingFee: 150,
-    total: 2000,
+    subtotal: 1500,
+    shippingFee: 200,
+    total: 1700,
+    amountPaid: 0,
+    outstandingBalance: 1700,
+    codCollection: 1700,
     status: 'pending',
     notes: 'Urgent delivery needed for knee pain.'
   },
@@ -168,15 +177,18 @@ export const INITIAL_ORDERS: Order[] = [
     items: [
       {
         productId: 'tibra-natural-joint-oil-family-pack',
-        productName: 'Tibra Natural Complete Family Care (Pack of 3)',
+        productName: 'TIBRA NATURALS Complete Family Care (Pack of 3)',
         quantity: 1,
-        price: 4790,
-        image: '/assets/purefix-bottle-box-showcase.webp'
+        price: 3600,
+        image: '/assets/tibra-naturals-pain-relief-oil-box-packaging.webp'
       }
     ],
-    subtotal: 4790,
+    subtotal: 3600,
     shippingFee: 0,
-    total: 4790,
+    total: 3600,
+    amountPaid: 3600,
+    outstandingBalance: 0,
+    codCollection: 0,
     status: 'delivered',
     deliveryCourier: 'Leopards Courier',
     trackingNumber: 'LEO-7482910',

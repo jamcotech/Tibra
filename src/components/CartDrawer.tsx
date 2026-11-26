@@ -209,24 +209,24 @@ export const CartDrawer: React.FC = () => {
                     <span className="text-[9px] font-bold uppercase tracking-wider bg-[#748C48] text-white px-2 py-0.5 rounded-full">Duo Offer</span>
                     <span className="text-[9px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">Save 35%</span>
                   </div>
-                  <p className="text-xs font-bold text-botanical-950 mt-1">Buy 2 Bottles for Rs. 2,600 Only!</p>
-                  <p className="text-[10px] text-botanical-700">Regular: <span className="line-through text-stone-400 font-mono">Rs. 3,980</span> (Flat Rs. 1,380 OFF)</p>
+                  <p className="text-xs font-bold text-botanical-950 mt-1">Buy 2 Bottles for Rs. {pricing.twoBottleCombo.packagePrice.toLocaleString()} Only!</p>
+                  <p className="text-[10px] text-botanical-700">Regular: <span className="line-through text-stone-400 font-mono">Rs. {pricing.twoBottleCombo.originalPrice.toLocaleString()}</span></p>
                   <button
                     type="button"
                     onClick={() => {
                       const duo = {
                         id: 'tibra-natural-joint-oil-bundle-2',
                         name: 'TIBRA NATURALS Joint Oil (Duo Pack of 2)',
-                        price: 2600,
-                        originalPrice: 3980,
-                        image: '/assets/purefix-bottle-box-showcase.webp'
+                        price: pricing.twoBottleCombo.packagePrice,
+                        originalPrice: pricing.twoBottleCombo.originalPrice,
+                        image: '/assets/tibra-naturals-pain-relief-oil-duo-pack.webp'
                       };
                       removeFromCart(cart[0].product.id);
                       addToCart(duo as any, 1);
                     }}
                     className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-[#748C48] hover:bg-[#5F7339] text-white shadow-xs cursor-pointer"
                   >
-                    <span>Upgrade to 2-Pack (Rs. 2,600)</span>
+                    <span>Upgrade to 2-Pack (Rs. {pricing.twoBottleCombo.packagePrice.toLocaleString()})</span>
                   </button>
                 </div>
               </div>

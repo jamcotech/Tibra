@@ -1,2 +1,9 @@
+# Media asset SEO 301 redirects
+/assets/purefix-bottle-box-showcase.jpg /assets/tibra-naturals-pain-relief-oil-box-packaging.webp 301
+/assets/purefix-bottle-box-showcase.webp /assets/tibra-naturals-pain-relief-oil-box-packaging.webp 301
+/assets/purefix-bottle-transparent.webp /assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp 301
+/assets/purefix-bottle-004-transparent.webp /assets/tibra-naturals-pain-relief-oil-bottle-30ml.webp 301
+/assets/purefix-logo.png /assets/tibra-naturals-brand-logo.png 301
+
 # SPA catch-all rewrite for Netlify and Cloudflare Pages
 /* /index.html 200

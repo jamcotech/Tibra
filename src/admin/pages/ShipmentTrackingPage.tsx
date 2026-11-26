@@ -271,31 +271,31 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#252E15] tracking-tight font-serif">
               Order & Shipment Tracking
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#748C48]/15 text-[#252E15] border border-[#748C48]/30">
               Live Logistics Engine
             </span>
           </div>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className="text-xs text-zinc-500 mt-1">
             Manage, dispatch, track, and monitor customer orders across TCS, PostEx, Leopards, and manual couriers in Pakistan.
           </p>
         </div>
 
         {/* View Switcher & Action Buttons */}
         <div className="flex items-center gap-2">
-          <div className="flex rounded-xl bg-zinc-900 border border-zinc-800 p-1">
+          <div className="flex rounded-xl bg-zinc-100 border border-zinc-200 p-1">
             <button
               type="button"
               onClick={() => setActiveTab('tracking')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
-                activeTab === 'tracking' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                activeTab === 'tracking' ? 'bg-[#748C48] text-white shadow-2xs' : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
               Shipments & Orders
@@ -304,7 +304,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
               type="button"
               onClick={() => setActiveTab('couriers')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
-                activeTab === 'couriers' ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                activeTab === 'couriers' ? 'bg-[#748C48] text-white shadow-2xs' : 'text-zinc-600 hover:text-zinc-900'
               }`}
             >
               Courier Settings
@@ -314,9 +314,9 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
           <button
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-200 hover:text-white transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-zinc-50 border border-zinc-300 text-xs font-semibold text-zinc-700 transition cursor-pointer shadow-2xs"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5 text-[#748C48]" />
             Export CSV
           </button>
 
@@ -326,10 +326,10 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
               onRefresh();
               fetchApiData();
             }}
-            className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition cursor-pointer"
+            className="p-2 rounded-xl bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-600 hover:text-zinc-900 transition cursor-pointer shadow-2xs"
             title="Refresh Orders"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-4 h-4 text-[#748C48]" />
           </button>
         </div>
       </div>
@@ -337,8 +337,8 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
       {actionMessage && (
         <div className={`p-3.5 rounded-xl text-xs font-medium border ${
           actionMessage.startsWith('Error')
-            ? 'bg-red-950/40 border-red-800/60 text-red-300'
-            : 'bg-emerald-950/40 border-emerald-800/60 text-emerald-300'
+            ? 'bg-red-50 border-red-300 text-red-800'
+            : 'bg-emerald-50 border-emerald-300 text-emerald-800'
         }`}>
           {actionMessage}
         </div>
@@ -348,50 +348,50 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
         <>
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">Total Orders</span>
-              <span className="text-xl font-bold text-white mt-1 block">{metrics.total}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">Total Orders</span>
+              <span className="text-xl font-bold text-zinc-900 mt-1 block">{metrics.total}</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">Awaiting Conf.</span>
-              <span className="text-xl font-bold text-amber-400 mt-1 block">{metrics.awaiting}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">Awaiting Conf.</span>
+              <span className="text-xl font-bold text-amber-700 mt-1 block">{metrics.awaiting}</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">Processing</span>
-              <span className="text-xl font-bold text-blue-400 mt-1 block">{metrics.processing}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">Processing</span>
+              <span className="text-xl font-bold text-blue-700 mt-1 block">{metrics.processing}</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">Ready Dispatch</span>
-              <span className="text-xl font-bold text-purple-400 mt-1 block">{metrics.readyDispatch}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">Ready Dispatch</span>
+              <span className="text-xl font-bold text-purple-700 mt-1 block">{metrics.readyDispatch}</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">Booked / Picked</span>
-              <span className="text-xl font-bold text-sky-400 mt-1 block">{metrics.booked}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">Booked / Picked</span>
+              <span className="text-xl font-bold text-sky-700 mt-1 block">{metrics.booked}</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">In Transit</span>
-              <span className="text-xl font-bold text-amber-300 mt-1 block">{metrics.inTransit}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">In Transit</span>
+              <span className="text-xl font-bold text-amber-600 mt-1 block">{metrics.inTransit}</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">Out for Deliv.</span>
-              <span className="text-xl font-bold text-orange-400 mt-1 block">{metrics.outDelivery}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">Out for Deliv.</span>
+              <span className="text-xl font-bold text-orange-700 mt-1 block">{metrics.outDelivery}</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block">Delivered</span>
-              <span className="text-xl font-bold text-emerald-400 mt-1 block">{metrics.delivered}</span>
+            <div className="p-3.5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+              <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider block">Delivered</span>
+              <span className="text-xl font-bold text-emerald-700 mt-1 block">{metrics.delivered}</span>
             </div>
           </div>
 
           {/* Search & Filters */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 bg-zinc-900/60 p-3 rounded-2xl border border-zinc-800">
+          <div className="flex flex-col sm:flex-row items-center gap-3 bg-white p-3.5 rounded-2xl border border-zinc-200 shadow-xs">
             <div className="relative flex-1 w-full">
-              <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by Order #, Consignment, Customer Name, City..."
-                className="w-full pl-10 pr-4 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 transition"
+                className="w-full pl-10 pr-4 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs text-zinc-900 focus:outline-none focus:bg-white focus:border-[#748C48] transition"
               />
             </div>
 
@@ -399,7 +399,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-zinc-300 focus:outline-none cursor-pointer"
+                className="px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs text-zinc-800 focus:outline-none cursor-pointer"
               >
                 <option value="ALL">All Statuses</option>
                 <option value="order_placed">Awaiting Confirmation</option>
@@ -416,7 +416,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
               <select
                 value={courierFilter}
                 onChange={(e) => setCourierFilter(e.target.value)}
-                className="px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-zinc-300 focus:outline-none cursor-pointer"
+                className="px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs text-zinc-800 focus:outline-none cursor-pointer"
               >
                 <option value="ALL">All Couriers</option>
                 <option value="TCS">TCS Express</option>
@@ -428,10 +428,10 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
           </div>
 
           {/* Orders & Shipments Table */}
-          <div className="bg-zinc-900/60 rounded-2xl border border-zinc-800 overflow-hidden shadow-lg">
+          <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-zinc-950/80 border-b border-zinc-800 text-zinc-400 uppercase text-[10px] tracking-wider font-semibold">
+                <thead className="bg-zinc-50/80 border-b border-zinc-200 text-zinc-500 uppercase text-[10px] tracking-wider font-semibold">
                   <tr>
                     <th className="px-4 py-3.5">Order #</th>
                     <th className="px-4 py-3.5">Customer & City</th>
@@ -442,7 +442,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                     <th className="px-4 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
+                <tbody className="divide-y divide-zinc-100 text-zinc-800">
                   {filteredRecords.length === 0 ? (
                     <tr>
                       <td colSpan={7} className="px-4 py-12 text-center text-zinc-500">
@@ -457,47 +457,47 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                       const isException = r.shipmentStatus.includes('attempt') || r.shipmentStatus.includes('delay') || r.shipmentStatus.includes('return');
 
                       return (
-                        <tr key={r.id} className="hover:bg-zinc-800/40 transition">
-                          <td className="px-4 py-3 font-mono font-bold text-white">
+                        <tr key={r.id} className="hover:bg-[#FAF8F5] transition">
+                          <td className="px-4 py-3 font-mono font-bold text-[#252E15]">
                             {r.orderNumber}
                             <span className="block text-[10px] font-sans font-normal text-zinc-500 mt-0.5">
                               {r.date}
                             </span>
                           </td>
                           <td className="px-4 py-3">
-                            <span className="font-semibold text-zinc-200 block">{r.customerName}</span>
-                            <span className="text-[11px] text-zinc-400">{r.customerPhone} • {r.city}</span>
+                            <span className="font-semibold text-zinc-900 block">{r.customerName}</span>
+                            <span className="text-[11px] text-zinc-500">{r.customerPhone} • {r.city}</span>
                           </td>
                           <td className="px-4 py-3">
-                            <span className="font-semibold text-zinc-200 block">{r.shipmentCourier}</span>
+                            <span className="font-semibold text-zinc-800 block">{r.shipmentCourier}</span>
                             {r.shipmentTracking ? (
-                              <span className="text-[11px] font-mono text-emerald-400">{r.shipmentTracking}</span>
+                              <span className="text-[11px] font-mono text-emerald-700 font-semibold">{r.shipmentTracking}</span>
                             ) : (
-                              <span className="text-[10px] text-amber-500 font-medium">Unbooked</span>
+                              <span className="text-[10px] text-amber-700 font-medium">Unbooked</span>
                             )}
                           </td>
                           <td className="px-4 py-3">
                             <span
                               className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-semibold border ${
                                 isDelivered
-                                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
                                   : isOut
-                                  ? 'bg-orange-500/10 text-orange-400 border-orange-500/30'
+                                  ? 'bg-orange-50 text-orange-800 border-orange-300'
                                   : isTransit
-                                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                                  ? 'bg-amber-50 text-amber-800 border-amber-300'
                                   : isException
-                                  ? 'bg-rose-500/10 text-rose-400 border-rose-500/30'
-                                  : 'bg-zinc-800 text-zinc-300 border-zinc-700'
+                                  ? 'bg-rose-50 text-rose-800 border-rose-300'
+                                  : 'bg-zinc-100 text-zinc-700 border-zinc-200'
                               }`}
                             >
                               {r.shipmentStatus.replace(/_/g, ' ').toUpperCase()}
                             </span>
                           </td>
-                          <td className="px-4 py-3 font-mono font-medium text-zinc-200">
+                          <td className="px-4 py-3 font-mono font-medium text-zinc-900">
                             Rs. {r.total.toLocaleString()}
                             <span className="block text-[10px] text-zinc-500">{r.paymentMethod}</span>
                           </td>
-                          <td className="px-4 py-3 text-[11px] text-zinc-400 font-mono">
+                          <td className="px-4 py-3 text-[11px] text-zinc-500 font-mono">
                             {r.lastSync}
                           </td>
                           <td className="px-4 py-3 text-right">
@@ -505,7 +505,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                               <button
                                 type="button"
                                 onClick={() => setSelectedOrder(r)}
-                                className="px-2.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition cursor-pointer"
+                                className="px-2.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold transition cursor-pointer shadow-2xs"
                               >
                                 View Details
                               </button>
@@ -515,7 +515,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                                   setSelectedOrder(r);
                                   setIsAssignModalOpen(true);
                                 }}
-                                className="p-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 transition cursor-pointer"
+                                className="p-1.5 rounded-lg bg-[#748C48]/15 hover:bg-[#748C48]/25 text-[#252E15] transition cursor-pointer"
                                 title="Assign / Book Courier"
                               >
                                 <Truck className="w-3.5 h-3.5" />
@@ -526,7 +526,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                                   setSelectedOrder(r);
                                   setIsStatusModalOpen(true);
                                 }}
-                                className="p-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 transition cursor-pointer"
+                                className="p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 transition cursor-pointer"
                                 title="Update Status & Audit Log"
                               >
                                 <Edit className="w-3.5 h-3.5" />
@@ -544,37 +544,37 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
         </>
       ) : (
         /* Courier Settings View */
-        <div className="bg-zinc-900/60 rounded-2xl border border-zinc-800 p-6 space-y-6">
+        <div className="bg-white rounded-2xl border border-zinc-200 p-6 space-y-6 shadow-sm">
           <div>
-            <h2 className="text-base font-bold text-white">Pakistan Courier Provider Integrations</h2>
-            <p className="text-xs text-zinc-400 mt-1">
+            <h2 className="text-base font-bold text-[#252E15] font-serif">Pakistan Courier Provider Integrations</h2>
+            <p className="text-xs text-zinc-500 mt-1">
               Verify credentials status, webhook callback URLs, and automated electronic booking for top couriers.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {courierSettings.map(c => (
-              <div key={c.providerId} className="p-5 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-3">
+              <div key={c.providerId} className="p-5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-white">{c.displayName}</h3>
+                  <h3 className="text-sm font-bold text-zinc-900">{c.displayName}</h3>
                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
                     c.isConfigured
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                      : 'bg-zinc-800 text-zinc-400 border-zinc-700'
+                      ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                      : 'bg-zinc-200 text-zinc-700 border-zinc-300'
                   }`}>
                     {c.mode}
                   </span>
                 </div>
 
-                <div className="text-xs space-y-1.5 text-zinc-400">
-                  <p><strong>Required Env Variables:</strong> <span className="font-mono text-zinc-300">{c.requiredEnv}</span></p>
+                <div className="text-xs space-y-1.5 text-zinc-600">
+                  <p><strong>Required Env Variables:</strong> <span className="font-mono text-zinc-800">{c.requiredEnv}</span></p>
                   <p><strong>Webhook Endpoint:</strong></p>
-                  <div className="p-2 rounded bg-zinc-900 font-mono text-[11px] text-zinc-300 break-all border border-zinc-800">
+                  <div className="p-2 rounded bg-white font-mono text-[11px] text-zinc-800 break-all border border-zinc-200">
                     {c.webhookUrl}
                   </div>
                 </div>
 
-                <div className="text-[11px] text-zinc-500 pt-2 border-t border-zinc-900">
+                <div className="text-[11px] text-zinc-500 pt-2 border-t border-zinc-200">
                   {c.isConfigured
                     ? '✓ Live API authenticated and ready to issue tracking consignments.'
                     : 'ℹ️ Live API credentials not detected. Operating in verified Manual / Fallback Mode. Admin can manually enter consignment numbers.'}
@@ -587,47 +587,47 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
 
       {/* Order Detail Modal */}
       {selectedOrder && !isAssignModalOpen && !isStatusModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-5">
-            <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-zinc-200 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl text-zinc-900">
+            <div className="flex items-center justify-between pb-4 border-b border-zinc-200">
               <div>
-                <h3 className="text-lg font-bold text-white">Order Details: {selectedOrder.orderNumber}</h3>
-                <span className="text-xs text-zinc-400">{selectedOrder.date}</span>
+                <h3 className="text-lg font-bold text-[#252E15] font-serif">Order Details: {selectedOrder.orderNumber}</h3>
+                <span className="text-xs text-zinc-500">{selectedOrder.date}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedOrder(null)}
-                className="text-zinc-400 hover:text-white text-sm"
+                className="text-zinc-400 hover:text-zinc-800 text-sm cursor-pointer p-1 rounded-lg hover:bg-zinc-100"
               >
                 ✕
               </button>
             </div>
 
             {/* Customer & Address */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs bg-zinc-950 p-4 rounded-xl border border-zinc-800/80">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs bg-zinc-50 p-4 rounded-xl border border-zinc-200">
               <div>
                 <p className="text-zinc-500 uppercase font-semibold text-[10px]">Customer Details</p>
-                <p className="text-sm font-bold text-white mt-1">{selectedOrder.customerName}</p>
-                <p className="text-zinc-300">{selectedOrder.customerPhone}</p>
-                {selectedOrder.customerEmail && <p className="text-zinc-400">{selectedOrder.customerEmail}</p>}
+                <p className="text-sm font-bold text-zinc-900 mt-1">{selectedOrder.customerName}</p>
+                <p className="text-zinc-700">{selectedOrder.customerPhone}</p>
+                {selectedOrder.customerEmail && <p className="text-zinc-600">{selectedOrder.customerEmail}</p>}
               </div>
               <div>
                 <p className="text-zinc-500 uppercase font-semibold text-[10px]">Shipping Destination</p>
-                <p className="text-sm font-bold text-white mt-1">{selectedOrder.city}</p>
-                <p className="text-zinc-300">{selectedOrder.shippingAddress}</p>
+                <p className="text-sm font-bold text-zinc-900 mt-1">{selectedOrder.city}</p>
+                <p className="text-zinc-700">{selectedOrder.shippingAddress}</p>
               </div>
             </div>
 
             {/* Courier & Tracking Info */}
-            <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80 space-y-3">
+            <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-200 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-zinc-500 uppercase font-semibold text-[10px]">Assigned Courier</p>
-                  <p className="text-sm font-bold text-white mt-0.5">{selectedOrder.deliveryCourier || 'Not Assigned'}</p>
+                  <p className="text-sm font-bold text-zinc-900 mt-0.5">{selectedOrder.deliveryCourier || 'Not Assigned'}</p>
                 </div>
                 <div>
                   <p className="text-zinc-500 uppercase font-semibold text-[10px]">Consignment Number</p>
-                  <p className="text-sm font-mono font-bold text-emerald-400 mt-0.5">
+                  <p className="text-sm font-mono font-bold text-emerald-700 mt-0.5">
                     {selectedOrder.trackingNumber || 'Pending'}
                   </p>
                 </div>
@@ -635,7 +635,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                   type="button"
                   onClick={() => handleSyncCourier(selectedOrder)}
                   disabled={isActionLoading || !selectedOrder.trackingNumber}
-                  className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white transition disabled:opacity-40 cursor-pointer flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 text-xs font-semibold text-zinc-800 transition disabled:opacity-40 cursor-pointer flex items-center gap-1.5 shadow-2xs"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${isActionLoading ? 'animate-spin' : ''}`} />
                   Sync Courier API
@@ -643,12 +643,12 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
               </div>
 
               {selectedOrder.trackingNumber && (
-                <div className="pt-2 border-t border-zinc-900 flex justify-between items-center text-xs">
+                <div className="pt-2 border-t border-zinc-200 flex justify-between items-center text-xs">
                   <a
                     href={`/track-order/?order=${selectedOrder.orderNumber}&phone=${encodeURIComponent(selectedOrder.customerPhone)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-emerald-400 hover:underline flex items-center gap-1"
+                    className="text-[#748C48] hover:underline flex items-center gap-1 font-semibold"
                   >
                     Open Public Customer Tracking View <ExternalLink className="w-3.5 h-3.5" />
                   </a>
@@ -658,41 +658,41 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
 
             {/* Items */}
             <div className="space-y-2">
-              <p className="text-zinc-400 text-xs font-bold uppercase tracking-wider">Ordered Items</p>
-              <div className="divide-y divide-zinc-800 text-xs">
+              <p className="text-zinc-600 text-xs font-bold uppercase tracking-wider">Ordered Items</p>
+              <div className="divide-y divide-zinc-200 text-xs border border-zinc-200 rounded-xl p-3 bg-white">
                 {selectedOrder.items.map((item, idx) => (
                   <div key={idx} className="py-2 flex items-center justify-between">
-                    <span>{item.productName} × {item.quantity}</span>
-                    <span className="font-mono font-semibold text-white">Rs. {(item.quantity * item.price).toLocaleString()}</span>
+                    <span className="text-zinc-800">{item.productName} × {item.quantity}</span>
+                    <span className="font-mono font-semibold text-zinc-900">Rs. {(item.quantity * item.price).toLocaleString()}</span>
                   </div>
                 ))}
               </div>
-              <div className="pt-2 flex justify-between font-bold text-sm text-white border-t border-zinc-800">
+              <div className="pt-2 flex justify-between font-bold text-sm text-zinc-900">
                 <span>Total Amount:</span>
-                <span>Rs. {selectedOrder.total.toLocaleString()} ({selectedOrder.paymentMethod})</span>
+                <span className="text-[#252E15]">Rs. {selectedOrder.total.toLocaleString()} ({selectedOrder.paymentMethod})</span>
               </div>
             </div>
 
             {/* Modal Actions */}
-            <div className="pt-4 border-t border-zinc-800 flex items-center justify-end gap-3">
+            <div className="pt-4 border-t border-zinc-200 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setIsAssignModalOpen(true)}
-                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-[#748C48] hover:bg-[#5F7339] text-white text-xs font-bold transition cursor-pointer shadow-xs"
               >
                 Assign / Book Courier
               </button>
               <button
                 type="button"
                 onClick={() => setIsStatusModalOpen(true)}
-                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-[#252E15] hover:bg-[#323D1D] text-white text-xs font-bold transition cursor-pointer shadow-xs"
               >
                 Update Status
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedOrder(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold transition cursor-pointer border border-zinc-300"
               >
                 Close
               </button>
@@ -703,19 +703,19 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
 
       {/* Assign Courier Modal */}
       {isAssignModalOpen && selectedOrder && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <form onSubmit={handleAssignCourier} className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 space-y-4">
-            <h3 className="text-base font-bold text-white">Assign Courier & Generate Consignment</h3>
-            <p className="text-xs text-zinc-400">Order: {selectedOrder.orderNumber} • Destination: {selectedOrder.city}</p>
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <form onSubmit={handleAssignCourier} className="bg-white border border-zinc-200 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-zinc-900">
+            <h3 className="text-base font-bold text-[#252E15] font-serif">Assign Courier & Generate Consignment</h3>
+            <p className="text-xs text-zinc-500">Order: {selectedOrder.orderNumber} • Destination: {selectedOrder.city}</p>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1">
                 Select Courier Partner
               </label>
               <select
                 value={assignCourier}
                 onChange={(e) => setAssignCourier(e.target.value)}
-                className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-white focus:outline-none"
+                className="w-full px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs text-zinc-900 focus:outline-none focus:border-[#748C48]"
               >
                 <option value="TCS">TCS Express (COD & Standard)</option>
                 <option value="PostEx">PostEx Pakistan</option>
@@ -725,7 +725,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1">
                 Tracking / Consignment Number (Optional)
               </label>
               <input
@@ -733,25 +733,25 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                 value={assignTrackingNo}
                 onChange={(e) => setAssignTrackingNo(e.target.value)}
                 placeholder="Leave blank to auto-generate from API"
-                className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-mono text-white focus:outline-none"
+                className="w-full px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs font-mono text-zinc-900 focus:outline-none focus:border-[#748C48]"
               />
               <span className="text-[10px] text-zinc-500 mt-1 block">
                 If credentials are configured, the system books via API. Otherwise generates verified tracking number.
               </span>
             </div>
 
-            <div className="pt-4 flex items-center justify-end gap-2 border-t border-zinc-800">
+            <div className="pt-4 flex items-center justify-end gap-2 border-t border-zinc-200">
               <button
                 type="button"
                 onClick={() => setIsAssignModalOpen(false)}
-                className="px-3 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-semibold cursor-pointer"
+                className="px-3 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold cursor-pointer border border-zinc-300"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isActionLoading}
-                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition disabled:opacity-50 cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-[#748C48] hover:bg-[#5F7339] text-white text-xs font-bold transition disabled:opacity-50 cursor-pointer shadow-xs"
               >
                 {isActionLoading ? 'Booking...' : 'Confirm Assignment'}
               </button>
@@ -762,19 +762,19 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
 
       {/* Update Status Modal with Audit Logging */}
       {isStatusModalOpen && selectedOrder && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <form onSubmit={handleUpdateStatus} className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 space-y-4">
-            <h3 className="text-base font-bold text-white">Manual Status Update & Audit Log</h3>
-            <p className="text-xs text-zinc-400">Order: {selectedOrder.orderNumber} • Current: {selectedOrder.status}</p>
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <form onSubmit={handleUpdateStatus} className="bg-white border border-zinc-200 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-zinc-900">
+            <h3 className="text-base font-bold text-[#252E15] font-serif">Manual Status Update & Audit Log</h3>
+            <p className="text-xs text-zinc-500">Order: {selectedOrder.orderNumber} • Current: {selectedOrder.status}</p>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1">
                 New Milestone Status
               </label>
               <select
                 value={updateStatus}
                 onChange={(e) => setUpdateStatus(e.target.value)}
-                className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-white focus:outline-none"
+                className="w-full px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs text-zinc-900 focus:outline-none focus:border-[#748C48]"
               >
                 <optgroup label="Standard Milestones">
                   <option value="order_confirmed">Order Confirmed</option>
@@ -801,7 +801,7 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1">
                 Current Location / Facility
               </label>
               <input
@@ -809,13 +809,13 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                 value={updateLocation}
                 onChange={(e) => setUpdateLocation(e.target.value)}
                 placeholder="e.g. Lahore Central Hub, Karachi Korangi Hub"
-                className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-white focus:outline-none"
+                className="w-full px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs text-zinc-900 focus:outline-none focus:border-[#748C48]"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-1">
                 Reason / Internal Notes (Logged for Audit)
               </label>
               <textarea
@@ -823,23 +823,23 @@ export const ShipmentTrackingPage: React.FC<ShipmentTrackingPageProps> = ({ orde
                 onChange={(e) => setUpdateReason(e.target.value)}
                 rows={2}
                 placeholder="e.g. Handed over to courier driver, verified delivery call"
-                className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-xs text-white focus:outline-none"
+                className="w-full px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-xl text-xs text-zinc-900 focus:outline-none focus:border-[#748C48]"
                 required
               />
             </div>
 
-            <div className="pt-4 flex items-center justify-end gap-2 border-t border-zinc-800">
+            <div className="pt-4 flex items-center justify-end gap-2 border-t border-zinc-200">
               <button
                 type="button"
                 onClick={() => setIsStatusModalOpen(false)}
-                className="px-3 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-semibold cursor-pointer"
+                className="px-3 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold cursor-pointer border border-zinc-300"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isActionLoading}
-                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition disabled:opacity-50 cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-[#252E15] hover:bg-[#323D1D] text-white text-xs font-bold transition disabled:opacity-50 cursor-pointer shadow-xs"
               >
                 {isActionLoading ? 'Saving...' : 'Update & Audit Log'}
               </button>
