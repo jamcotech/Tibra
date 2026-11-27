@@ -312,11 +312,19 @@ export const storeService = {
     }
     try {
       const parsed = JSON.parse(data);
+      if (parsed.twoBottleCombo && parsed.twoBottleCombo.packagePrice === 2500) {
+        parsed.twoBottleCombo.packagePrice = 2600;
+        localStorage.setItem(STORAGE_KEYS.PRICING, JSON.stringify(parsed));
+      }
       return {
         ...DEFAULT_PRICING_CONFIG,
         ...parsed,
         singleBottle: { ...DEFAULT_PRICING_CONFIG.singleBottle, ...parsed.singleBottle },
-        twoBottleCombo: { ...DEFAULT_PRICING_CONFIG.twoBottleCombo, ...parsed.twoBottleCombo },
+        twoBottleCombo: {
+          ...DEFAULT_PRICING_CONFIG.twoBottleCombo,
+          ...parsed.twoBottleCombo,
+          packagePrice: parsed.twoBottleCombo?.packagePrice === 2500 ? 2600 : (parsed.twoBottleCombo?.packagePrice || 2600)
+        },
         threeBottleFamily: { ...DEFAULT_PRICING_CONFIG.threeBottleFamily, ...parsed.threeBottleFamily },
       };
     } catch {

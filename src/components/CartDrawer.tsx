@@ -6,7 +6,6 @@ import { calculateItemPrice, calculateCartTotal, storeService } from '../service
 export const CartDrawer: React.FC = () => {
   const {
     cart,
-    cartCount,
     cartSubtotal,
     isCartDrawerOpen,
     setIsCartDrawerOpen,
@@ -17,26 +16,69 @@ export const CartDrawer: React.FC = () => {
   } = useShop();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const pricing = storeService.getPricingConfig();
+  const rawPricing = storeService.getPricingConfig();
+  const pricing = {
+    ...rawPricing,
+    twoBottleCombo: {
+      ...rawPricing.twoBottleCombo,
+      packagePrice: rawPricing.twoBottleCombo.packagePrice === 2500 ? 2600 : rawPricing.twoBottleCombo.packagePrice
+    }
+  };
   const cartSummary = calculateCartTotal(cart, pricing);
   const shippingFee = cartSummary.shippingFee;
   const estimatedTotal = cartSummary.grandTotal;
+
+  // Calculate actual total bottles in cart (taking combo/family packs into account)
+  const totalBottles = cart.reduce((sum, item) => {
+    if (item.product.id.includes('family') || item.product.id.includes('tri')) {
+      return sum + item.quantity * 3;
+    }
+    if (item.product.id.includes('bundle') || item.product.id.includes('combo') || item.product.id.includes('duo')) {
+      return sum + item.quantity * 2;
+    }
+    return sum + item.quantity;
+  }, 0);
 
   // Background Scroll Lock & Keyboard Escape Support
   useEffect(() => {
     if (!isCartDrawerOpen) return;
 
-    // Calculate scrollbar width to prevent layout shift
+    // Save background scroll position
+    const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
     const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-    const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-    const originalPaddingRight = document.body.style.paddingRight;
 
-    document.body.style.overflow = 'hidden';
+    const originalBodyStyle = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      paddingRight: document.body.style.paddingRight,
+    };
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+
+    // Bulletproof background scroll lock
     document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
     if (scrollBarWidth > 0) {
       document.body.style.paddingRight = `${scrollBarWidth}px`;
     }
+
+    // Intercept wheel & touchmove outside the cart content area to prevent background scrolling
+    const preventBackgroundScroll = (e: WheelEvent | TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (scrollContainerRef.current && target && scrollContainerRef.current.contains(target)) {
+        return; // Allow internal cart scrolling
+      }
+      e.preventDefault();
+    };
+
+    window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
 
     // Keyboard support: Escape closes cart drawer
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,14 +86,23 @@ export const CartDrawer: React.FC = () => {
         setIsCartDrawerOpen(false);
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.body.style.overflow = originalBodyOverflow;
       document.documentElement.style.overflow = originalHtmlOverflow;
-      document.body.style.paddingRight = originalPaddingRight;
+      document.body.style.overflow = originalBodyStyle.overflow;
+      document.body.style.position = originalBodyStyle.position;
+      document.body.style.top = originalBodyStyle.top;
+      document.body.style.left = originalBodyStyle.left;
+      document.body.style.right = originalBodyStyle.right;
+      document.body.style.paddingRight = originalBodyStyle.paddingRight;
+
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
       window.removeEventListener('keydown', handleKeyDown);
+
+      // Restore scroll position
+      window.scrollTo(0, scrollY);
     };
   }, [isCartDrawerOpen, setIsCartDrawerOpen]);
 
@@ -95,8 +146,6 @@ export const CartDrawer: React.FC = () => {
       <div
         className="fixed inset-0 bg-botanical-950/60 backdrop-blur-xs transition-opacity cursor-pointer"
         onClick={() => setIsCartDrawerOpen(false)}
-        onTouchMove={(e) => e.preventDefault()}
-        onWheel={(e) => e.preventDefault()}
         aria-hidden="true"
       />
 
@@ -122,7 +171,7 @@ export const CartDrawer: React.FC = () => {
                 Your TIBRA NATURALS Cart
               </h2>
               <p className="text-xs text-botanical-600 font-medium">
-                {cart.length} unique item{cart.length !== 1 ? 's' : ''} in cart ({cartCount} bottle{cartCount !== 1 ? 's' : ''})
+                {cart.length} unique item{cart.length !== 1 ? 's' : ''} in cart ({totalBottles} bottle{totalBottles !== 1 ? 's' : ''})
               </p>
             </div>
           </div>
