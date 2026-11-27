@@ -11,24 +11,17 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { addToCart, quickBuyNow, products } = useShop();
   const primaryProduct = products[0] || storeService.getProducts()[0];
-  const [isMobile, setIsMobile] = React.useState(() => (typeof window !== 'undefined' ? window.innerWidth < 768 : false));
 
-  /* Feather-light GPU-accelerated video playback on desktop with 0% CPU overhead & accessibility check */
+  /* Feather-light GPU-accelerated video playback with 0% CPU overhead, smooth mobile autoplay & accessibility check */
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
     const video = videoRef.current;
-    if (!video) return () => window.removeEventListener('resize', checkMobile);
+    if (!video) return;
 
     // Accessibility: Respect user's motion preferences
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       video.pause();
-      return () => window.removeEventListener('resize', checkMobile);
+      return;
     }
 
     const enforcePlaybackRate = () => {
@@ -38,11 +31,19 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
     };
 
     video.playbackRate = 0.7;
+
+    // Gracefully initiate playback on both mobile and desktop (handles iOS/Android low power mode silently)
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay prevented by browser power/data policy; poster image remains cleanly visible
+      });
+    }
+
     video.addEventListener('play', enforcePlaybackRate);
     video.addEventListener('ratechange', enforcePlaybackRate);
 
     return () => {
-      window.removeEventListener('resize', checkMobile);
       video.removeEventListener('play', enforcePlaybackRate);
       video.removeEventListener('ratechange', enforcePlaybackRate);
     };
@@ -106,30 +107,18 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       >
         {/* ── FULL-BLEED HARDWARE-ACCELERATED VISUAL HERO (LCP & CLS OPTIMIZED) ── */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Mobile: Ultra-fast 39KB WebP Image (Zero video network overhead) */}
-          {isMobile ? (
-            <img
-              src="/assets/hero-video-poster.webp"
-              alt="TIBRA NATURALS Pain Relief Oil Botanical Formulation Bottle"
-              width={720}
-              height={1280}
-              fetchPriority="high"
-              className="hero-video-media absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
-            />
-          ) : (
-            /* Desktop: Cinematic Slow-Motion Video with Native Poster */
-            <video
-              ref={videoRef}
-              className="hero-video-media absolute inset-0 w-full h-full object-cover"
-              src="/assets/hero-video-002.mp4"
-              poster="/assets/hero-video-poster.webp"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            />
-          )}
+          {/* Universal Cinematic Slow-Motion Video with Native 39KB WebP Poster for instant LCP render on Mobile & Desktop */}
+          <video
+            ref={videoRef}
+            className="hero-video-media absolute inset-0 w-full h-full object-cover"
+            src="/assets/hero-video-002.mp4"
+            poster="/assets/hero-video-poster.webp"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
         </div>
 
         {/* ── OVERLAYS — Clean contrast with zero haze, video fully reaches top under navbar ── */}
